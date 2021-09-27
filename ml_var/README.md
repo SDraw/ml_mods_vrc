@@ -6,7 +6,7 @@ In Unity 2018 way of handling blendshapes has been changed. This change leads to
 This mod simply removes all blendshapes upon mesh baking.
 
 # Installation
-* Get [latest release](../../releases/latest).
+* Get [latest release](../../../releases/latest).
 * Put `ml_var.dll` in `Mods` folder of game.
 
 # Notes

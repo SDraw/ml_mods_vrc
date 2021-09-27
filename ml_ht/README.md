@@ -6,7 +6,7 @@ MelonLoader mod for VRChat that allows to turn head regardless of body rotation.
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader).
 * Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
-* Get [latest release DLL](../../releases/latest).
+* Get [latest release DLL](../../../releases/latest).
 * Put `ml_ht.dll` in `Mods` folder of game.
 
 # Usage
