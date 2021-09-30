@@ -20,7 +20,7 @@ namespace ml_ht
             MelonLoader.MelonCoroutines.Start(FindInputController());
         }
 
-        void Update()
+        void LateUpdate()
         {
             if((m_player != null) && (m_inputController != null))
             {

@@ -15,7 +15,7 @@ This mod allows you to use your Leap Motion controller for hands and fingers vis
 Check self-explanatory mod settings in UIExpansionKit's mods settings tab.
 
 # SDK3 avatars parameters
-You can retrieve hands presense, fingers curls and spreads by setting specific parameters in your avatar.  
+You can retrieve hands presense, fingers bends and spreads by setting specific parameters in your avatar.  
 List of available additional parameters:
 * `_LeftHandPresent` - boolean
 * `_RightHandPresent` - boolean
