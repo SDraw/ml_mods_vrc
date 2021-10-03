@@ -24,6 +24,8 @@ namespace ml_alg
         static FieldInfo ms_IKSolverVR_Spine_pelvisTarget = null;
 
         static Type ms_IKSolverVR_Arm = null;
+        static FieldInfo ms_IKSolverVR_Arm_IKPosition = null;
+        static FieldInfo ms_IKSolverVR_Arm_IKRotation = null;
         static FieldInfo ms_IKSolverVR_Arm_target = null;
 
         static Type ms_IKSolverVR_Leg = null;
@@ -61,6 +63,9 @@ namespace ml_alg
 
                     l_mod.Assembly.GetTypes().DoIf(t => t.Name == "Arm", t => ms_IKSolverVR_Arm = t);
                     ms_IKSolverVR_Arm?.GetFields().DoIf(f => f.Name == "target", f => ms_IKSolverVR_Arm_target = f);
+                    ms_IKSolverVR_Arm?.GetFields().DoIf(f => f.Name == "IKPosition", f => ms_IKSolverVR_Arm_IKPosition = f);
+                    ms_IKSolverVR_Arm?.GetFields().DoIf(f => f.Name == "IKRotation", f => ms_IKSolverVR_Arm_IKRotation = f);
+                
 
                     l_mod.Assembly.GetTypes().DoIf(t => t.Name == "Leg", t => ms_IKSolverVR_Leg = t);
                     ms_IKSolverVR_Leg?.GetFields().DoIf(f => f.Name == "IKPosition", f => ms_IKSolverVR_Leg_IKPosition = f);
@@ -86,11 +91,11 @@ namespace ml_alg
                         ms_IKSolverVR_Spine_IKRotationPelvis?.SetValue(l_spine, f_rot);
 
                     UnityEngine.Transform l_target = (UnityEngine.Transform)ms_IKSolverVR_Spine_pelvisTarget?.GetValue(l_spine);
-                    if(l_target != null)
+                    if((l_target != null) && (l_target.parent != null))
                     {
-                        l_target.position = f_pos;
+                        l_target.parent.position = f_pos;
                         if(f_rotate)
-                            l_target.rotation = f_rot;
+                            l_target.parent.rotation = f_rot;
                     }
                 }
             }
@@ -118,6 +123,10 @@ namespace ml_alg
                 var l_arm = ms_IKSolverVR_leftArm?.GetValue(l_solver);
                 if(l_arm != null)
                 {
+                    ms_IKSolverVR_Arm_IKPosition?.SetValue(l_arm, f_pos);
+                    if(f_rotate)
+                        ms_IKSolverVR_Arm_IKRotation?.SetValue(l_arm, f_rot);
+
                     UnityEngine.Transform l_target = (UnityEngine.Transform)ms_IKSolverVR_Arm_target?.GetValue(l_arm);
                     if(l_target != null)
                     {
@@ -151,6 +160,10 @@ namespace ml_alg
                 var l_arm = ms_IKSolverVR_rightArm?.GetValue(l_solver);
                 if(l_arm != null)
                 {
+                    ms_IKSolverVR_Arm_IKPosition?.SetValue(l_arm, f_pos);
+                    if(f_rotate)
+                        ms_IKSolverVR_Arm_IKRotation?.SetValue(l_arm, f_rot);
+
                     UnityEngine.Transform l_target = (UnityEngine.Transform)ms_IKSolverVR_Arm_target?.GetValue(l_arm);
                     if(l_target != null)
                     {
@@ -189,11 +202,11 @@ namespace ml_alg
                         ms_IKSolverVR_Leg_IKRotation?.SetValue(l_leg, f_rot);
 
                     UnityEngine.Transform l_target = (UnityEngine.Transform)ms_IKSolverVR_Leg_target?.GetValue(l_leg);
-                    if(l_target != null)
+                    if((l_target != null) && (l_target.parent != null))
                     {
-                        l_target.position = f_pos;
+                        l_target.parent.position = f_pos;
                         if(f_rotate)
-                            l_target.rotation = f_rot;
+                            l_target.parent.rotation = f_rot;
                     }
                 }
             }
@@ -226,11 +239,11 @@ namespace ml_alg
                         ms_IKSolverVR_Leg_IKRotation?.SetValue(l_leg, f_rot);
 
                     UnityEngine.Transform l_target = (UnityEngine.Transform)ms_IKSolverVR_Leg_target?.GetValue(l_leg);
-                    if(l_target != null)
+                    if((l_target != null) && (l_target.parent != null))
                     {
-                        l_target.position = f_pos;
+                        l_target.parent.position = f_pos;
                         if(f_rotate)
-                            l_target.rotation = f_rot;
+                            l_target.parent.rotation = f_rot;
                     }
                 }
             }

@@ -35,7 +35,7 @@
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity");
 
             if(IKTweaksHelper.Present)
-                MelonLoader.MelonPreferences.CreateEntry("ALG", "IKTweaks", ms_useIKTweaks, "Detect IKTweaks FBT (offsets issues present)");
+                MelonLoader.MelonPreferences.CreateEntry("ALG", "IKTweaks", ms_useIKTweaks, "Detect IKTweaks FBT (hands issues present)");
 
             ReloadSettings();
         }
