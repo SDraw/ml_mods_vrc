@@ -42,5 +42,5 @@ Also, check self-explanatory mod settings in UIExpansionKit's mods settings tab.
 
 # Notes
 * This mod is made specificaly for SDK3 avatars creators.
-* For some avatars proximity of left and right eyes can be same due to weird Unity behaviour.
+* Eyes and jaw bones are merged with head due to zero scaling of local player's head bone. Those bones will have same proximity values if camera is near of head bone.
 * Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.
