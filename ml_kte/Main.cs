@@ -77,6 +77,7 @@ namespace ml_kte
         {
             if(!m_quit)
             {
+                bool l_oldState = Settings.Enabled;
                 Settings.Reload();
 
                 if(Settings.Enabled)
@@ -84,10 +85,10 @@ namespace ml_kte
                 else
                 {
                     KinectHandlerV2.TerminateKinect();
-                    if(Utils.GetLocalPlayer() != null)
-                        VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                    if(l_oldState && (Utils.GetLocalPlayer() != null))
+                            VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
                 }
-                                        
+
                 if(m_trackedRoot != null)
                 {
                     m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
