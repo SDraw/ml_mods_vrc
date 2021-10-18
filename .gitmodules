@@ -1,3 +1,6 @@
-[submodule "ml_kte_cpp/vendor/glm"]
-	path = ml_kte_cpp/vendor/glm
+[submodule "ml_kte_cpp_v1/vendor/glm"]
+	path = ml_kte_cpp_v1/vendor/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "ml_kte_cpp_v2/vendor/glm"]
+	path = ml_kte_cpp_v2/vendor/glm
 	url = https://github.com/g-truc/glm.git

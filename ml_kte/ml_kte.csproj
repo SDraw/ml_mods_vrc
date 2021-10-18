@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependenciesHandler.cs" />
+    <Compile Include="KinectHandlerV1.cs" />
     <Compile Include="KinectHandlerV2.cs" />
     <Compile Include="KinectTracked.cs" />
     <Compile Include="Main.cs" />
@@ -118,8 +119,13 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\ml_kte_cpp\bin\ml_kte_cpp.dll">
-      <Link>ml_kte_cpp.dll</Link>
+    <EmbeddedResource Include="..\ml_kte_cpp_v2\bin\ml_kte_cpp_v2.dll">
+      <Link>ml_kte_cpp_v2.dll</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\ml_kte_cpp_v1\bin\ml_kte_cpp_v1.dll">
+      <Link>ml_kte_cpp_v1.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

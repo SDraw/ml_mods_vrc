@@ -9,6 +9,10 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD /*ul_reason_for_call*/, LPVOID 
 
 CCore *g_core = nullptr;
 
+extern "C" __declspec(dllexport) void CheckLibrary()
+{
+}
+
 extern "C" __declspec(dllexport) void LaunchKinect()
 {
     if (!g_core)

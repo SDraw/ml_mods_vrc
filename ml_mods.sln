@@ -20,9 +20,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_kte", "ml_kte\ml_kte.csproj", "{0024178E-D5F8-484B-8F8D-A650D66EBEEE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319} = {7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}
+		{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63} = {D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ml_kte_cpp", "ml_kte_cpp\ml_kte_cpp.vcxproj", "{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ml_kte_cpp_v2", "ml_kte_cpp_v2\ml_kte_cpp_v2.vcxproj", "{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ml_kte_cpp_v1", "ml_kte_cpp_v1\ml_kte_cpp_v1.vcxproj", "{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +69,10 @@ Global
 		{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}.Debug|x64.Build.0 = Debug|x64
 		{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}.Release|x64.ActiveCfg = Release|x64
 		{7281B1A6-E7D7-42D4-A2AC-FD0F871E7319}.Release|x64.Build.0 = Release|x64
+		{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}.Debug|x64.ActiveCfg = Debug|x64
+		{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}.Debug|x64.Build.0 = Debug|x64
+		{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}.Release|x64.ActiveCfg = Release|x64
+		{D420D3C8-0EA1-4377-B6E4-6D1ED90B6D63}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

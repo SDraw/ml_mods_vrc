@@ -17,11 +17,12 @@ namespace ml_kte
             Count
         }
 
-        static readonly int[] g_trackedPointBones = { 3, 0, 14, 18, 7, 11 };
+        static readonly int[] g_trackedPointBones = { 3, 0, 14, 18, 7, 11 }; // Kinect V1 and V2 have same bones IDs, almost
+
         static readonly Quaternion[] g_rotationFixes =
         {
             Quaternion.identity,
-            Quaternion.Euler(0,180f,0),
+            Quaternion.Euler(0f,180f,0f),
             Quaternion.identity,
             Quaternion.identity,
             Quaternion.identity,
@@ -64,7 +65,17 @@ namespace ml_kte
             m_quit = true;
 
             if(Settings.Enabled)
-                KinectHandlerV2.TerminateKinect();
+            {
+                switch(Settings.DeviceVersion)
+                {
+                    case Settings.KinectVersion.V1:
+                        KinectHandlerV1.Terminate();
+                        break;
+                    case Settings.KinectVersion.V2:
+                        KinectHandlerV2.Terminate();
+                        break;
+                }
+            }
 
             m_positionFloatsAlloc.Free();
             m_rotationFloatsAlloc.Free();
@@ -77,16 +88,45 @@ namespace ml_kte
         {
             if(!m_quit)
             {
+                switch(Settings.DeviceVersion)
+                {
+                    case Settings.KinectVersion.V1:
+                        KinectHandlerV1.Check();
+                        break;
+                    case Settings.KinectVersion.V2:
+                        KinectHandlerV2.Check();
+                        break;
+                }
+
                 bool l_oldState = Settings.Enabled;
                 Settings.Reload();
 
                 if(Settings.Enabled)
-                    KinectHandlerV2.LaunchKinect();
+                {
+                    switch(Settings.DeviceVersion)
+                    {
+                        case Settings.KinectVersion.V1:
+                            KinectHandlerV1.Launch();
+                            break;
+                        case Settings.KinectVersion.V2:
+                            KinectHandlerV2.Launch();
+                            break;
+                    }
+                }
                 else
                 {
-                    KinectHandlerV2.TerminateKinect();
+                    switch(Settings.DeviceVersion)
+                    {
+                        case Settings.KinectVersion.V1:
+                            KinectHandlerV1.Terminate();
+                            break;
+                        case Settings.KinectVersion.V2:
+                            KinectHandlerV2.Terminate();
+                            break;
+                    }
+
                     if(l_oldState && (Utils.GetLocalPlayer() != null))
-                            VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                        VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
                 }
 
                 if(m_trackedRoot != null)
@@ -101,7 +141,15 @@ namespace ml_kte
         {
             if(Settings.Enabled && (m_trackedRoot != null))
             {
-                KinectHandlerV2.GetKinectData(m_positionFloatsAlloc.AddrOfPinnedObject(), m_rotationFloatsAlloc.AddrOfPinnedObject());
+                switch(Settings.DeviceVersion)
+                {
+                    case Settings.KinectVersion.V1:
+                        KinectHandlerV1.GetTrackingData(m_positionFloatsAlloc.AddrOfPinnedObject(), m_rotationFloatsAlloc.AddrOfPinnedObject());
+                        break;
+                    case Settings.KinectVersion.V2:
+                        KinectHandlerV2.GetTrackingData(m_positionFloatsAlloc.AddrOfPinnedObject(), m_rotationFloatsAlloc.AddrOfPinnedObject());
+                        break;
+                }
                 for(int i = 0; i < (int)TrackedPoint.Count; i++)
                 {
                     int l_boneIndex = g_trackedPointBones[i];

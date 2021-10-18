@@ -3,21 +3,21 @@ using System.Runtime.InteropServices;
 
 namespace ml_kte
 {
-    public static class KinectHandlerV2
+    public static class KinectHandlerV1
     {
         static bool ms_valid = false;
 
-        [DllImport("ml_kte_cpp_v2.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("ml_kte_cpp_v1.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void CheckLibrary();
 
-        [DllImport("ml_kte_cpp_v2.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("ml_kte_cpp_v1.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void LaunchKinect();
 
-        [DllImport("ml_kte_cpp_v2.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("ml_kte_cpp_v1.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void TerminateKinect();
 
-        [DllImport("ml_kte_cpp_v2.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern void GetKinectData(IntPtr f_positions, IntPtr f_rotations); // 75 floats, 100 floats
+        [DllImport("ml_kte_cpp_v1.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern void GetKinectData(IntPtr f_positions, IntPtr f_rotations); // 60 floats, 80 floats
 
         public static void Check()
         {
@@ -28,11 +28,11 @@ namespace ml_kte
                     CheckLibrary();
                     ms_valid = true;
 
-                    MelonLoader.MelonLogger.Msg("Kinect 2.0 Runtime/SDK detected");
+                    MelonLoader.MelonLogger.Msg("Kinect 1.x Runtime/SDK detected");
                 }
                 catch(Exception)
                 {
-                    MelonLoader.MelonLogger.Warning("Kinect 2.0 Runtime/SDK isn't installed correctly, no tracking data will be provided");
+                    MelonLoader.MelonLogger.Warning("Kinect 1.x Runtime/SDK isn't installed correctly, no tracking data will be provided");
                 }
             }
         }

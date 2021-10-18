@@ -9,7 +9,7 @@ namespace ml_kte
     {
         static readonly List<string> ms_libraries = new List<string>()
         {
-            "ml_kte_cpp.dll"
+            "ml_kte_cpp_v1.dll", "ml_kte_cpp_v2.dll"
         };
 
         public static void ExtractDependencies()
