@@ -88,6 +88,9 @@ namespace ml_kte
         {
             if(!m_quit)
             {
+                bool l_oldState = Settings.Enabled;
+                Settings.Reload();
+
                 switch(Settings.DeviceVersion)
                 {
                     case Settings.KinectVersion.V1:
@@ -97,9 +100,6 @@ namespace ml_kte
                         KinectHandlerV2.Check();
                         break;
                 }
-
-                bool l_oldState = Settings.Enabled;
-                Settings.Reload();
 
                 if(Settings.Enabled)
                 {
