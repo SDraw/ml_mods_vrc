@@ -22,7 +22,7 @@ CKinectHandler::~CKinectHandler()
     Cleanup();
 
     delete m_frameData;
-    m_frameData = nullptr;
+    for(auto &l_filter : m_jointFilters) delete l_filter;
 }
 
 bool CKinectHandler::Initialize()
@@ -58,12 +58,6 @@ void CKinectHandler::Terminate()
 
 void CKinectHandler::Cleanup()
 {
-    for(auto &l_filter : m_jointFilters)
-    {
-        delete l_filter;
-        l_filter = nullptr;
-    }
-
     if(m_bodyFrameReader)
     {
         m_bodyFrameReader->Release();

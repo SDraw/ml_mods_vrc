@@ -21,7 +21,7 @@ CKinectHandler::~CKinectHandler()
     Cleanup();
 
     delete m_frameData;
-    m_frameData = nullptr;
+    for(auto &l_filter : m_jointFilters) delete l_filter;
 }
 
 bool CKinectHandler::Initialize()
@@ -73,12 +73,6 @@ void CKinectHandler::Cleanup()
         m_kinectSensor = nullptr;
     }
 
-    for(auto &l_filter : m_jointFilters)
-    {
-        delete l_filter;
-        l_filter = nullptr;
-    }
-
     m_paused = false;
 }
 
@@ -106,7 +100,7 @@ void CKinectHandler::Update()
         {
             for(size_t i = 0U; i < NUI_SKELETON_COUNT; i++)
             {
-                NUI_SKELETON_DATA &l_skeleton = l_frame.SkeletonData[i];
+                const NUI_SKELETON_DATA &l_skeleton = l_frame.SkeletonData[i];
                 if(l_skeleton.eTrackingState == NUI_SKELETON_TRACKED)
                 {
                     m_frameData->m_tick = GetTickCount64();
