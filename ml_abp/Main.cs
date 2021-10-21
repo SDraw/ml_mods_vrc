@@ -82,6 +82,7 @@ namespace ml_abp
 
                     m_localInteracted.BonesProximity = Settings.ProximityDistance;
                     m_localInteracted.PlayersProximity = Settings.PlayersDistance;
+                    m_localInteracted.UseCustomTargets = Settings.CustomTargets;
                 }
             }
         }
@@ -113,6 +114,7 @@ namespace ml_abp
             m_localInteracted = Utils.GetLocalPlayer().gameObject.AddComponent<InteractedPlayer>();
             m_localInteracted.BonesProximity = Settings.ProximityDistance;
             m_localInteracted.PlayersProximity = Settings.PlayersDistance;
+            m_localInteracted.UseCustomTargets = Settings.CustomTargets;
         }
 
         void OnRoomLeft()

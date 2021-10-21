@@ -67,11 +67,13 @@ namespace ml_abp
             public int m_paramHash;
             public float m_distance;
             public HumanBodyBones m_bone;
+            public Transform m_customTarget;
         }
 
         VRC.Player m_player = null;
         float m_boneProximity = 0.25f;
         float m_playersProximity = 5f;
+        bool m_useCustomTargets = false;
 
         List<InteracterPlayer> m_interacterPlayers = null;
         List<CustomParameter> m_parameters = null;
@@ -93,6 +95,12 @@ namespace ml_abp
         public float PlayersProximity
         {
             set => m_playersProximity = value;
+        }
+
+        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
+        public bool UseCustomTargets
+        {
+            set => m_useCustomTargets = value;
         }
 
         public InteractedPlayer(IntPtr ptr) : base(ptr) { }
@@ -128,14 +136,14 @@ namespace ml_abp
 
                                 foreach(var l_pair in m_parameters)
                                 {
-                                    var l_localBone = l_localAnimator.GetBoneTransform(l_pair.m_bone);
-                                    if(l_localBone != null)
+                                    var l_localTarget = ((l_pair.m_bone != HumanBodyBones.LastBone) ? l_localAnimator.GetBoneTransform(l_pair.m_bone) : l_pair.m_customTarget);
+                                    if(l_localTarget != null)
                                     {
                                         float l_distance = float.MaxValue;
                                         if(l_remoteLeftHandBone != null)
-                                            l_distance = Math.Min(l_distance, Vector3.Distance(l_localBone.position, l_remoteLeftHandBone.position));
+                                            l_distance = Math.Min(l_distance, Vector3.Distance(l_localTarget.position, l_remoteLeftHandBone.position));
                                         if(l_remoteRightHandBone != null)
-                                            l_distance = Math.Min(l_distance, Vector3.Distance(l_localBone.position, l_remoteRightHandBone.position));
+                                            l_distance = Math.Min(l_distance, Vector3.Distance(l_localTarget.position, l_remoteRightHandBone.position));
                                         if(l_distance <= m_boneProximity)
                                         {
                                             l_pair.m_distance = Math.Min(l_pair.m_distance, l_distance);
@@ -179,6 +187,8 @@ namespace ml_abp
 
         void RebuildParameters()
         {
+            UnhollowerBaseLib.Il2CppArrayBase<Transform> l_avatarTransforms = (m_useCustomTargets ? m_player.prop_VRCPlayer_0.field_Internal_Animator_0.transform.GetComponentsInChildren<Transform>(true) : null);
+
             m_playableController = m_player.prop_VRCPlayer_0.field_Private_AnimatorControllerManager_0.field_Private_AvatarAnimParamController_0.field_Private_AvatarPlayableController_0;
             if(m_playableController != null)
             {
@@ -192,9 +202,28 @@ namespace ml_abp
                             {
                                 m_paramHash = l_param.field_Public_Int32_0,
                                 m_distance = float.MaxValue,
-                                m_bone = gs_parameterBones[i]
+                                m_bone = gs_parameterBones[i],
+                                m_customTarget = null
                             });
                             break;
+                        }
+                    }
+
+                    if(m_useCustomTargets && (l_param.field_Public_AvatarParameter_0 != null) && l_param.field_Public_AvatarParameter_0.field_Private_String_0.StartsWith("_ProximityTarget"))
+                    {
+                        foreach(var l_child in l_avatarTransforms)
+                        {
+                            if(l_child.name == l_param.field_Public_AvatarParameter_0.field_Private_String_0)
+                            {
+                                m_parameters.Add(new CustomParameter
+                                {
+                                    m_paramHash = l_param.field_Public_Int32_0,
+                                    m_distance = float.MaxValue,
+                                    m_bone = HumanBodyBones.LastBone,
+                                    m_customTarget = l_child
+                                });
+                                break;
+                            }
                         }
                     }
                 }
