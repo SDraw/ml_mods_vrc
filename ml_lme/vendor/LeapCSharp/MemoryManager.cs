@@ -47,7 +47,6 @@ namespace LeapInternal {
     private static Dictionary<PoolKey, Queue<object>> _pooledMemory =
       new Dictionary<PoolKey, Queue<object>>();
 
-    //[MonoPInvokeCallback(typeof(Allocate))]
     public static IntPtr Pin(UInt32 size, eLeapAllocatorType typeHint, IntPtr state) {
       try {
         //Construct a key to identify the desired allocation
@@ -100,7 +99,6 @@ namespace LeapInternal {
       return IntPtr.Zero;
     }
 
-    //[MonoPInvokeCallback(typeof(Deallocate))]
     public static void Unpin(IntPtr ptr, IntPtr state) {
       try {
         //Grab the info for the given pointer
