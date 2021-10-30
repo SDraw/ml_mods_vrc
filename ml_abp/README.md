@@ -34,6 +34,7 @@ MelonLoader mod for VRChat that brings additional avatar parameters for proximit
   * _LeftToesProximity
   * _RightToesProximity
   * _JawProximity
+  * Your own proximity target. For that your avatar parameter and game object in avatar hierarchy should have same name and start with `_ProximityTarget`.
 * Select player in quick menu.
 * Press `Toggle bones proximity` in UIExpansionKit quick menu.  
 

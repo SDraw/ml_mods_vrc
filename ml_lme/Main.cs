@@ -24,6 +24,8 @@ namespace ml_lme
             Settings.LoadSettings();
 
             m_leapController = new Leap.Controller();
+            m_leapController.Device += this.OnLeapDeviceInitialized;
+
             m_gesturesData = new GestureMatcher.GesturesData();
             m_leapHands = new GameObject[GestureMatcher.GesturesData.gc_handCount];
 
@@ -85,14 +87,16 @@ namespace ml_lme
                 if(m_leapController != null)
                 {
                     if(Settings.Enabled)
+                    {
                         m_leapController.StartConnection();
+                        m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
+                        if(Settings.LeapHmdMode)
+                            m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                        else
+                            m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                    }
                     else
                         m_leapController.StopConnection();
-
-                    if(Settings.LeapHmdMode)
-                        m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-                    else
-                        m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
                 }
 
                 // Update tracking transforms
@@ -159,13 +163,6 @@ namespace ml_lme
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<LeapTracked>();
             m_localTracked.FingersOnly = Settings.FingersTracking;
             m_localTracked.Sdk3Parameters = Settings.SDK3Parameters;
-
-            // Restart Leap Motion because of weird LeapCSharp bug
-            if(Settings.Enabled)
-            {
-                m_leapController.StopConnection();
-                m_leapController.StartConnection();
-            }
         }
 
         void OnRoomLeft()
@@ -178,6 +175,18 @@ namespace ml_lme
             var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
             if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localTracked != null))
                 m_localTracked.ResetParameters();
+        }
+
+        void OnLeapDeviceInitialized(object f_sender, Leap.DeviceEventArgs f_args)
+        {
+            if(!m_quit && (m_leapController != null))
+            {
+                m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
+                if(Settings.LeapHmdMode)
+                    m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                else
+                    m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+            }
         }
 
         static void ReorientateLeapToUnity(ref Vector3 f_pos, ref Quaternion f_rot, bool f_hmd)

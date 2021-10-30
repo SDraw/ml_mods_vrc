@@ -137,7 +137,7 @@
     <Compile Include="vendor\LeapCSharp\Vector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="vendor\LeapC\lib\x64\LeapC.dll">
+    <EmbeddedResource Include="vendor\LeapSDK\lib\x64\LeapC.dll">
       <Link>LeapC.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
