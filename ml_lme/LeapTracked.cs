@@ -67,7 +67,7 @@ namespace ml_lme
         // Struct would be better, but it's not C++
         class CustomParameter
         {
-            public VRC.Playables.AvatarParameter.EnumNPublicSealedvaUnBoInFl5vUnique m_valueType;
+            public VRC.Playables.AvatarParameter.ParameterType m_valueType;
             public bool m_boolValue;
             public float m_floatValue;
             public int m_intValue;
@@ -119,13 +119,13 @@ namespace ml_lme
                 {
                     switch(l_param.m_valueType)
                     {
-                        case VRC.Playables.AvatarParameter.EnumNPublicSealedvaUnBoInFl5vUnique.Bool:
+                        case VRC.Playables.AvatarParameter.ParameterType.Bool:
                             m_playableController.SetAvatarBoolParamEx(l_param.m_paramHash, l_param.m_boolValue);
                             break;
-                        case VRC.Playables.AvatarParameter.EnumNPublicSealedvaUnBoInFl5vUnique.Float:
+                        case VRC.Playables.AvatarParameter.ParameterType.Float:
                             m_playableController.SetAvatarFloatParamEx(l_param.m_paramHash, l_param.m_floatValue);
                             break;
-                        case VRC.Playables.AvatarParameter.EnumNPublicSealedvaUnBoInFl5vUnique.Int:
+                        case VRC.Playables.AvatarParameter.ParameterType.Int:
                             m_playableController.SetAvatarIntParamEx(l_param.m_paramHash, l_param.m_intValue);
                             break;
                     }
@@ -316,7 +316,7 @@ namespace ml_lme
                                 m_floatValue = 0f,
                                 m_parameterType = (CustomParameterType)i,
                                 m_paramHash = l_param.field_Public_Int32_0,
-                                m_valueType = l_param.field_Public_AvatarParameter_0.field_Private_EnumNPublicSealedvaUnBoInFl5vUnique_0
+                                m_valueType = l_param.field_Public_AvatarParameter_0.field_Private_ParameterType_0
                             });
                             break;
                         }

@@ -38,7 +38,7 @@ namespace ml_alg
         {
             if((m_player != null) && (m_gestureController != null))
             {
-                bool l_grabState = (m_gestureController.field_Private_EnumNPrivateSealedva9vUnique_0 == HandGestureController.EnumNPrivateSealedva9vUnique.EnumValue1);
+                bool l_grabState = (m_gestureController.field_Private_Gesture_0 == HandGestureController.Gesture.Fist);
                 if(m_leftHandGrab != l_grabState)
                 {
                     m_leftHandGrab = l_grabState;
@@ -46,7 +46,7 @@ namespace ml_alg
                         l_lifted.OnLifterGesture(this, HumanBodyBones.LeftHand, m_leftHandGrab);
                 }
 
-                l_grabState = (m_gestureController.field_Private_EnumNPrivateSealedva9vUnique_2 == HandGestureController.EnumNPrivateSealedva9vUnique.EnumValue1);
+                l_grabState = (m_gestureController.field_Private_Gesture_2 == HandGestureController.Gesture.Fist);
                 if(m_rightHandGrab != l_grabState)
                 {
                     m_rightHandGrab = l_grabState;

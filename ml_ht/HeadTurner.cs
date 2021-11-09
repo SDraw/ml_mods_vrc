@@ -31,7 +31,7 @@ namespace ml_ht
                     float l_angle = Input.mouseScrollDelta.y;
                     if(l_angle != 0f)
                     {
-                        var l_neckRotator = m_inputController.field_Protected_NeckMouseRotator_0;
+                        var l_neckRotator = m_inputController.field_Protected_MonoBehaviourPublicObSiBoSiVeBoQuVeBoSiUnique_0;
                         if(l_neckRotator != null)
                         {
                             var l_quat = l_neckRotator.field_Private_Quaternion_0;

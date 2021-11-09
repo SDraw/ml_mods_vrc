@@ -196,7 +196,7 @@ namespace ml_abp
                 {
                     for(int i = 0; i < gs_parameterNames.Length; i++)
                     {
-                        if((l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == gs_parameterNames[i]) && (l_param.field_Public_AvatarParameter_0.field_Private_EnumNPublicSealedvaUnBoInFl5vUnique_0 == VRC.Playables.AvatarParameter.EnumNPublicSealedvaUnBoInFl5vUnique.Float))
+                        if((l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == gs_parameterNames[i]) && (l_param.field_Public_AvatarParameter_0.field_Private_ParameterType_0 == VRC.Playables.AvatarParameter.ParameterType.Float))
                         {
                             m_parameters.Add(new CustomParameter
                             {
