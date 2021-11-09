@@ -1,5 +1,5 @@
 # Vertex Animation Remover
-Universal MelonLoader mod for disabling blendshapes on old hardware.
+Universal MelonLoader mod for disabling blendshapes on old hardware, designed for Unity 2018.
 
 # Why?
 In Unity 2018 way of handling blendshapes has been changed. This change leads to distorted vertex geometry if any blendshape is applied to mesh on old hardware (for example, Intel HD Graphics 3000).  
