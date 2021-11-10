@@ -20,13 +20,14 @@ namespace ml_abp
             MethodsResolver.ResolveMethods();
             Settings.LoadSettings();
 
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
+            GameUtils.Initialize(this.HarmonyInstance);
+            GameUtils.OnRoomJoined += this.OnRoomJoined;
+            GameUtils.OnRoomLeft += this.OnRoomLeft;
+            GameUtils.OnPlayerJoined += this.OnPlayerJoined;
+            GameUtils.OnPlayerLeft += this.OnPlayerLeft;
+            GameUtils.OnFriended += this.OnFriended;
+            GameUtils.OnUnfriended += this.OnUnfriended;
+            GameUtils.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuSettings.AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
@@ -179,7 +180,7 @@ namespace ml_abp
             }
         }
 
-        void OnAvatarInstantiated(VRCAvatarManager f_avatarManager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
+        void OnAvatarInstantiated(GameObject f_avatarObject)
         {
             var l_player = f_avatarObject.transform.root.GetComponent<VRC.Player>();
             if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localInteracted != null))

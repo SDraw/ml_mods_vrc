@@ -6,7 +6,6 @@ MelonLoader mod for VRChat that brings limbs manipulation of local player by rem
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader).
 * Install [latest UIExpansionKit](https://github.com/knah/VRCMods).
-* Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
 * Get [latest release DLL](../../../releases/latest).
 * Put `ml_alg.dll` in `Mods` folder of game.
 

@@ -43,6 +43,11 @@
       <HintPath>C:\Games\Steam\steamapps\common\VRChat\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Il2CppSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Games\Steam\steamapps\common\VRChat\MelonLoader\Managed\Il2CppSystem.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="MelonLoader">
       <HintPath>C:\Games\Steam\steamapps\common\VRChat\MelonLoader\MelonLoader.dll</HintPath>
       <Private>False</Private>
@@ -80,10 +85,6 @@
       <HintPath>C:\Games\Steam\steamapps\common\VRChat\MelonLoader\Managed\VRCCore-Standalone.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VRChatUtilityKit">
-      <HintPath>F:\games\Steam\steamapps\common\VRChat\Mods\VRChatUtilityKit.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="VRCSDK3A, Version=3.7.1.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependenciesHandler.cs" />
+    <Compile Include="GameUtils.cs" />
     <Compile Include="GestureMatcher.cs" />
     <Compile Include="LeapTracked.cs" />
     <Compile Include="Main.cs" />

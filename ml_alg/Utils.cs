@@ -7,7 +7,36 @@ namespace ml_alg
         public static readonly Vector4 gs_pointVec4 = new Vector4(0f, 0f, 0f, 1f);
 
         // VRChat related
-        public static VRC.Player GetQuickMenuSelectedPlayer() => QuickMenu.field_Private_Static_QuickMenu_0.field_Private_Player_0;
+        static VRC.UI.Elements.QuickMenu ms_quickMenu = null;
+        public static VRC.Player GetQuickMenuSelectedPlayer() // Thanks, now I hate this new menu
+        {
+            VRC.Player l_result = null;
+            if(ms_quickMenu == null)
+                ms_quickMenu = UnityEngine.GameObject.FindObjectOfType<VRC.UI.Elements.QuickMenu>();
+            if(ms_quickMenu != null)
+            {
+                if(ms_quickMenu.field_Private_UIPage_1.isActiveAndEnabled) // For players in instance
+                {
+                    var l_selectedUserQM = ms_quickMenu.field_Private_UIPage_1.TryCast<VRC.UI.Elements.Menus.SelectedUserMenuQM>();
+                    if((l_selectedUserQM != null) && (l_selectedUserQM.field_Private_IUser_0 != null))
+                    {
+                        var l_remotePlayers = GetPlayers();
+                        if(l_remotePlayers != null)
+                        {
+                            foreach(var l_remotePlayer in l_remotePlayers)
+                            {
+                                if((l_remotePlayer != null) && (l_remotePlayer.field_Private_APIUser_0?.id == l_selectedUserQM.field_Private_IUser_0.prop_String_0))
+                                {
+                                    l_result = l_remotePlayer;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return l_result;
+        }
         public static VRC.Player GetLocalPlayer() => VRC.Player.prop_Player_0;
 
         public static bool IsFriend(VRC.Player f_player) => VRC.Core.APIUser.IsFriendsWith(f_player.prop_String_0);

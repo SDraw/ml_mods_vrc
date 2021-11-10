@@ -21,9 +21,10 @@ namespace ml_clv
             m_trackerLines = new List<TrackerBoneLine>();
 
             // Events
-            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+            GameUtils.Initialize(this.HarmonyInstance);
+            GameUtils.OnUiManagerInit += this.OnUiManagerInit;
+            GameUtils.OnRoomJoined += this.OnRoomJoined;
+            GameUtils.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
             if(MethodsResolver.PrepareForCalibration != null)

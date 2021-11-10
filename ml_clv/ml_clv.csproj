@@ -77,11 +77,9 @@
       <HintPath>F:\games\Steam\steamapps\common\VRChat\MelonLoader\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VRChatUtilityKit">
-      <HintPath>F:\games\Steam\steamapps\common\VRChat\Mods\VRChatUtilityKit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameUtils.cs" />
     <Compile Include="MethodsResolver.cs" />
     <Compile Include="TrackerBoneLine.cs" />
     <Compile Include="Main.cs" />

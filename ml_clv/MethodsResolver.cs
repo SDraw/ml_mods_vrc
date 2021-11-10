@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Linq;
 using HarmonyLib;
+using UnhollowerRuntimeLib.XrefScans;
 
 namespace ml_clv
 {
@@ -18,9 +19,9 @@ namespace ml_clv
             if(ms_prepareForCalibration == null)
             {
                 var l_methods = typeof(VRCTrackingManager).GetMethods()
-                .Where(m => (m.Name.StartsWith("Method_Public_Static_Void_") && m.ReturnType == typeof(void) && m.GetParameters().Count() == 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.XrefScan(m)
-                .Where(x => (x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Global && x.ReadAsObject().ToString().Contains("trying to calibrate"))).Any() && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                .Where(x => (x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any()));
+                .Where(m => (m.Name.StartsWith("Method_Public_Static_Void_") && m.ReturnType == typeof(void) && m.GetParameters().Count() == 0 && XrefScanner.XrefScan(m)
+                .Where(x => (x.Type == XrefType.Global && x.ReadAsObject().ToString().Contains("trying to calibrate"))).Any() && XrefScanner.UsedBy(m)
+                .Where(x => (x.Type == XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any()));
 
                 if(l_methods.Count() != 0)
                 {

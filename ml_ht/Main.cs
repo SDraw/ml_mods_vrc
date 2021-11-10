@@ -6,8 +6,9 @@
 
         public override void OnApplicationStart()
         {
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+            GameUtils.Initialize(this.HarmonyInstance);
+            GameUtils.OnRoomJoined += this.OnRoomJoined;
+            GameUtils.OnRoomLeft += this.OnRoomLeft;
         }
 
         void OnRoomJoined()
@@ -19,7 +20,7 @@
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
 
-            m_localTurner = Utils.GetLocalPlayer().prop_VRCPlayer_0.gameObject.AddComponent<HeadTurner>();
+            m_localTurner = Utils.GetLocalPlayer().gameObject.AddComponent<HeadTurner>();
         }
 
         void OnRoomLeft()
