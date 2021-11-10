@@ -11,31 +11,17 @@ namespace ml_abp
 
         // VRChat related
         static VRC.UI.Elements.QuickMenu ms_quickMenu = null;
-        public static VRC.Player GetQuickMenuSelectedPlayer() // Thanks, now I hate this new menu
+        public static VRC.Player GetPlayerQM() // Thanks, now I hate this new menu
         {
             VRC.Player l_result = null;
             if(ms_quickMenu == null)
                 ms_quickMenu = UnityEngine.GameObject.FindObjectOfType<VRC.UI.Elements.QuickMenu>();
-            if(ms_quickMenu != null)
+            if((ms_quickMenu != null) && (ms_quickMenu.field_Private_UIPage_1 != null) && ms_quickMenu.field_Private_UIPage_1.isActiveAndEnabled)
             {
-                if(ms_quickMenu.field_Private_UIPage_1.isActiveAndEnabled) // For players in instance
+                var l_selectedUserQM = ms_quickMenu.field_Private_UIPage_1.TryCast<VRC.UI.Elements.Menus.SelectedUserMenuQM>();
+                if((l_selectedUserQM != null) && (l_selectedUserQM.field_Private_IUser_0 != null))
                 {
-                    var l_selectedUserQM = ms_quickMenu.field_Private_UIPage_1.TryCast<VRC.UI.Elements.Menus.SelectedUserMenuQM>();
-                    if((l_selectedUserQM != null) && (l_selectedUserQM.field_Private_IUser_0 != null))
-                    {
-                        var l_remotePlayers = GetPlayers();
-                        if(l_remotePlayers != null)
-                        {
-                            foreach(var l_remotePlayer in l_remotePlayers)
-                            {
-                                if((l_remotePlayer != null) && (l_remotePlayer.field_Private_APIUser_0?.id == l_selectedUserQM.field_Private_IUser_0.prop_String_0))
-                                {
-                                    l_result = l_remotePlayer;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    l_result = GetPlayerWithId(l_selectedUserQM.field_Private_IUser_0.prop_String_0);
                 }
             }
             return l_result;
@@ -47,20 +33,7 @@ namespace ml_abp
 
         public static VRC.Player GetPlayerWithId(string f_id)
         {
-            VRC.Player l_result = null;
-            var l_remotePlayers = GetPlayers();
-            if(l_remotePlayers != null)
-            {
-                foreach(var l_remotePlayer in l_remotePlayers)
-                {
-                    if((l_remotePlayer != null) && (l_remotePlayer.field_Private_APIUser_0?.id == f_id))
-                    {
-                        l_result = l_remotePlayer;
-                        break;
-                    }
-                }
-            }
-            return l_result;
+            return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { f_id });
         }
 
         public static List<VRC.Player> GetFriendsInInstance()

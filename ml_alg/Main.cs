@@ -16,6 +16,7 @@ namespace ml_alg
 
         public override void OnApplicationStart()
         {
+            MethodsResolver.ResolveMethods();
             IKTweaksHelper.ResolveTypes();
             Settings.LoadSettings();
 
@@ -111,7 +112,7 @@ namespace ml_alg
         {
             if(m_update && m_buttonVisibility)
             {
-                var l_selectedPlayer = Utils.GetQuickMenuSelectedPlayer();
+                var l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
                 {
                     m_currentSelectedPlayer = l_selectedPlayer;
@@ -225,7 +226,7 @@ namespace ml_alg
         {
             if(m_update && (m_localLiftedPlayer != null))
             {
-                var l_remotePlayer = Utils.GetQuickMenuSelectedPlayer();
+                var l_remotePlayer = Utils.GetPlayerQM();
                 if(l_remotePlayer != null)
                 {
                     var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
@@ -292,7 +293,7 @@ namespace ml_alg
         {
             m_buttonVisibility = true;
 
-            var l_remotePlayer = Utils.GetQuickMenuSelectedPlayer();
+            var l_remotePlayer = Utils.GetPlayerQM();
             if(l_remotePlayer != null)
             {
                 m_currentSelectedPlayer = l_remotePlayer;

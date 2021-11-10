@@ -92,7 +92,7 @@ namespace ml_abp
         {
             if(m_update && m_toggleVisibility)
             {
-                var l_selectedPlayer = Utils.GetQuickMenuSelectedPlayer();
+                var l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
                 {
                     m_currentSelectedPlayer = l_selectedPlayer;
@@ -226,7 +226,7 @@ namespace ml_abp
         {
             if(m_update && (m_localInteracted != null))
             {
-                var l_remotePlayer = Utils.GetQuickMenuSelectedPlayer();
+                var l_remotePlayer = Utils.GetPlayerQM();
                 if(l_remotePlayer != null)
                 {
                     var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
@@ -252,7 +252,7 @@ namespace ml_abp
         {
             m_toggleVisibility = true;
 
-            var l_remotePlayer = Utils.GetQuickMenuSelectedPlayer();
+            var l_remotePlayer = Utils.GetPlayerQM();
             if(l_remotePlayer != null)
             {
                 m_currentSelectedPlayer = l_remotePlayer;
