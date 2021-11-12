@@ -20,14 +20,13 @@ namespace ml_alg
             IKTweaksHelper.ResolveTypes();
             Settings.LoadSettings();
 
-            GameUtils.Initialize(this.HarmonyInstance);
-            GameUtils.OnRoomJoined += this.OnJoinedRoom;
-            GameUtils.OnRoomLeft += this.OnLeftRoom;
-            GameUtils.OnPlayerJoined += this.OnPlayerJoined;
-            GameUtils.OnPlayerLeft += this.OnPlayerLeft;
-            GameUtils.OnFriended += this.OnFriended;
-            GameUtils.OnUnfriended += this.OnUnfriended;
-            GameUtils.OnAvatarInstantiated += this.OnAvatarInstantiated;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnLeftRoom;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuSettings.AddLabel("World pull permission:",
@@ -35,7 +34,7 @@ namespace ml_alg
                 {
                     var l_worldText = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
                     if(l_worldText != null)
-                        l_worldText.text = "World pull permission: <color=#" + (GameUtils.IsSafeWorld() ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
+                        l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
                 }
             );
             m_menuSettings.AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
@@ -90,7 +89,7 @@ namespace ml_alg
                         }
                     }
 
-                    m_localLiftedPlayer.AllowPull = (Settings.AllowPull && GameUtils.IsSafeWorld());
+                    m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
                     m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
                     m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
                     m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
@@ -132,7 +131,7 @@ namespace ml_alg
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
             m_localLiftedPlayer = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
-            m_localLiftedPlayer.AllowPull = (Settings.AllowPull && GameUtils.IsSafeWorld());
+            m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
             m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
             m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
             m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
@@ -207,7 +206,7 @@ namespace ml_alg
             }
         }
 
-        void OnAvatarInstantiated(GameObject f_avatarObject)
+        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
         {
             var l_playerObject = f_avatarObject.transform.root;
             if(l_playerObject != null)

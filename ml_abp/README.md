@@ -2,10 +2,11 @@
 MelonLoader mod for VRChat that brings additional avatar parameters for proximity to avatar bones
 
 # Installation
-* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader).
-* Install [latest UIExpansionKit](https://github.com/knah/VRCMods).
-* Get [latest release DLL](../../../releases/latest).
-* Put `ml_abp.dll` in `Mods` folder of game.
+* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
+* Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
+* Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
+* Get [latest release DLL](../../../releases/latest)
+* Put `ml_abp.dll` in `Mods` folder of game
 
 # Usage
 * Add additional parameters to your avatar(s) and animator(s). List of available additional parameters:

@@ -30,11 +30,10 @@ namespace ml_lme
             m_leapHands = new GameObject[GestureMatcher.GesturesData.gc_handCount];
 
             // Events
-            GameUtils.Initialize(this.HarmonyInstance);
-            GameUtils.OnUiManagerInit += this.OnUiManagerInit;
-            GameUtils.OnRoomJoined += this.OnRoomJoined;
-            GameUtils.OnRoomLeft += this.OnRoomLeft;
-            GameUtils.OnAvatarInstantiated += this.OnAvatarInstantiated;
+            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             // Patches
             var l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
@@ -171,7 +170,7 @@ namespace ml_lme
             m_localTracked = null;
         }
 
-        void OnAvatarInstantiated(GameObject f_avatarObject)
+        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
         {
             var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
             if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localTracked != null))

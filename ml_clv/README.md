@@ -3,8 +3,9 @@ MelonLoader mod for VRChat that shows lines from trackers to avatar bones in ful
 Inspired by [ChilloutVR](https://store.steampowered.com/app/661130/ChilloutVR), compatible with [IKTweaks](https://github.com/knah/VRCMods).
 
 # Installation
-* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader).
-* **Optional:** Install [latest UIExpansionKit](https://github.com/knah/VRCMods).
+* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
+* Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
+* **Optional:** Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
 * Get [latest release DLL](../../../releases/latest).
 * Put `ml_clv.dll` in `Mods` folder of game.
 

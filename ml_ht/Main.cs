@@ -6,9 +6,8 @@
 
         public override void OnApplicationStart()
         {
-            GameUtils.Initialize(this.HarmonyInstance);
-            GameUtils.OnRoomJoined += this.OnRoomJoined;
-            GameUtils.OnRoomLeft += this.OnRoomLeft;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
         }
 
         void OnRoomJoined()

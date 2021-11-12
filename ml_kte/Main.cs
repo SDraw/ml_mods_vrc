@@ -52,11 +52,10 @@ namespace ml_kte
             m_rotationFloats = new float[100];
             m_rotationFloatsAlloc = GCHandle.Alloc(m_rotationFloats, GCHandleType.Pinned);
 
-            GameUtils.Initialize(this.HarmonyInstance);
-            GameUtils.OnUiManagerInit += this.OnUiManagerInit;
-            GameUtils.OnRoomJoined += this.OnRoomJoined;
-            GameUtils.OnRoomLeft += this.OnRoomLeft;
-            GameUtils.OnAvatarInstantiated += this.OnAvatarInstantiated;
+            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             OnPreferencesSaved();
         }
@@ -127,7 +126,7 @@ namespace ml_kte
                     }
 
                     if(l_oldState && (Utils.GetLocalPlayer() != null))
-                        GameUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                        VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
                 }
 
                 if(m_trackedRoot != null)
@@ -212,7 +211,7 @@ namespace ml_kte
             m_localTracked = null;
         }
 
-        void OnAvatarInstantiated(GameObject f_avatarObject)
+        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
         {
             var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
             if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localTracked != null))

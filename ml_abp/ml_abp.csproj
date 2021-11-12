@@ -101,13 +101,17 @@
       <HintPath>F:\games\Steam\steamapps\common\VRChat\MelonLoader\Managed\VRCCore-Standalone.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="VRChatUtilityKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Games\Steam\steamapps\common\VRChat\Mods\VRChatUtilityKit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VRCSDK3A">
       <HintPath>F:\games\Steam\steamapps\common\VRChat\MelonLoader\Managed\VRCSDK3A.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameUtils.cs" />
     <Compile Include="InteractedPlayer.cs" />
     <Compile Include="InteracterPlayer.cs" />
     <Compile Include="Main.cs" />
