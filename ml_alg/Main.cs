@@ -29,14 +29,12 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-            m_menuSettings.AddLabel("World pull permission:",
-                delegate (GameObject f_obj)
-                {
-                    var l_worldText = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
-                    if(l_worldText != null)
-                        l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
-                }
-            );
+            m_menuSettings.AddLabel("World pull permission:", (GameObject f_obj) =>
+            {
+                var l_worldText = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                if(l_worldText != null)
+                    l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
+            });
             m_menuSettings.AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
             m_menuSettings.AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
             m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);

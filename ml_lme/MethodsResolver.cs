@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UnhollowerRuntimeLib.XrefScans;
 
 namespace ml_lme
 {
@@ -15,12 +16,12 @@ namespace ml_lme
             if(ms_isInVR == null)
             {
                 var l_methodsList = typeof(VRCTrackingManager).GetMethods()
-                    .Where(m => m.Name.StartsWith("Method_Public_Static_Boolean_") && m.ReturnType == typeof(bool) && m.GetParameters().Count() == 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarDebugConsole)).Count() > 1 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRCFlowManager)).Count() >= 1 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(SpawnManager)).Count() >= 1);
+                    .Where(m => m.Name.StartsWith("Method_Public_Static_Boolean_") && (m.ReturnType == typeof(bool)) && !m.GetParameters().Any() && (XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarDebugConsole))).Count() > 1) && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFlowManager))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(SpawnManager))).Any());
 
-                if(l_methodsList.Count() != 0)
+                if(l_methodsList.Any())
                 {
                     ms_isInVR = l_methodsList.First();
                     MelonLoader.MelonDebug.Msg("VRCTrackingManager.IsInVR -> VRCTrackingManager." + ms_isInVR.Name);
@@ -33,14 +34,14 @@ namespace ml_lme
             if(ms_setAvatarIntParam == null)
             {
                 var l_methodsList = typeof(AvatarPlayableController).GetMethods()
-                    .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Int32_") && m.ReturnType == typeof(void) && m.GetParameters().Count() == 2 && UnhollowerRuntimeLib.XrefScans.XrefScanner.XrefScan(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(JawController)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(OVRLipSyncContextPlayableParam)).Count() > 0);
+                    .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Int32_") && (m.ReturnType == typeof(void)) && (m.GetParameters().Count() == 2) && XrefScanner.XrefScan(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(JawController))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(OVRLipSyncContextPlayableParam))).Any());
 
-                if(l_methodsList.Count() != 0)
+                if(l_methodsList.Any())
                 {
                     ms_setAvatarIntParam = l_methodsList.First();
                     MelonLoader.MelonDebug.Msg("AvatarPlayableController.SetAvatarIntParam -> AvatarPlayableController." + ms_setAvatarIntParam.Name);
@@ -53,12 +54,12 @@ namespace ml_lme
             if(ms_setAvatarFloatParam == null)
             {
                 var l_methodsList = typeof(AvatarPlayableController).GetMethods()
-                   .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Single_Boolean_") && m.ReturnType == typeof(void) && m.GetParameters().Count() == 3 && UnhollowerRuntimeLib.XrefScans.XrefScanner.XrefScan(m)
-                   .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController)).Count() > 0);
+                    .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Single_Boolean_") && (m.ReturnType == typeof(void)) && (m.GetParameters().Count() == 3) && XrefScanner.XrefScan(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController))).Any());
 
-                if(l_methodsList.Count() != 0)
+                if(l_methodsList.Any())
                 {
                     ms_setAvatarFloatParam = l_methodsList.First();
                     MelonLoader.MelonDebug.Msg("AvatarPlayableController.SetAvatarFloatParam -> AvatarPlayableController." + ms_setAvatarFloatParam.Name);
@@ -72,13 +73,13 @@ namespace ml_lme
             {
 
                 var l_methodsList = typeof(AvatarPlayableController).GetMethods()
-                    .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Boolean_") && m.ReturnType == typeof(void) && m.GetParameters().Count() == 2 && UnhollowerRuntimeLib.XrefScans.XrefScanner.XrefScan(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(UnityEngine.Playables.PlayableExtensions)).Count() == 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.XrefScan(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController)).Count() > 0 && UnhollowerRuntimeLib.XrefScans.XrefScanner.UsedBy(m)
-                    .Where(x => x.Type == UnhollowerRuntimeLib.XrefScans.XrefType.Method && x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController)).Count() > 0);
+                    .Where(m => m.Name.StartsWith("Method_Public_Void_Int32_Boolean_") && (m.ReturnType == typeof(void)) && (m.GetParameters().Count() == 2) && !XrefScanner.XrefScan(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(UnityEngine.Playables.PlayableExtensions))).Any() && XrefScanner.XrefScan(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.Playables.AvatarParameter))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarAnimParamController))).Any() && XrefScanner.UsedBy(m)
+                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarPlayableController))).Any());
 
-                if(l_methodsList.Count() != 0)
+                if(l_methodsList.Any())
                 {
                     ms_setAvatarBoolParam = l_methodsList.First();
                     MelonLoader.MelonDebug.Msg("AvatarPlayableController.SetAvatarBoolParam -> AvatarPlayableController." + ms_setAvatarBoolParam.Name);

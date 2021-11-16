@@ -33,16 +33,14 @@ namespace ml_abp
             m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
 
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle,
-                delegate (GameObject f_obj)
-                {
-                    m_textComponent = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject f_obj) =>
+            {
+                m_textComponent = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
 
-                    var l_listener = f_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
-                    l_listener.OnEnabled += this.OnProximityToggleShown;
-                    l_listener.OnDisabled += this.OnProximityToggleHidden;
-                }
-            );
+                var l_listener = f_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
+                l_listener.OnEnabled += this.OnProximityToggleShown;
+                l_listener.OnDisabled += this.OnProximityToggleHidden;
+            });
         }
 
         public override void OnApplicationQuit()
