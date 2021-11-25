@@ -17,16 +17,36 @@ namespace ml_kte
             Count
         }
 
-        static readonly int[] g_trackedPointBones = { 3, 0, 14, 18, 7, 11 }; // Kinect V1 and V2 have same bones IDs, almost
+        // Kinect V1 and V2 have same bones IDs, almost
+        static readonly int[] gs_positionBones = { 3, 0, 14, 18, 7, 11 };
+        static readonly int[] gs_rotationBones = { 2, 0, 14, 18, 7, 11 };
 
-        static readonly Quaternion[] g_rotationFixes =
+        static readonly Quaternion[] gs_globalRotations =
         {
-            Quaternion.identity,
+            Quaternion.Euler(0f,180f,0f),
             Quaternion.Euler(0f,180f,0f),
             Quaternion.identity,
             Quaternion.identity,
             Quaternion.identity,
             Quaternion.identity
+        };
+        static readonly Quaternion[] g_localRotations =
+        {
+            Quaternion.identity,
+            Quaternion.identity,
+            Quaternion.Euler(270f,270f,0f),
+            Quaternion.Euler(270f,90f,0f),
+            Quaternion.Euler(270f,90f,0f),
+            Quaternion.Euler(270f,270f,0f),
+        };
+        static readonly Vector4[] gs_rotationNegations =
+        {
+            Vector4.one,
+            Vector4.one,
+            new Vector4(-1f,1f,-1f,1f),
+            new Vector4(-1f,1f,-1f,1f),
+            new Vector4(-1f,1f,-1f,1f),
+            new Vector4(-1f,1f,-1f,1f)
         };
 
         KinectTracked m_localTracked = null;
@@ -133,6 +153,23 @@ namespace ml_kte
                 {
                     m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
                     m_trackedRoot.transform.localRotation = Quaternion.Euler(Settings.OffsetRX, Settings.OffsetRY, Settings.OffsetRZ);
+
+                    for(int i = 0; i < (int)TrackedPoint.Count; i++)
+                    {
+                        m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
+                    }
+                }
+
+                if(m_localTracked != null)
+                {
+                    m_localTracked.TrackHead = Settings.TrackHead;
+                    m_localTracked.TrackHips = Settings.TrackHips;
+                    m_localTracked.TrackLegs = Settings.TrackLegs;
+                    m_localTracked.TrackHands = Settings.TrackHands;
+                    m_localTracked.RotateHead = Settings.RotateHead;
+                    m_localTracked.RotateHips = Settings.RotateHips;
+                    m_localTracked.RotateLegs = Settings.RotateLegs;
+                    m_localTracked.RotateHands = Settings.RotateHands;
                 }
             }
         }
@@ -152,9 +189,11 @@ namespace ml_kte
                 }
                 for(int i = 0; i < (int)TrackedPoint.Count; i++)
                 {
-                    int l_boneIndex = g_trackedPointBones[i];
+                    int l_boneIndex = gs_positionBones[i];
                     m_trackedPoints[i].transform.localPosition = new Vector3(-m_positionFloats[l_boneIndex * 3], m_positionFloats[l_boneIndex * 3 + 1], m_positionFloats[l_boneIndex * 3 + 2]);
-                    m_trackedPoints[i].transform.localRotation = g_rotationFixes[i] * new Quaternion(-m_rotationFloats[l_boneIndex * 4], -m_rotationFloats[l_boneIndex * 4 + 1], m_rotationFloats[l_boneIndex * 4 + 2], m_rotationFloats[l_boneIndex * 4 + 3]);
+
+                    l_boneIndex = gs_rotationBones[i];
+                    m_trackedPoints[i].transform.localRotation = gs_globalRotations[i] * (new Quaternion(-m_rotationFloats[l_boneIndex * 4] * gs_rotationNegations[i].x, -m_rotationFloats[l_boneIndex * 4 + 1] * gs_rotationNegations[i].y, m_rotationFloats[l_boneIndex * 4 + 2] * gs_rotationNegations[i].z, m_rotationFloats[l_boneIndex * 4 + 3] * gs_rotationNegations[i].w) * g_localRotations[i]);
                 }
             }
         }
@@ -188,9 +227,14 @@ namespace ml_kte
 
             for(int i = 0; i < (int)TrackedPoint.Count; i++)
             {
-                m_trackedPoints[i] = new GameObject("TrackedPoint" + i);
+                m_trackedPoints[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                m_trackedPoints[i].name = "TrackedPoint" + i;
                 m_trackedPoints[i].transform.parent = m_trackedRoot.transform;
+                m_trackedPoints[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                m_trackedPoints[i].layer = LayerMask.NameToLayer("Player");
+                m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
                 Object.DontDestroyOnLoad(m_trackedPoints[i]);
+                Object.Destroy(m_trackedPoints[i].GetComponent<SphereCollider>());
             }
         }
 
@@ -204,6 +248,14 @@ namespace ml_kte
                 yield return null;
 
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<KinectTracked>();
+            m_localTracked.TrackHead = Settings.TrackHead;
+            m_localTracked.TrackHips = Settings.TrackHips;
+            m_localTracked.TrackLegs = Settings.TrackLegs;
+            m_localTracked.TrackHands = Settings.TrackHands;
+            m_localTracked.RotateHead = Settings.RotateHead;
+            m_localTracked.RotateHips = Settings.RotateHips;
+            m_localTracked.RotateLegs = Settings.RotateLegs;
+            m_localTracked.RotateHands = Settings.RotateHands;
         }
 
         void OnRoomLeft()

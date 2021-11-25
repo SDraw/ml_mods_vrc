@@ -16,6 +16,15 @@
         static float ms_rootRotationX = 0f;
         static float ms_rootRotationY = 0f;
         static float ms_rootRotationZ = 0f;
+        static bool ms_showPoints = false;
+        static bool ms_trackHead = true;
+        static bool ms_trackHands = true;
+        static bool ms_trackHips = true;
+        static bool ms_trackLegs = true;
+        static bool ms_rotateHead = true;
+        static bool ms_rotateHips = true;
+        static bool ms_rotateLegs = true;
+        static bool ms_rotateHands = true;
 
         public static void Load()
         {
@@ -28,6 +37,15 @@
             MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRX", ms_rootRotationX, "Root rotation X");
             MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRY", ms_rootRotationY, "Root rotation Y");
             MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRZ", ms_rootRotationZ, "Root rotation Z");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "ShowPoints", ms_showPoints, "Show tracking points");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHead", ms_trackHead, "Head tracking");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHips", ms_trackHips, "Hips tracking");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackLegs", ms_trackLegs, "Legs tracking");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHands", ms_trackHands, "Hands tracking");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHead", ms_rotateHead, "Head rotation");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHips", ms_rotateHips, "Hips rotation");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateLegs", ms_rotateLegs, "Legs rotation");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHands", ms_rotateHands, "Hands rotation");
 
             Reload();
         }
@@ -45,6 +63,15 @@
             ms_rootRotationX = MelonLoader.MelonPreferences.GetEntryValue<float>("KTE", "OffsetRX");
             ms_rootRotationY = MelonLoader.MelonPreferences.GetEntryValue<float>("KTE", "OffsetRY");
             ms_rootRotationZ = MelonLoader.MelonPreferences.GetEntryValue<float>("KTE", "OffsetRZ");
+            ms_showPoints = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "ShowPoints");
+            ms_trackHead = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "TrackHead");
+            ms_trackHands = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "TrackHands");
+            ms_trackHips = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "TrackHips");
+            ms_trackLegs = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "TrackLegs");
+            ms_rotateHead = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateHead");
+            ms_rotateHips = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateHips");
+            ms_rotateLegs = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateLegs");
+            ms_rotateHands = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateHands");
         }
 
         public static bool Enabled
@@ -81,6 +108,45 @@
         public static float OffsetRZ
         {
             get => ms_rootRotationX;
+        }
+
+        public static bool ShowPoints
+        {
+            get => ms_showPoints;
+        }
+
+        public static bool TrackHead
+        {
+            get => ms_trackHead;
+        }
+        public static bool TrackHands
+        {
+            get => ms_trackHands;
+        }
+        public static bool TrackHips
+        {
+            get => ms_trackHips;
+        }
+        public static bool TrackLegs
+        {
+            get => ms_trackLegs;
+        }
+
+        public static bool RotateHead
+        {
+            get => ms_rotateHead;
+        }
+        public static bool RotateHips
+        {
+            get => ms_rotateHips;
+        }
+        public static bool RotateLegs
+        {
+            get => ms_rotateLegs;
+        }
+        public static bool RotateHands
+        {
+            get => ms_rotateHands;
         }
     }
 }

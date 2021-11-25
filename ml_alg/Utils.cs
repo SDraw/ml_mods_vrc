@@ -12,7 +12,7 @@ namespace ml_alg
         {
             VRC.Player l_result = null;
             if(ms_quickMenu == null)
-                ms_quickMenu = UnityEngine.GameObject.FindObjectOfType<VRC.UI.Elements.QuickMenu>();
+                ms_quickMenu = UnityEngine.GameObject.Find("UserInterface").transform.Find("Canvas_QuickMenu(Clone)").GetComponent<VRC.UI.Elements.QuickMenu>();
             if((ms_quickMenu != null) && (ms_quickMenu.field_Private_UIPage_1 != null) && ms_quickMenu.field_Private_UIPage_1.isActiveAndEnabled)
             {
                 var l_selectedUserQM = ms_quickMenu.field_Private_UIPage_1.TryCast<VRC.UI.Elements.Menus.SelectedUserMenuQM>();
