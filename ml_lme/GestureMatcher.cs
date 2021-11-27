@@ -4,8 +4,8 @@
     {
         public class GesturesData
         {
-            readonly public static int gc_handCount = 2;
-            readonly public static int gc_fingersCount = 5;
+            readonly public static int ms_handsCount = 2;
+            readonly public static int ms_fingersCount = 5;
 
             public bool[] m_handsPresenses = null;
             public UnityEngine.Vector3[] m_handsPositons = null;
@@ -17,25 +17,25 @@
 
             public GesturesData()
             {
-                m_handsPresenses = new bool[gc_handCount];
-                m_handsPositons = new UnityEngine.Vector3[gc_handCount];
-                m_handsRotations = new UnityEngine.Quaternion[gc_handCount];
-                m_leftFingersBends = new float[gc_fingersCount];
-                m_leftFingersSpreads = new float[gc_fingersCount];
-                m_rightFingersBends = new float[gc_fingersCount];
-                m_rightFingersSpreads = new float[gc_fingersCount];
+                m_handsPresenses = new bool[ms_handsCount];
+                m_handsPositons = new UnityEngine.Vector3[ms_handsCount];
+                m_handsRotations = new UnityEngine.Quaternion[ms_handsCount];
+                m_leftFingersBends = new float[ms_fingersCount];
+                m_leftFingersSpreads = new float[ms_fingersCount];
+                m_rightFingersBends = new float[ms_fingersCount];
+                m_rightFingersSpreads = new float[ms_fingersCount];
             }
         }
 
-        readonly static UnityEngine.Vector3 gc_axisX = new UnityEngine.Vector3(1f, 0f, 0f);
-        readonly static UnityEngine.Vector3 gc_axisXN = new UnityEngine.Vector3(-1f, 0f, 0f);
+        readonly static UnityEngine.Vector3 ms_axisX = new UnityEngine.Vector3(1f, 0f, 0f);
+        readonly static UnityEngine.Vector3 ms_axisXN = new UnityEngine.Vector3(-1f, 0f, 0f);
 
         public static void GetGestures(Leap.Frame f_frame, ref GesturesData f_data)
         {
             // Fill as default
-            for(int i = 0; i < GesturesData.gc_handCount; i++)
+            for(int i = 0; i < GesturesData.ms_handsCount; i++)
                 f_data.m_handsPresenses[i] = false;
-            for(int i = 0; i < GesturesData.gc_fingersCount; i++)
+            for(int i = 0; i < GesturesData.ms_fingersCount; i++)
             {
                 f_data.m_leftFingersBends[i] = 0f;
                 f_data.m_leftFingersSpreads[i] = 0f;
@@ -114,7 +114,7 @@
         static void FillHandSpreads(Leap.Hand f_hand, ref float[] f_bends, ref float[] f_spreads)
         {
             UnityEngine.Quaternion l_palmRotation = new UnityEngine.Quaternion(f_hand.Rotation.x, f_hand.Rotation.y, f_hand.Rotation.z, f_hand.Rotation.w);
-            UnityEngine.Vector3 l_sideDir = l_palmRotation * (f_hand.IsLeft ? gc_axisX : gc_axisXN);
+            UnityEngine.Vector3 l_sideDir = l_palmRotation * (f_hand.IsLeft ? ms_axisX : ms_axisXN);
             UnityEngine.Vector3 l_handPos = new UnityEngine.Vector3(f_hand.PalmPosition.x, f_hand.PalmPosition.y, f_hand.PalmPosition.z);
 
             foreach(var l_finger in f_hand.Fingers)

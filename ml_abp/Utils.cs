@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ml_abp
+﻿namespace ml_abp
 {
     static class Utils
     {
@@ -36,9 +34,9 @@ namespace ml_abp
             return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { f_id });
         }
 
-        public static List<VRC.Player> GetFriendsInInstance()
+        public static System.Collections.Generic.List<VRC.Player> GetFriendsInInstance()
         {
-            List<VRC.Player> l_result = new List<VRC.Player>();
+            System.Collections.Generic.List<VRC.Player> l_result = new System.Collections.Generic.List<VRC.Player>();
             var l_remotePlayers = GetPlayers();
             if(l_remotePlayers != null)
             {

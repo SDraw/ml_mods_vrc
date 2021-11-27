@@ -6,14 +6,14 @@ namespace ml_clv
     [MelonLoader.RegisterTypeInIl2Cpp]
     class TrackerBoneLine : MonoBehaviour
     {
-        public static readonly string[] gc_trackerTypes =
+        public static readonly string[] ms_trackerTypes =
         {
             "waist", "left_foot", "right_foot",
             "left_elbow", "right_elbow",
             "left_knee", "right_knee",
             "chest"
         };
-        public static readonly HumanBodyBones[] gc_linkedBones =
+        public static readonly HumanBodyBones[] ms_linkedBones =
         {
             HumanBodyBones.Hips, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot,
             HumanBodyBones.LeftLowerArm, HumanBodyBones.RightLowerArm,
@@ -93,9 +93,9 @@ namespace ml_clv
             {
                 string l_controllerType = l_stringBuilder.ToString();
                 int l_controllerTypeId = -1;
-                for(int i = 0; i < gc_trackerTypes.Length; i++)
+                for(int i = 0; i < ms_trackerTypes.Length; i++)
                 {
-                    if(l_controllerType.Contains(gc_trackerTypes[i]))
+                    if(l_controllerType.Contains(ms_trackerTypes[i]))
                     {
                         l_controllerTypeId = i;
                         break;
@@ -103,7 +103,7 @@ namespace ml_clv
                 }
 
                 if(l_controllerTypeId != -1)
-                    l_result = gc_linkedBones[l_controllerTypeId];
+                    l_result = ms_linkedBones[l_controllerTypeId];
             }
 
             // Tracker is unassigned in SteamVR or has no right property 
@@ -111,7 +111,7 @@ namespace ml_clv
             {
                 // Find nearest bone
                 float l_distance = float.MaxValue;
-                foreach(var l_bone in gc_linkedBones)
+                foreach(var l_bone in ms_linkedBones)
                 {
                     var l_boneTransform = f_animator.GetBoneTransform(l_bone);
                     if(l_boneTransform != null)

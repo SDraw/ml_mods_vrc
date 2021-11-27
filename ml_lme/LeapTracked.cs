@@ -7,7 +7,7 @@ namespace ml_lme
     [MelonLoader.RegisterTypeInIl2Cpp]
     class LeapTracked : MonoBehaviour
     {
-        static readonly string[] gs_parameterNames =
+        static readonly string[] ms_parameterNames =
         {
             "_LeftHandPresent",
             "_RightHandPresent",
@@ -305,9 +305,9 @@ namespace ml_lme
             {
                 foreach(var l_param in m_playableController.field_Private_ArrayOf_ObjectNPublicInObInPaInUnique_0)
                 {
-                    for(int i = 0; i < gs_parameterNames.Length; i++)
+                    for(int i = 0; i < ms_parameterNames.Length; i++)
                     {
-                        if(l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == gs_parameterNames[i])
+                        if(l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == ms_parameterNames[i])
                         {
                             m_parameters.Add(new CustomParameter
                             {

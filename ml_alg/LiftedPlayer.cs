@@ -6,8 +6,8 @@ namespace ml_alg
     [MelonLoader.RegisterTypeInIl2Cpp]
     class LiftedPlayer : MonoBehaviour
     {
-        static readonly HumanBodyBones[] gs_updateBones = { HumanBodyBones.Head, HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
-        static readonly HumanBodyBones[] gs_lateUpdateBones = { HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
+        static readonly HumanBodyBones[] ms_updateBones = { HumanBodyBones.Head, HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
+        static readonly HumanBodyBones[] ms_lateUpdateBones = { HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
 
         enum BodyTrackingMode
         {
@@ -201,7 +201,7 @@ namespace ml_alg
                 }
             }
 
-            foreach(int i in gs_updateBones)
+            foreach(int i in ms_updateBones)
             {
                 if((m_liftBodyParts[i].m_lifter != null) && (m_liftBodyParts[i].m_attachedBone != HumanBodyBones.LastBone))
                 {
@@ -217,7 +217,7 @@ namespace ml_alg
                                     var l_transform = m_player.transform;
                                     if(l_transform != null)
                                     {
-                                        l_transform.position = (l_bonePoint.transform.GetMatrix(true, false) * m_liftBodyParts[i].m_offsetMatrix) * Utils.gs_pointVec4;
+                                        l_transform.position = (l_bonePoint.transform.GetMatrix(true, false) * m_liftBodyParts[i].m_offsetMatrix) * Utils.ms_pointVector;
                                         m_player.field_Private_VRCPlayerApi_0.SetVelocity(Vector3.zero);
                                     }
 
@@ -236,7 +236,7 @@ namespace ml_alg
                                 case (int)HumanBodyBones.RightFoot:
                                 {
                                     var l_resultMatrix = l_bonePoint.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
-                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.gs_pointVec4;
+                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.ms_pointVector;
                                     m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
                                 }
                                 break;
@@ -248,7 +248,7 @@ namespace ml_alg
                                     ReapplyOffset(i);
 
                                     var l_resultMatrix = l_bonePoint.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
-                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.gs_pointVec4;
+                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.ms_pointVector;
                                     m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
                                 }
                                 break;
@@ -269,7 +269,7 @@ namespace ml_alg
                         case (int)HumanBodyBones.RightFoot:
                         {
                             var l_resultMatrix = m_player.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
-                            m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.gs_pointVec4;
+                            m_liftBodyParts[i].m_targetPos = l_resultMatrix * Utils.ms_pointVector;
                             m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
                         }
                         break;
@@ -280,7 +280,7 @@ namespace ml_alg
 
         void LateUpdate()
         {
-            foreach(int i in gs_lateUpdateBones)
+            foreach(int i in ms_lateUpdateBones)
             {
                 if((m_liftBodyParts[i].m_attachedBone != HumanBodyBones.LastBone) || m_liftBodyParts[i].m_saved)
                 {
@@ -723,7 +723,7 @@ namespace ml_alg
                 if(l_remoteTransform != null)
                 {
                     float l_nearestDistance = float.MaxValue;
-                    foreach(var l_bone in gs_updateBones)
+                    foreach(var l_bone in ms_updateBones)
                     {
                         var l_localTransform = m_animator.GetBoneTransform(l_bone);
                         if(l_localTransform != null)

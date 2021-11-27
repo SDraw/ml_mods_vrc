@@ -7,7 +7,7 @@ namespace ml_abp
     [MelonLoader.RegisterTypeInIl2Cpp]
     class InteractedPlayer : MonoBehaviour
     {
-        static readonly string[] gs_parameterNames =
+        static readonly string[] ms_parameterNames =
         {
             "_HeadProximity",
             "_HipsProximity",
@@ -34,7 +34,7 @@ namespace ml_abp
             "_RightToesProximity",
             "_JawProximity"
         };
-        static readonly HumanBodyBones[] gs_parameterBones =
+        static readonly HumanBodyBones[] ms_parameterBones =
         {
             HumanBodyBones.Head,
             HumanBodyBones.Hips,
@@ -194,15 +194,15 @@ namespace ml_abp
             {
                 foreach(var l_param in m_playableController.field_Private_ArrayOf_ObjectNPublicInObInPaInUnique_0)
                 {
-                    for(int i = 0; i < gs_parameterNames.Length; i++)
+                    for(int i = 0; i < ms_parameterNames.Length; i++)
                     {
-                        if((l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == gs_parameterNames[i]) && (l_param.field_Public_AvatarParameter_0.field_Private_ParameterType_0 == VRC.Playables.AvatarParameter.ParameterType.Float))
+                        if((l_param.field_Public_AvatarParameter_0?.field_Private_String_0 == ms_parameterNames[i]) && (l_param.field_Public_AvatarParameter_0.field_Private_ParameterType_0 == VRC.Playables.AvatarParameter.ParameterType.Float))
                         {
                             m_parameters.Add(new CustomParameter
                             {
                                 m_paramHash = l_param.field_Public_Int32_0,
                                 m_distance = float.MaxValue,
-                                m_bone = gs_parameterBones[i],
+                                m_bone = ms_parameterBones[i],
                                 m_customTarget = null
                             });
                             break;

@@ -5,7 +5,7 @@ namespace ml_lme
 {
     public class LeapMotionExtention : MelonLoader.MelonMod
     {
-        static readonly Quaternion gs_hmdRotationFix = new Quaternion(0f, 0.7071068f, 0.7071068f, 0f);
+        static readonly Quaternion ms_hmdRotationFix = new Quaternion(0f, 0.7071068f, 0.7071068f, 0f);
 
         bool m_quit = false;
 
@@ -27,7 +27,7 @@ namespace ml_lme
             m_leapController.Device += this.OnLeapDeviceInitialized;
 
             m_gesturesData = new GestureMatcher.GesturesData();
-            m_leapHands = new GameObject[GestureMatcher.GesturesData.gc_handCount];
+            m_leapHands = new GameObject[GestureMatcher.GesturesData.ms_handsCount];
 
             // Events
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
@@ -55,7 +55,7 @@ namespace ml_lme
             m_leapTrackingRoot.transform.parent = Utils.GetSteamVRControllerManager().transform;
             Object.DontDestroyOnLoad(m_leapTrackingRoot);
 
-            for(int i = 0; i < GestureMatcher.GesturesData.gc_handCount; i++)
+            for(int i = 0; i < GestureMatcher.GesturesData.ms_handsCount; i++)
             {
                 m_leapHands[i] = new GameObject("LeapHand" + i);
                 m_leapHands[i].transform.parent = m_leapTrackingRoot.transform;
@@ -129,7 +129,7 @@ namespace ml_lme
                         m_localTracked.UpdateFromGestures(m_gesturesData);
 
                     // Update transforms
-                    for(int i = 0; i < GestureMatcher.GesturesData.gc_handCount; i++)
+                    for(int i = 0; i < GestureMatcher.GesturesData.ms_handsCount; i++)
                     {
                         if(m_gesturesData.m_handsPresenses[i] && (m_leapHands[i] != null))
                         {
@@ -200,7 +200,7 @@ namespace ml_lme
             {
                 f_pos.x *= -1f;
                 Utils.Swap(ref f_pos.y, ref f_pos.z);
-                f_rot = (gs_hmdRotationFix * f_rot);
+                f_rot = (ms_hmdRotationFix * f_rot);
             }
         }
 

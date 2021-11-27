@@ -4,7 +4,7 @@ namespace ml_alg
 {
     static class Utils
     {
-        public static readonly Vector4 gs_pointVec4 = new Vector4(0f, 0f, 0f, 1f);
+        public static readonly Vector4 ms_pointVector = new Vector4(0f, 0f, 0f, 1f);
 
         // VRChat related
         static VRC.UI.Elements.QuickMenu ms_quickMenu = null;
@@ -12,7 +12,7 @@ namespace ml_alg
         {
             VRC.Player l_result = null;
             if(ms_quickMenu == null)
-                ms_quickMenu = UnityEngine.GameObject.Find("UserInterface").transform.Find("Canvas_QuickMenu(Clone)").GetComponent<VRC.UI.Elements.QuickMenu>();
+                ms_quickMenu = GameObject.Find("UserInterface").transform.Find("Canvas_QuickMenu(Clone)").GetComponent<VRC.UI.Elements.QuickMenu>();
             if((ms_quickMenu != null) && (ms_quickMenu.field_Private_UIPage_1 != null) && ms_quickMenu.field_Private_UIPage_1.isActiveAndEnabled)
             {
                 var l_selectedUserQM = ms_quickMenu.field_Private_UIPage_1.TryCast<VRC.UI.Elements.Menus.SelectedUserMenuQM>();
@@ -74,12 +74,6 @@ namespace ml_alg
         public static Matrix4x4 AsMatrix(this Quaternion f_quat)
         {
             return Matrix4x4.Rotate(f_quat);
-        }
-
-        // Just here, no reason, not used
-        public static T AsReal<T>(this T obj) where T : UnityEngine.Object
-        {
-            return (obj != null) ? obj : (T)null;
         }
     }
 }

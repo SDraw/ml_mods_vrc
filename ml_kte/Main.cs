@@ -18,10 +18,10 @@ namespace ml_kte
         }
 
         // Kinect V1 and V2 have same bones IDs, almost
-        static readonly int[] gs_positionBones = { 3, 0, 14, 18, 7, 11 };
-        static readonly int[] gs_rotationBones = { 2, 0, 14, 18, 7, 11 };
+        static readonly int[] ms_positionBones = { 3, 0, 14, 18, 7, 11 };
+        static readonly int[] ms_rotationBones = { 2, 0, 14, 18, 7, 11 };
 
-        static readonly Quaternion[] gs_globalRotations =
+        static readonly Quaternion[] ms_globalRotations =
         {
             Quaternion.Euler(0f,180f,0f),
             Quaternion.Euler(0f,180f,0f),
@@ -30,7 +30,7 @@ namespace ml_kte
             Quaternion.identity,
             Quaternion.identity
         };
-        static readonly Quaternion[] g_localRotations =
+        static readonly Quaternion[] ms_localRotations =
         {
             Quaternion.identity,
             Quaternion.identity,
@@ -39,7 +39,7 @@ namespace ml_kte
             Quaternion.Euler(270f,90f,0f),
             Quaternion.Euler(270f,270f,0f),
         };
-        static readonly Vector4[] gs_rotationNegations =
+        static readonly Vector4[] ms_rotationNegations =
         {
             Vector4.one,
             Vector4.one,
@@ -189,11 +189,11 @@ namespace ml_kte
                 }
                 for(int i = 0; i < (int)TrackedPoint.Count; i++)
                 {
-                    int l_boneIndex = gs_positionBones[i];
+                    int l_boneIndex = ms_positionBones[i];
                     m_trackedPoints[i].transform.localPosition = new Vector3(-m_positionFloats[l_boneIndex * 3], m_positionFloats[l_boneIndex * 3 + 1], m_positionFloats[l_boneIndex * 3 + 2]);
 
-                    l_boneIndex = gs_rotationBones[i];
-                    m_trackedPoints[i].transform.localRotation = gs_globalRotations[i] * (new Quaternion(-m_rotationFloats[l_boneIndex * 4] * gs_rotationNegations[i].x, -m_rotationFloats[l_boneIndex * 4 + 1] * gs_rotationNegations[i].y, m_rotationFloats[l_boneIndex * 4 + 2] * gs_rotationNegations[i].z, m_rotationFloats[l_boneIndex * 4 + 3] * gs_rotationNegations[i].w) * g_localRotations[i]);
+                    l_boneIndex = ms_rotationBones[i];
+                    m_trackedPoints[i].transform.localRotation = ms_globalRotations[i] * (new Quaternion(-m_rotationFloats[l_boneIndex * 4] * ms_rotationNegations[i].x, -m_rotationFloats[l_boneIndex * 4 + 1] * ms_rotationNegations[i].y, m_rotationFloats[l_boneIndex * 4 + 2] * ms_rotationNegations[i].z, m_rotationFloats[l_boneIndex * 4 + 3] * ms_rotationNegations[i].w) * ms_localRotations[i]);
                 }
             }
         }
@@ -260,7 +260,7 @@ namespace ml_kte
 
         void OnRoomLeft()
         {
-            m_localTracked = null;
+            m_localTracked = null;  
         }
 
         void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
