@@ -185,7 +185,7 @@ namespace ml_lme
             if(m_handGestureController != null)
             {
                 m_handGestureController.field_Internal_Boolean_0 = true;
-                m_handGestureController.field_Private_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_0 = VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique.Index;
+                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Index;
 
                 for(int i = 0; i < 2; i++)
                 {
@@ -257,7 +257,7 @@ namespace ml_lme
             if(m_handGestureController != null)
             {
                 m_handGestureController.field_Internal_Boolean_0 = true;
-                m_handGestureController.field_Private_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_0 = VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique.Index;
+                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Index;
                 for(int i = 0; i < 2; i++)
                 {
                     if(f_gesturesData.m_handsPresenses[i])
@@ -294,7 +294,7 @@ namespace ml_lme
             if(m_handGestureController != null)
             {
                 m_handGestureController.field_Internal_Boolean_0 = false;
-                m_handGestureController.field_Private_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_0 = VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique.Mouse;
+                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Mouse;
             }
         }
 

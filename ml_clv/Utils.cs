@@ -7,10 +7,10 @@
         public static SteamVR_ControllerManager GetSteamVRControllerManager()
         {
             SteamVR_ControllerManager l_result = null;
-            if(VRCInputManager.field_Private_Static_Dictionary_2_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_VRCInputProcessor_0?.Count > 0)
+            if(VRCInputManager.field_Private_Static_Dictionary_2_InputMethod_VRCInputProcessor_0?.Count > 0)
             {
                 VRCInputProcessor l_input = null;
-                l_input = VRCInputManager.field_Private_Static_Dictionary_2_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_VRCInputProcessor_0[VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique.Vive];
+                l_input = VRCInputManager.field_Private_Static_Dictionary_2_InputMethod_VRCInputProcessor_0[VRCInputManager.InputMethod.Vive];
                 if(l_input != null)
                 {
                     var l_viveInput = l_input.TryCast<VRCInputProcessorVive>();

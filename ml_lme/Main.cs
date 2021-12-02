@@ -38,7 +38,7 @@ namespace ml_lme
             // Patches
             var l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
             typeof(VRCInputManager).GetMethods().Where(x =>
-                    x.Name.StartsWith("Method_Public_Static_Boolean_EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique_")
+                    x.Name.StartsWith("Method_Public_Static_Boolean_InputMethod_")
                 ).ToList().ForEach(m => HarmonyInstance.Patch(m, l_patchMethod));
         }
 
@@ -204,12 +204,12 @@ namespace ml_lme
             }
         }
 
-        static bool VRCIM_ControllersType(ref bool __result, VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique __0)
+        static bool VRCIM_ControllersType(ref bool __result, VRCInputManager.InputMethod __0)
         {
             // Need to account presence of VR controllers to allow mouse input for controler-less VR
             if(Settings.Enabled && (bool)MethodsResolver.IsInVR?.Invoke(null, null))
             {
-                if(__0 == VRCInputManager.EnumNPublicSealedvaKeMoCoGaViOcViDaWaUnique.Index)
+                if(__0 == VRCInputManager.InputMethod.Index)
                 {
                     __result = true;
                     return false;
