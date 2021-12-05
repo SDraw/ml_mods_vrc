@@ -57,6 +57,8 @@ namespace ml_kte
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
+
+            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
 
         public void LateUpdateTransforms(Transform f_head, Transform f_hips, Transform f_leftLeg, Transform f_rightLeg, Transform f_leftHand, Transform f_rightHand)
@@ -150,7 +152,7 @@ namespace ml_kte
             }
         }
 
-        public void RecacheComponents()
+        void RecacheComponents()
         {
             if(m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;

@@ -87,24 +87,26 @@ namespace ml_lme
         bool m_fingersOnly = false;
         bool m_updateParameters = false;
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool FingersOnly
         {
             set => m_fingersOnly = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool Sdk3Parameters
         {
             set => m_updateParameters = value;
         }
 
-        public LeapTracked(IntPtr ptr) : base(ptr) { }
+        public LeapTracked(IntPtr ptr) : base(ptr)
+        {
+            m_parameters = new List<CustomParameter>();
+        }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
-            m_parameters = new List<CustomParameter>();
+
+            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.ResetParameters);
         }
 
         void Update()
@@ -274,7 +276,7 @@ namespace ml_lme
 
         }
 
-        public void ResetParameters()
+        void ResetParameters()
         {
             m_parameters.Clear();
             m_playableController = null;

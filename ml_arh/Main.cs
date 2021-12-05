@@ -10,7 +10,6 @@
 
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
         }
 
         public override void OnPreferencesSaved()
@@ -19,12 +18,13 @@
 
             if(m_localAdjuster != null)
             {
+                m_localAdjuster.Enabled = Settings.Enabled;
                 m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight);
 
                 if(Settings.Enabled)
                 {
                     float l_height = Utils.GetTrackingHeight();
-                    m_localAdjuster.UpdateHeights(l_height, l_height * 0.5f);
+                    m_localAdjuster.UpdateHeights(l_height, l_height * 0.515151f);
                 }
                 else
                 {
@@ -42,27 +42,13 @@
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
             m_localAdjuster = Utils.GetLocalPlayer().gameObject.AddComponent<HeightAdjuster>();
+            m_localAdjuster.Enabled = Settings.Enabled;
             m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight);
         }
 
         void OnRoomLeft()
         {
             m_localAdjuster = null;
-        }
-
-        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, UnityEngine.GameObject f_avatarObject)
-        {
-            var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
-            if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localAdjuster != null))
-            {
-                m_localAdjuster.RecacheComponents();
-
-                if(Settings.Enabled)
-                {
-                    float l_height = Utils.GetTrackingHeight();
-                    m_localAdjuster.UpdateHeights(l_height, l_height * 0.5f);
-                }
-            }
         }
     }
 }

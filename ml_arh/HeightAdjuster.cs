@@ -18,11 +18,16 @@ namespace ml_ahr
         CharacterController m_characterController = null;
         VRCVrIkController m_ikController = null;
 
+        bool m_enabled = true;
         bool m_poseHeight = true;
         float m_height = 1.65f;
         float m_center = 0.85f;
         PoseState m_poseState = PoseState.Standing;
 
+        public bool Enabled
+        {
+            set => m_enabled = value;
+        }
         public bool PoseHeight
         {
             set => m_poseHeight = value;
@@ -33,6 +38,16 @@ namespace ml_ahr
         void Awake()
         {
             m_characterController = this.GetComponent<CharacterController>();
+
+            this.GetComponent<VRCPlayer>().field_Private_OnAvatarIsReady_0 += new System.Action(() =>
+            {
+                RecacheComponents();
+                if(m_enabled)
+                {
+                    float l_height = Utils.GetTrackingHeight();
+                    UpdateHeights(l_height, l_height * 0.515151f);
+                }
+            });
         }
 
         void Update()
@@ -48,7 +63,7 @@ namespace ml_ahr
             }
         }
 
-        public void RecacheComponents()
+        void RecacheComponents()
         {
             m_poseState = PoseState.Standing;
 

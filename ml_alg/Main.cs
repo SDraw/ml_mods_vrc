@@ -26,7 +26,6 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuSettings.AddLabel("World pull permission:", (GameObject f_obj) =>
@@ -201,21 +200,6 @@ namespace ml_alg
                         Object.Destroy(l_component);
                     }
                 }
-            }
-        }
-
-        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
-        {
-            var l_playerObject = f_avatarObject.transform.root;
-            if(l_playerObject != null)
-            {
-                var l_lifted = l_playerObject.GetComponent<LiftedPlayer>();
-                if(l_lifted != null)
-                    l_lifted.RecacheComponents();
-
-                var l_lifter = l_playerObject.GetComponent<LifterPlayer>();
-                if(l_lifter != null)
-                    l_lifter.RecacheComponents();
             }
         }
 

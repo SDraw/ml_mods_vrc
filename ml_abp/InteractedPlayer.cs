@@ -85,31 +85,32 @@ namespace ml_abp
             get => m_player;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public float BonesProximity
         {
             set => m_boneProximity = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public float PlayersProximity
         {
             set => m_playersProximity = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool UseCustomTargets
         {
             set => m_useCustomTargets = value;
         }
 
-        public InteractedPlayer(IntPtr ptr) : base(ptr) { }
+        public InteractedPlayer(IntPtr ptr) : base(ptr)
+        {
+            m_interacterPlayers = new List<InteracterPlayer>();
+            m_parameters = new List<CustomParameter>();
+        }
 
         void Awake()
         {
             m_player = this.GetComponent<VRC.Player>();
-            m_interacterPlayers = new List<InteracterPlayer>();
-            m_parameters = new List<CustomParameter>();
+
+            m_player.prop_VRCPlayer_0.field_Private_OnAvatarIsReady_0 += new System.Action(this.RebuildParameters);
         }
 
         void Update()
@@ -177,16 +178,11 @@ namespace ml_abp
                 m_interacterPlayers.Remove(f_player);
         }
 
-        public void ResetParameters()
+        void RebuildParameters()
         {
             m_parameters.Clear();
             m_playableController = null;
 
-            RebuildParameters();
-        }
-
-        void RebuildParameters()
-        {
             UnhollowerBaseLib.Il2CppArrayBase<Transform> l_avatarTransforms = (m_useCustomTargets ? m_player.prop_VRCPlayer_0.field_Internal_Animator_0.transform.GetComponentsInChildren<Transform>(true) : null);
 
             m_playableController = m_player.prop_VRCPlayer_0.field_Private_AnimatorControllerManager_0.field_Private_AvatarAnimParamController_0.field_Private_AvatarPlayableController_0;

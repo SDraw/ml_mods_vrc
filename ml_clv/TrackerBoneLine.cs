@@ -28,7 +28,6 @@ namespace ml_clv
         VRCPlayer m_player = null;
         LineRenderer m_lineRenderer = null;
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public int Index
         {
             set => m_index = value;
@@ -81,7 +80,6 @@ namespace ml_clv
             }
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         HumanBodyBones FindAssignedBone(Animator f_animator)
         {
             HumanBodyBones l_result = HumanBodyBones.LastBone;

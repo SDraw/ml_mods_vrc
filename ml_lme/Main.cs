@@ -33,7 +33,6 @@ namespace ml_lme
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             // Patches
             var l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
@@ -168,13 +167,6 @@ namespace ml_lme
         void OnRoomLeft()
         {
             m_localTracked = null;
-        }
-
-        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
-        {
-            var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
-            if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localTracked != null))
-                m_localTracked.ResetParameters();
         }
 
         void OnLeapDeviceInitialized(object f_sender, Leap.DeviceEventArgs f_args)

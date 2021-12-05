@@ -75,7 +75,6 @@ namespace ml_kte
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnAvatarInstantiated += this.OnAvatarInstantiated;
 
             OnPreferencesSaved();
         }
@@ -261,13 +260,6 @@ namespace ml_kte
         void OnRoomLeft()
         {
             m_localTracked = null;  
-        }
-
-        void OnAvatarInstantiated(VRCAvatarManager f_manager, VRC.Core.ApiAvatar f_apiAvatar, GameObject f_avatarObject)
-        {
-            var l_player = f_avatarObject.transform.root.GetComponent<VRCPlayer>();
-            if((l_player != null) && (l_player == Utils.GetLocalPlayer()) && (m_localTracked != null))
-                m_localTracked.RecacheComponents();
         }
     }
 }

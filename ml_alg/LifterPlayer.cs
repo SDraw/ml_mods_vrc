@@ -14,8 +14,6 @@ namespace ml_alg
         bool m_rightHandGrab = false;
         List<LiftedPlayer> m_liftedPlayers = null;
 
-        public LifterPlayer(IntPtr ptr) : base(ptr) { }
-
         public VRC.Player Player
         {
             get => m_player;
@@ -26,12 +24,18 @@ namespace ml_alg
             get => m_animator;
         }
 
+        public LifterPlayer(IntPtr ptr) : base(ptr)
+        {
+            m_liftedPlayers = new List<LiftedPlayer>();
+        }
+
         void Awake()
         {
             m_player = this.GetComponent<VRC.Player>();
             m_animator = m_player.prop_VRCPlayer_0.field_Internal_Animator_0;
             m_gestureController = m_player.prop_VRCPlayer_0.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
-            m_liftedPlayers = new List<LiftedPlayer>();
+
+            m_player.prop_VRCPlayer_0.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
 
         void Update()
@@ -67,7 +71,7 @@ namespace ml_alg
                 m_liftedPlayers.Remove(f_lifted);
         }
 
-        public void RecacheComponents()
+        void RecacheComponents()
         {
             m_animator = m_player.prop_VRCPlayer_0.field_Internal_Animator_0;
             if((m_animator != null) && !m_animator.isHuman)

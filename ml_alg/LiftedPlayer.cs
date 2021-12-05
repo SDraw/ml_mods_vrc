@@ -58,62 +58,51 @@ namespace ml_alg
         MonoBehaviour m_iktFbtIK = null;
         BodyTrackingMode m_trackingMode = BodyTrackingMode.Generic;
 
-        public LiftedPlayer(IntPtr ptr) : base(ptr) { }
-
         public VRC.Player Player
         {
             get => m_player;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public float GrabDistance
         {
             set => m_grabDistance = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool RotateHips
         {
             set => m_rotateHips = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool RotateLegs
         {
             set => m_rotateLegs = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool RotateHands
         {
             set => m_rotateHands = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool AllowPull
         {
             set => m_allowPull = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool AllowHandsPull
         {
             set => m_allowHandsPull = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool AllowHipsPull
         {
             set => m_allowHipsPull = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool AllowLegsPull
         {
             set => m_allowLegsPull = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool SavePose
         {
             set
@@ -124,35 +113,29 @@ namespace ml_alg
             }
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool UseVelocity
         {
             set => m_useVelocity = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public float VelocityMultiplier
         {
             set => m_velocityMultiplier = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool AverageVelocity
         {
             set => m_averageVelocity = value;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public bool UseIKTweaks
         {
             set => m_useIKTweaks = value;
         }
 
-        void Awake()
+        public LiftedPlayer(IntPtr ptr) : base(ptr)
         {
-            m_player = this.GetComponent<VRC.Player>();
-
-            // Reduntant array: 6 used, 49 dummies
+            // Redundant array: 6 used, 49 dummies
             m_liftBodyParts = new LiftBodyPart[(int)HumanBodyBones.LastBone];
             for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
             {
@@ -168,6 +151,14 @@ namespace ml_alg
                 };
             }
         }
+
+        void Awake()
+        {
+            m_player = this.GetComponent<VRC.Player>();
+
+            m_player.prop_VRCPlayer_0.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
+        }
+
         void Update()
         {
             // Recheck tracking mode
@@ -424,7 +415,7 @@ namespace ml_alg
             }
         }
 
-        public void RecacheComponents()
+        void RecacheComponents()
         {
             m_animator = m_player.prop_VRCPlayer_0.field_Internal_Animator_0;
             if(m_player.prop_VRCPlayer_0.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
@@ -435,7 +426,6 @@ namespace ml_alg
             m_iktFbtIK = null;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public void OnLifterGesture(LifterPlayer f_lifter, HumanBodyBones f_hand, bool f_state)
         {
             if(f_state)
@@ -484,7 +474,6 @@ namespace ml_alg
                 UnassignRemoteLifter(f_lifter, f_hand);
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         void AssignLiftedBone(LifterPlayer f_lifter, Animator f_remoteAnimator, HumanBodyBones f_localBone, HumanBodyBones f_remoteBone)
         {
             m_liftBodyParts[(int)f_localBone].m_lifter = f_lifter;
@@ -536,7 +525,8 @@ namespace ml_alg
                             {
                                 m_liftBodyParts[(int)f_localBone].m_offsetMatrix = f_remoteAnimator.GetBoneTransform(f_remoteBone).GetMatrix().inverse * l_trackerPoint.parent.GetMatrix();
                             }
-                        } break;
+                        }
+                        break;
 
                         default:
                         {
@@ -560,7 +550,8 @@ namespace ml_alg
                             {
                                 m_liftBodyParts[(int)f_localBone].m_offsetMatrix = f_remoteAnimator.GetBoneTransform(f_remoteBone).GetMatrix().inverse * l_trackerPoint.parent.GetMatrix();
                             }
-                        } break;
+                        }
+                        break;
 
                         default:
                         {
@@ -577,14 +568,14 @@ namespace ml_alg
                                 l_footTransform = m_animator.GetBoneTransform(f_localBone);
 
                             m_liftBodyParts[(int)f_localBone].m_offsetMatrix = f_remoteAnimator.GetBoneTransform(f_remoteBone).GetMatrix().inverse * l_footTransform.GetMatrix();
-                        } break;
+                        }
+                        break;
                     }
                 }
                 break;
             }
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         void UnassignRemoteLifter(LifterPlayer f_player, HumanBodyBones f_remoteBone)
         {
             for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
@@ -639,7 +630,6 @@ namespace ml_alg
             }
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         void ProcessBoneReset(HumanBodyBones f_bone)
         {
             m_liftBodyParts[(int)f_bone].m_lifter = null;
@@ -713,7 +703,6 @@ namespace ml_alg
             }
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         HumanBodyBones GetNearestBone(Animator f_remoteAnimator, HumanBodyBones f_remoteBone)
         {
             var l_result = HumanBodyBones.LastBone;
@@ -743,7 +732,6 @@ namespace ml_alg
             return l_result;
         }
 
-        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         void ReapplyOffset(int f_index)
         {
             switch(m_liftBodyParts[f_index].m_reapplyOffset)
