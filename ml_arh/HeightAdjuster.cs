@@ -39,15 +39,7 @@ namespace ml_ahr
         {
             m_characterController = this.GetComponent<CharacterController>();
 
-            this.GetComponent<VRCPlayer>().field_Private_OnAvatarIsReady_0 += new System.Action(() =>
-            {
-                RecacheComponents();
-                if(m_enabled)
-                {
-                    float l_height = Utils.GetTrackingHeight();
-                    UpdateHeights(l_height, l_height * 0.515151f);
-                }
-            });
+            this.GetComponent<VRCPlayer>().field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
 
         void Update()
@@ -69,6 +61,12 @@ namespace ml_ahr
 
             m_ikController = null;
             m_ikController = this.GetComponent<VRCPlayer>().field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0;
+
+            if(m_enabled)
+            {
+                float l_height = Utils.GetTrackingHeight();
+                UpdateHeights(l_height, l_height * 0.515151f);
+            }
         }
 
         public void UpdateHeights(float f_height, float f_center)
