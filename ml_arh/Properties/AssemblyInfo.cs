@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("AvatarRealHeight")]
-[assembly: AssemblyVersion("1.0.1")]
-[assembly: AssemblyFileVersion("1.0.1")]
+[assembly: AssemblyVersion("1.0.2")]
+[assembly: AssemblyFileVersion("1.0.2")]
 
-[assembly: MelonLoader.MelonInfo(typeof(ml_ahr.Main), "AvatarRealHeight", "1.0.1", "SDraw", "https://github.com/SDraw/ml_mods")]
+[assembly: MelonLoader.MelonInfo(typeof(ml_ahr.Main), "AvatarRealHeight", "1.0.2", "SDraw", "https://github.com/SDraw/ml_mods")]
 [assembly: MelonLoader.MelonGame("VRChat", "VRChat")]
 [assembly: MelonLoader.MelonAdditionalDependencies("VRChatUtilityKit")]
 [assembly: MelonLoader.MelonPlatform(MelonLoader.MelonPlatformAttribute.CompatiblePlatforms.WINDOWS_X64)]
