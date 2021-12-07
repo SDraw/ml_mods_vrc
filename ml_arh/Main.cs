@@ -22,14 +22,9 @@
                 m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight);
 
                 if(Settings.Enabled)
-                {
-                    float l_height = Utils.GetTrackingHeight();
-                    m_localAdjuster.UpdateHeights(l_height, l_height * 0.515151f);
-                }
+                    m_localAdjuster.UpdateHeight(Utils.GetTrackingHeight());
                 else
-                {
-                    m_localAdjuster.UpdateHeights(1.65f, 0.85f); // Default VRChat values
-                }
+                    m_localAdjuster.UpdateHeight(1.65f); // Default VRChat value
             }
         }
 
