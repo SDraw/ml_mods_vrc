@@ -3,7 +3,7 @@ with the full text of their respective licenses.
 
 abseil (20200225.2) - Apache License (2.0)
 ===============================================================================
-
+```
                                  Apache License
                            Version 2.0, January 2004
                         https://www.apache.org/licenses/
@@ -206,12 +206,13 @@ abseil (20200225.2) - Apache License (2.0)
    See the License for the specific language governing permissions and
    limitations under the License.
 
-
+```
 -------------------------------------------------------------------------------
 
 
-android/log.h - Apache License (2.0)
+Android Core System Libraries - Apache License (2.0)
 ===============================================================================
+```
 Copyright (C) 2009 The Android Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -225,11 +226,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
 -------------------------------------------------------------------------------
 
 
 args (6.2.2) - MIT License
 ===============================================================================
+```
 Copyright (c) 2016-2017 Taylor C. Richberger <taywee@gmx.com> and Pavel Belikov
 
 
@@ -239,11 +242,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 asio (1.12.2) - Boost Software License (1.0)
 ===============================================================================
+```
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -268,14 +273,13 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 bzip2 (1.0.8) - Modified combination of Simplified BSD License & zlib/libpng License
 ===============================================================================
-
---------------------------------------------------------------------------
-
+```
 This program, "bzip2", the associated library "libbzip2", and all
 documentation, are copyright (C) 1996-2019 Julian R Seward.  All
 rights reserved.
@@ -314,13 +318,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Julian Seward, jseward@acm.org
 bzip2/libbzip2 version 1.0.8 of 13 July 2019
 
---------------------------------------------------------------------------
-
+```
 -------------------------------------------------------------------------------
 
 
 catch2 (2.12.1) - Boost Software License (1.0)
 ===============================================================================
+```
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -345,12 +349,13 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 cctz (2.3) - Apache License (2.0)
 ===============================================================================
-
+```
                                  Apache License
                            Version 2.0, January 2004
                         https://www.apache.org/licenses/
@@ -554,11 +559,13 @@ cctz (2.3) - Apache License (2.0)
    limitations under the License.
 
 
+```
 -------------------------------------------------------------------------------
 
 
 CLI11 (1.9.1) - New BSD License
 ===============================================================================
+```
 CLI11 1.8 Copyright (c) 2017-2019 University of Cincinnati, developed by Henry
 Schreiner under NSF AWARD 1414736. All rights reserved.
 
@@ -585,11 +592,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+```
 -------------------------------------------------------------------------------
 
 
 cppyy (1.8.0) - New BSD License (Modified)
 ===============================================================================
+```
 Copyright (c) 2002-2020, The Regents of the University of California,
 through Lawrence Berkeley National Laboratory (subject to receipt of
 any required approvals from the U.S. Dept. of Energy). All rights
@@ -647,11 +656,13 @@ source code):
 
 Conda-forge recipes were provided by Julian Rueth and Isuru Fernando.
 
+```
 -------------------------------------------------------------------------------
 
 
 easyloggingpp (9.94.2) - MIT License
 ===============================================================================
+```
 The MIT License (MIT)
 
 Copyright (c) 2017 muflihun.com
@@ -677,11 +688,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 eigen (3.3.7) - MPL2
 ===============================================================================
+```
 Mozilla Public License Version 2.0
 ==================================
 
@@ -1056,12 +1069,13 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   This Source Code Form is "Incompatible With Secondary Licenses", as
   defined by the Mozilla Public License, v. 2.0.
 
+```
 -------------------------------------------------------------------------------
 
 
-flatbuffers & flatc (1.12.0) - Apache License (2.0)
+flatbuffers (1.12.0) - Apache License (2.0)
 ===============================================================================
-
+```
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -1264,11 +1278,13 @@ flatbuffers & flatc (1.12.0) - Apache License (2.0)
    See the License for the specific language governing permissions and
    limitations under the License.
 
+```
 -------------------------------------------------------------------------------
 
 
 fmt (7.0.3) - MIT License
 ===============================================================================
+```
 Copyright (c) 2012 - present, Victor Zverovich
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -1297,11 +1313,13 @@ of this Software are embedded into a machine-executable object form of such
 source code, you may redistribute such embedded portions in such object form
 without including the above copyright and permission notices.
 
+```
 -------------------------------------------------------------------------------
 
 
 ghc_filesystem (1.3.2) - MIT License
 ===============================================================================
+```
 Copyright (c) 2018, Steffen Schümann <s.schuemann@pobox.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1322,11 +1340,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 glfw (3.1) - zlib/libpng License
 ===============================================================================
+```
 Copyright (c) 2002-2006 Marcus Geelnard
 Copyright (c) 2006-2010 Camilla Berglund <elmindreda@elmindreda.org>
 
@@ -1349,12 +1369,13 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source
    distribution.
 
-
+```
 -------------------------------------------------------------------------------
 
 
 gtest (1.8.1) - New BSD License
 ===============================================================================
+```
 Copyright 2008, Google Inc.
 All rights reserved.
 
@@ -1384,11 +1405,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+```
 -------------------------------------------------------------------------------
 
 
 imgui (1.49) - MIT License
 ===============================================================================
+```
 The MIT License (MIT)
 
 Copyright (c) 2014-2015 Omar Cornut and ImGui contributors
@@ -1411,11 +1434,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 jasper (2.0.14) - JasPer License v2.0
 ===============================================================================
+```
 JasPer License Version 2.0
 
 Copyright (c) 2001-2016 Michael David Adams
@@ -1468,11 +1493,13 @@ RISK ACTIVITIES").  THE COPYRIGHT HOLDERS SPECIFICALLY DISCLAIM ANY
 EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR HIGH RISK ACTIVITIES.
 
 
+```
 -------------------------------------------------------------------------------
 
 
 libjpeg (9c) - JPEG software 2018
 ===============================================================================
+```
 The Independent JPEG Group's JPEG software
 ==========================================
 
@@ -1852,11 +1879,13 @@ More features are being prepared for coming releases...
 
 Please send bug reports, offers of help, etc. to jpeg-info@jpegclub.org.
 
+```
 -------------------------------------------------------------------------------
 
 
 libpng (1.6.37) - PNG Reference Library License 2.0
 ===============================================================================
+```
 COPYRIGHT NOTICE, DISCLAIMER, and LICENSE
 =========================================
 
@@ -1992,17 +2021,223 @@ to supporting the PNG file format in commercial products.  If you use
 this source code in a product, acknowledgment is not required but would
 be appreciated.
 
+```
 -------------------------------------------------------------------------------
 
 
 libtm - Apache License (2.0)
 ===============================================================================
+```
 
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
 
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+```
 -------------------------------------------------------------------------------
+
 
 libusb (1.0.23) - GNU LGPL (2.1)
 ===============================================================================
+```
 		  GNU LESSER GENERAL PUBLIC LICENSE
 		       Version 2.1, February 1999
 
@@ -2507,10 +2742,13 @@ necessary.  Here is a sample alter the names:
 That's all there is to it!
 
 
+```
 -------------------------------------------------------------------------------
+
 
 libwebp (1.0.3) - New BSD License
 ===============================================================================
+```
 Copyright (c) 2010, Google Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -2541,33 +2779,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
--------------------------------------------------------------------------------
-
-
-mach-o/dyld.h - Apple Public Source License
-===============================================================================
-Copyright (c) 1999-2008 Apple Inc. All rights reserved.
-
-This file contains Original Code and/or Modifications of Original Code
-as defined in and that are subject to the Apple Public Source License
-Version 2.0 (the 'License'). You may not use this file except in
-compliance with the License. Please obtain a copy of the License at
-http://www.opensource.apple.com/apsl/ and read it before using this
-file.
-
-The Original Code and all software distributed under the License are
-distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
-EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
-INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
-Please see the License for the specific language governing rights and
-limitations under the License.
+```
 -------------------------------------------------------------------------------
 
 
 opencv (4.1.1) - New BSD License, Apache License (2.0), MIT License (Modified), ISC License
 ===============================================================================
+```
 By downloading, copying, installing or using the software you agree to this license.
 If you do not agree to this license, do not download, install,
 copy or use the software.
@@ -2610,11 +2828,13 @@ and on any theory of liability, whether in contract, strict liability,
 or tort (including negligence or otherwise) arising in any way out of
 the use of this software, even if advised of the possibility of such damage.
 
+```
 -------------------------------------------------------------------------------
 
 
 opencv (4.1.1) - New BSD License, Apache License (2.0), MIT License (Modified), ISC License
 ===============================================================================
+```
 
 License for Berkeley SoftFloat Release 3c
 
@@ -2653,11 +2873,13 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+```
 -------------------------------------------------------------------------------
 
 
 opencv (4.1.1) - New BSD License, Apache License (2.0), MIT License (Modified), ISC License
 ===============================================================================
+```
 Copyright (c) 2008-2015 The Khronos Group Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a
@@ -2684,11 +2906,13 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 
+```
 -------------------------------------------------------------------------------
 
 
 opencv (4.1.1) - New BSD License, Apache License (2.0), MIT License (Modified), ISC License
 ===============================================================================
+```
 quirc -- QR-code recognition library
 Copyright (C) 2010-2012 Daniel Beer <dlbeer@gmail.com>
 
@@ -2706,12 +2930,13 @@ PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
 ===============================================================================
-
+```
   LICENSE ISSUES
   ==============
 
@@ -2723,14 +2948,14 @@ openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
   ---------------
 
 /* ====================================================================
- * Copyright (c) 1998-2018 The OpenSSL Project.  All rights reserved.
+ * Copyright (c) 1998-2019 The OpenSSL Project.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
@@ -2785,21 +3010,21 @@ openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
  * This package is an SSL implementation written
  * by Eric Young (eay@cryptsoft.com).
  * The implementation was written so as to conform with Netscapes SSL.
- * 
+ *
  * This library is free for commercial and non-commercial use as long as
  * the following conditions are aheared to.  The following conditions
  * apply to all code found in this distribution, be it the RC4, RSA,
  * lhash, DES, etc., code; not just the SSL code.  The SSL documentation
  * included with this distribution is covered by the same copyright terms
  * except that the holder is Tim Hudson (tjh@cryptsoft.com).
- * 
+ *
  * Copyright remains Eric Young's, and as such any Copyright notices in
  * the code are not to be removed.
  * If this package is used in a product, Eric Young should be given attribution
  * as the author of the parts of the library used.
  * This can be in the form of a textual message at program startup or
  * in documentation (online or textual) provided with the package.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -2814,10 +3039,10 @@ openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
  *     Eric Young (eay@cryptsoft.com)"
  *    The word 'cryptographic' can be left out if the rouines from the library
  *    being used are not cryptographic related :-).
- * 4. If you include any Windows specific code (or a derivative thereof) from 
+ * 4. If you include any Windows specific code (or a derivative thereof) from
  *    the apps directory (application code) you must include an acknowledgement:
  *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -2829,7 +3054,7 @@ openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- * 
+ *
  * The licence and distribution terms for any publically available version or
  * derivative of this code cannot be changed.  i.e. this code cannot simply be
  * copied and put under another distribution licence
@@ -2837,11 +3062,13 @@ openssl (1.1.1) - OpenSSL License 2019, SSLeay License 1998
  */
 
 
+```
 -------------------------------------------------------------------------------
 
 
-protobuf & protoc_installer (3.6.1) - New BSD License (with exception)
+protobuf (3.6.1) - New BSD License (with exception)
 ===============================================================================
+```
 Copyright 2008 Google Inc.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -2875,11 +3102,13 @@ of the input file used when generating it.  This code is not
 standalone and requires a support library to be linked with it.  This
 support library is itself covered by the above license.
 
+```
 -------------------------------------------------------------------------------
 
 
 rapidjson (1.1.0) - MIT License, New BSD License, & JSON License
 ===============================================================================
+```
 Tencent is pleased to support the open source community by making RapidJSON available. 
  
 Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip.  All rights reserved.
@@ -2938,11 +3167,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 rapidxml (1.13) - Boost Software License (1.0) & MIT License
 ===============================================================================
+```
 Use of this software is granted under one of the following two licenses,
 to be chosen freely by the user.
 
@@ -3016,11 +3247,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
 
 
 readerwriterqueue (1.0.1) - Simplified BSD License
 ===============================================================================
+```
 This license applies to all the code in this repository except that written by third
 parties, namely the files in benchmarks/ext, which have their own licenses, and Jeff
 Preshing's semaphore implementation (used in the blocking queue) which has a zlib
@@ -3050,11 +3283,13 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABI
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+```
 -------------------------------------------------------------------------------
 
 
-realsense-file - Intel RealSense is under c2.0, which is also OK
+librealsense - Apache License (2.0)
 ===============================================================================
+```
 
                                  Apache License
                            Version 2.0, January 2004
@@ -3258,11 +3493,13 @@ realsense-file - Intel RealSense is under c2.0, which is also OK
    See the License for the specific language governing permissions and
    limitations under the License.
 
+```
 -------------------------------------------------------------------------------
 
 
 Remotery - Apache License (2.0)
 ===============================================================================
+```
 
                                  Apache License
                            Version 2.0, January 2004
@@ -3439,18 +3676,13 @@ Remotery - Apache License (2.0)
       incurred by, or claims asserted against, such Contributor by reason
       of your accepting any such warranty or additional liability.
 
--------------------------------------------------------------------------------
-
-
-select_configurations cmake macro - New BSD License
-===============================================================================
-
-
+```
 -------------------------------------------------------------------------------
 
 
 spdlog (1.8.0) - MIT License
 ===============================================================================
+```
 The MIT License (MIT)
 
 Copyright (c) 2016 Gabi Melman.                                       
@@ -3478,11 +3710,13 @@ This software depends on the fmt lib (MIT License),
 and users must comply to its license: https://github.com/fmtlib/fmt/blob/master/LICENSE.rst
 
 
+```
 -------------------------------------------------------------------------------
 
 
 sqlite (3.13.0) - SQLite Blessing
 ===============================================================================
+```
 The author disclaims copyright to this source code.  In place of
 a legal notice, here is a blessing:
 
@@ -3490,11 +3724,13 @@ a legal notice, here is a blessing:
    May you find forgiveness for yourself and forgive others.
    May you share freely, never taking more than you give.
 
+```
 -------------------------------------------------------------------------------
 
 
 tclap (1.2.1) - MIT License
 ===============================================================================
+```
 
 
 Copyright (c) 2003 Michael E. Smoot 
@@ -3519,13 +3755,13 @@ AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 THE SOFTWARE.
 
-
-
+```
 -------------------------------------------------------------------------------
 
 
 tensorflowlite (2.2.0) - Apache License (2.0)
 ===============================================================================
+```
 Copyright 2019 The TensorFlow Authors.  All rights reserved.
 
                                  Apache License
@@ -3730,11 +3966,13 @@ Copyright 2019 The TensorFlow Authors.  All rights reserved.
    See the License for the specific language governing permissions and
    limitations under the License.
 
+```
 -------------------------------------------------------------------------------
 
 
 websocketpp (0.8.2) - WebSocket++ 2014
 ===============================================================================
+```
 Main Library:
 
 Copyright (c) 2014, Peter Thorson. All rights reserved.
@@ -3881,10 +4119,49 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+```
 -------------------------------------------------------------------------------
+
+
+zlib (1.2.11) - The zlib/libpng License (Zlib)
+===============================================================================
+```
+ zlib.h -- interface of the 'zlib' general purpose compression library
+  version 1.2.11, January 15th, 2017
+
+  Copyright (C) 1995-2017 Jean-loup Gailly and Mark Adler
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+  Jean-loup Gailly        Mark Adler
+  jloup@gzip.org          madler@alumni.caltech.edu
+
+
+  The data format used by the zlib library is described by RFCs (Request for
+  Comments) 1950 to 1952 in the files http://tools.ietf.org/html/rfc1950
+  (zlib format), rfc1951 (deflate format) and rfc1952 (gzip format).
+
+```
+-------------------------------------------------------------------------------
+
 
 Qt (5.15.2) - GNU LGPL (3.0)
 ===============================================================================
+```
             GNU LESSER GENERAL PUBLIC LICENSE
 
  The Qt Toolkit is Copyright (C) 2015 The Qt Company Ltd.
@@ -4060,9 +4337,13 @@ whether future versions of the GNU Lesser General Public License shall
 apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the Library.
 
+```
+-------------------------------------------------------------------------------
+
+
 PCRE (10.36) - BSD-3-Clause
 ===============================================================================
-
+```
 PCRE2 LICENCE
 -------------
 
@@ -4158,8 +4439,13 @@ PCRE2 independently.
 
 End
 
+```
+-------------------------------------------------------------------------------
+
+
 Double-Conversion (3.1.5) - BSD-3-Clause
 ===============================================================================
+```
 
 Copyright 2006-2011, the V8 project authors. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -4188,8 +4474,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+```
+-------------------------------------------------------------------------------
+
+
 Freetype (2.10.4) - FTL
 ===============================================================================
+```
 
 
                     The FreeType Project LICENSE
@@ -4361,9 +4652,13 @@ Legal Terms
 
 
 --- end of FTL.TXT ---
+```
+-------------------------------------------------------------------------------
+
 
 libpq (13.2) - Postgres SQL
 ===============================================================================
+```
 
 PostgreSQL Database Management System
 (formerly known as Postgres, then as Postgres95)
@@ -4389,9 +4684,13 @@ AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
 ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+```
+-------------------------------------------------------------------------------
+
+
 zstd (1.5.0) - BSD-3-Clause
 ===============================================================================
-
+```
 BSD License
 
 For Zstandard software
@@ -4422,10 +4721,13 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+-------------------------------------------------------------------------------
+
 
 brotli (1.0.9) - MIT
 ===============================================================================
-
+```
 Copyright (c) 2009, 2010, 2013-2016 by the Brotli Authors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -4445,10 +4747,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+```
+-------------------------------------------------------------------------------
+
 
 Font - Now (OFL 1.1)
 ===============================================================================
-
+```
 Copyright (c) 2015, Alfredo Marco Pradil (<http://behance.net/pradil | ammpradil@gmail.com>), with Reserved Font Name Now.
 
 OFL FAQ - Frequently Asked Questions about the SIL Open Font License (OFL)
@@ -4877,4 +5182,5 @@ Foobar.org is a distributed community of developers...
 Company.com is a small business who likes to support community designers...
 University.edu is a renowned educational institution with a strong design department...
 -----
-
+```
+-------------------------------------------------------------------------------
