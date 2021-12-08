@@ -44,7 +44,6 @@ List of available additional parameters:
 * In desktop mode be sure to disable gestures in "Action Menu (R) - Options - Gestures" to make avatar animation actions be in fixed state instead of on hold state.
 * Offset values correspond to SteamVR environment units.
 * Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.
-* [Release 19-10-2021](../../../releases/tag/week-42-2) is the last release that supports Leap Motion Tracking Software below version 5.2.0.
 
 # Credits
 * Thanks to [Magic3000](https://github.com/Magic3000) for patch to enable remote finger tracking in VR mode.

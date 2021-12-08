@@ -103,7 +103,7 @@ namespace ml_lme
                 {
                     m_leapTrackingRoot.transform.parent = (Settings.HeadRoot ? Utils.GetCamera().transform : Utils.GetSteamVRControllerManager().transform);
                     m_leapTrackingRoot.transform.localPosition = new Vector3(0f, (Settings.HeadRoot ? Settings.HmdOffsetY : Settings.DesktopOffsetY), (Settings.HeadRoot ? Settings.HmdOffsetZ : Settings.DesktopOffsetZ));
-                    m_leapTrackingRoot.transform.localRotation = Quaternion.identity;
+                    m_leapTrackingRoot.transform.localRotation = Quaternion.Euler(Settings.RootRotation, 0f, 0f);
                 }
 
                 if(m_localTracked != null)

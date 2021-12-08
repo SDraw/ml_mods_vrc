@@ -1,5 +1,5 @@
 ﻿namespace ml_lme
-{ 
+{
     static class Settings
     {
         static bool ms_enabled = false;
@@ -11,19 +11,21 @@
         static float ms_desktopOffsetZ = 0.4f;
         static float ms_hmdOffsetY = -0.15f;
         static float ms_hmdOffsetZ = 0.15f;
+        static float ms_rootRotation = 0f;
 
         public static void LoadSettings()
         {
             MelonLoader.MelonPreferences.CreateCategory("LME", "Leap Motion extension");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable Leap Motion extension");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "LeapHmdMode", ms_leapHmdMode, "HMD mode for Leap Motion");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "HeadRoot", ms_headRoot, "Use head as root point");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "Sdk3Parameters", ms_sdk3Parameters, "Set SDK3 parameters to avatar");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "FingersTracking", ms_fingersTracking, "Use only fingers tracking");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable hands tracking");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "LeapHmdMode", ms_leapHmdMode, "HMD mode");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "HeadRoot", ms_headRoot, "Head as root point");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "Sdk3Parameters", ms_sdk3Parameters, "Set avatar SDK3 parameters");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "FingersTracking", ms_fingersTracking, "Fingers tracking only");
             MelonLoader.MelonPreferences.CreateEntry("LME", "DesktopOffsetY", ms_desktopOffsetY, "Desktop Y axis (up) offset");
             MelonLoader.MelonPreferences.CreateEntry("LME", "DesktopOffsetZ", ms_desktopOffsetZ, "Desktop Z axis (forward) offset");
             MelonLoader.MelonPreferences.CreateEntry("LME", "HmdOffsetY", ms_hmdOffsetY, "HMD Y axis (up) offset");
             MelonLoader.MelonPreferences.CreateEntry("LME", "HmdOffsetZ", ms_hmdOffsetZ, "HMD Z axis (forward) offset");
+            MelonLoader.MelonPreferences.CreateEntry("LME", "RootRotation", ms_rootRotation, "Root X axis rotation (for neck mounts)");
 
             ReloadSettings();
         }
@@ -39,6 +41,7 @@
             ms_desktopOffsetZ = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "DesktopOffsetZ");
             ms_hmdOffsetY = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "HmdOffsetY");
             ms_hmdOffsetZ = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "HmdOffsetZ");
+            ms_rootRotation = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "RootRotation");
         }
 
         public static bool Enabled
@@ -84,6 +87,11 @@
         public static float HmdOffsetZ
         {
             get => ms_hmdOffsetZ;
+        }
+
+        public static float RootRotation
+        {
+            get => ms_rootRotation;
         }
     }
 }
