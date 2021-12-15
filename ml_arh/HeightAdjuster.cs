@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ml_ahr
+namespace ml_arh
 {
     [MelonLoader.RegisterTypeInIl2Cpp]
     class HeightAdjuster : MonoBehaviour
@@ -17,6 +17,7 @@ namespace ml_ahr
 
         CharacterController m_characterController = null;
         VRCVrIkController m_ikController = null;
+        RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
 
         bool m_enabled = true;
         bool m_poseHeight = true;
@@ -45,9 +46,18 @@ namespace ml_ahr
 
         void Update()
         {
-            if(m_poseHeight && (m_ikController != null))
+            if(m_poseHeight && (m_ikController != null) && (m_fbtIK != null))
             {
-                PoseState l_currentState = (m_ikController.field_Private_Boolean_15 ? PoseState.Crouching : (m_ikController.field_Private_Boolean_14 ? PoseState.Crawling : PoseState.Standing));
+                PoseState l_currentState = PoseState.Standing;
+                if(m_fbtIK.enabled)
+                {
+                    float l_upright = Mathf.Clamp(Utils.GetUprightAmount(), 0f, 1f);
+                    if(l_upright <= 0.6f)
+                        l_currentState = ((l_upright <= 0.35f) ? PoseState.Crawling : PoseState.Crouching);
+                }
+                else
+                    l_currentState = (m_ikController.field_Private_Boolean_15 ? PoseState.Crouching : (m_ikController.field_Private_Boolean_14 ? PoseState.Crawling : PoseState.Standing));
+
                 if(m_poseState != l_currentState)
                 {
                     m_poseState = l_currentState;
@@ -62,6 +72,7 @@ namespace ml_ahr
 
             m_ikController = null;
             m_ikController = this.GetComponent<VRCPlayer>().field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0;
+            m_fbtIK = this.GetComponent<VRCPlayer>().field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
 
             if(m_enabled)
                 UpdateHeight(Utils.GetTrackingHeight());

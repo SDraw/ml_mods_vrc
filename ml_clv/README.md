@@ -4,7 +4,7 @@ Inspired by [ChilloutVR](https://store.steampowered.com/app/661130/ChilloutVR), 
 
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
-* Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
+* Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods)
 * **Optional:** Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
 * Get [latest release DLL](../../../releases/latest).
 * Put `ml_clv.dll` in `Mods` folder of game.

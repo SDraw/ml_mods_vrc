@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("CalibrationLinesVisualizer")]
-[assembly: AssemblyVersion("1.1.7")]
-[assembly: AssemblyFileVersion("1.1.7")]
+[assembly: AssemblyVersion("1.1.8")]
+[assembly: AssemblyFileVersion("1.1.8")]
 
-[assembly: MelonLoader.MelonInfo(typeof(ml_clv.Main), "CalibrationLinesVisualizer", "1.1.7", "SDraw", "https://github.com/SDraw/ml_mods")]
+[assembly: MelonLoader.MelonInfo(typeof(ml_clv.Main), "CalibrationLinesVisualizer", "1.1.8", "SDraw", "https://github.com/SDraw/ml_mods")]
 [assembly: MelonLoader.MelonGame("VRChat", "VRChat")]
 [assembly: MelonLoader.MelonAdditionalDependencies("VRChatUtilityKit")]
 [assembly: MelonLoader.MelonOptionalDependencies("IKTweaks")]

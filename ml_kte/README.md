@@ -5,7 +5,7 @@ Supports Kinect for XBox One / Kinect 2 for Windows and Kinect for XBox 360.
 
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
-* Install [latest VRChatUtilityKit](https://github.com/loukylor/VRC-Mods)
+* Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods)
 * **Optional:** Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
 * Get [latest release DLL](../../../releases/latest)
 * Put `ml_kte.dll` in `Mods` folder of game

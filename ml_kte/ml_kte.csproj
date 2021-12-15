@@ -119,6 +119,7 @@
     <Compile Include="KinectHandlerV1.cs" />
     <Compile Include="KinectHandlerV2.cs" />
     <Compile Include="KinectTracked.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />

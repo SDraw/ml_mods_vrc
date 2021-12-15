@@ -33,7 +33,7 @@ namespace ml_lme
                     }
                     catch(Exception)
                     {
-                        MelonLoader.MelonLogger.Error("Unable to extract embedded " + l_library + " library");
+                        Logger.Error("Unable to extract embedded " + l_library + " library");
                     }
                 }
                 else
@@ -55,7 +55,7 @@ namespace ml_lme
                                 l_libraryStream.CopyTo(l_fileStream);
                                 l_fileStream.Flush();
 
-                                MelonLoader.MelonLogger.Msg("Updated " + l_library + " library from embedded one");
+                                Logger.Message("Updated " + l_library + " library from embedded one");
 
                                 break;
                             }
@@ -65,7 +65,7 @@ namespace ml_lme
                     }
                     catch(Exception)
                     {
-                        MelonLoader.MelonLogger.Error("Unable to compare/update " + l_library + " library, delete it from game folder manually and restart.");
+                        Logger.Error("Unable to compare/update " + l_library + " library, delete it from game folder manually and restart.");
                     }
                 }
 

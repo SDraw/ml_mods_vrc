@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="MethodsResolver.cs" />
     <Compile Include="TrackerBoneLine.cs" />
     <Compile Include="Main.cs" />

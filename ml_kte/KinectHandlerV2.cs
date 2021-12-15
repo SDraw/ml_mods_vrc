@@ -28,11 +28,11 @@ namespace ml_kte
                     CheckLibrary();
                     ms_valid = true;
 
-                    MelonLoader.MelonLogger.Msg("Kinect 2.0 Runtime/SDK detected");
+                    Logger.Message("Kinect 2.0 Runtime/SDK detected");
                 }
                 catch(Exception)
                 {
-                    MelonLoader.MelonLogger.Warning("Kinect 2.0 Runtime/SDK isn't installed correctly, no tracking data will be provided");
+                    Logger.Warning("Kinect 2.0 Runtime/SDK isn't installed correctly, no tracking data will be provided");
                 }
             }
         }

@@ -18,34 +18,36 @@ namespace ml_clv
             // void VRCTrackingManager.PrepareForCalibration()
             if(ms_prepareForCalibration == null)
             {
-                var l_methods = typeof(VRCTrackingManager).GetMethods()
-                    .Where(m => m.Name.StartsWith("Method_Public_Static_Void_") && (m.ReturnType == typeof(void)) && !m.GetParameters().Any() && XrefScanner.XrefScan(m)
-                    .Where(x => (x.Type == XrefType.Global) && x.ReadAsObject().ToString().Contains("trying to calibrate")).Any() && XrefScanner.UsedBy(m)
-                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any());
+                var l_methods = typeof(VRCTrackingManager).GetMethods().Where(m =>
+                    m.Name.StartsWith("Method_Public_Static_Void_") && (m.ReturnType == typeof(void)) && !m.GetParameters().Any() &&
+                    XrefScanner.XrefScan(m).Where(x => (x.Type == XrefType.Global) && x.ReadAsObject().ToString().Contains("trying to calibrate")).Any() &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any()
+                );
 
                 if(l_methods.Any())
                 {
                     ms_prepareForCalibration = l_methods.First();
-                    MelonLoader.MelonDebug.Msg("VRCTrackingManager.PrepareForCalibration -> VRCTrackingManager." + ms_prepareForCalibration.Name);
+                    Logger.DebugMessage("VRCTrackingManager.PrepareForCalibration -> VRCTrackingManager." + ms_prepareForCalibration.Name);
                 }
                 else
-                    MelonLoader.MelonLogger.Warning("Can't resolve VRCTrackingManager.PrepareForCalibration");
+                    Logger.Warning("Can't resolve VRCTrackingManager.PrepareForCalibration");
             }
 
             // void VRCTracking.RestoreTrackingAfterCalibration()
             if(ms_restoreTrackingAfterCalibration == null)
             {
-                var l_methods = typeof(VRCTrackingManager).GetMethods()
-                    .Where(m => m.Name.StartsWith("Method_Public_Static_Void_") && (m.Name != ms_prepareForCalibration?.Name) && (m.ReturnType == typeof(void)) && !m.GetParameters().Any() && XrefScanner.UsedBy(m)
-                    .Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any());
+                var l_methods = typeof(VRCTrackingManager).GetMethods().Where(m =>
+                    m.Name.StartsWith("Method_Public_Static_Void_") && (m.Name != ms_prepareForCalibration?.Name) && (m.ReturnType == typeof(void)) && !m.GetParameters().Any() &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFbbIkController))).Any()
+                );
 
                 if(l_methods.Any())
                 {
                     ms_restoreTrackingAfterCalibration = l_methods.First();
-                    MelonLoader.MelonDebug.Msg("VRCTrackingManager.RestoreTrackingAfterCalibration -> VRCTrackingManager." + ms_restoreTrackingAfterCalibration.Name);
+                    Logger.DebugMessage("VRCTrackingManager.RestoreTrackingAfterCalibration -> VRCTrackingManager." + ms_restoreTrackingAfterCalibration.Name);
                 }
                 else
-                    MelonLoader.MelonLogger.Warning("Can't resolve VRCTrackingManager.RestoreTrackingAfterCalibration");
+                    Logger.Warning("Can't resolve VRCTrackingManager.RestoreTrackingAfterCalibration");
             }
 
             // void IKTweaks.CalibrationManager.Calibrate(GameObject avatarRoot)
@@ -60,7 +62,7 @@ namespace ml_clv
                         if(l_cbType != null)
                         {
                             ms_calibrate = l_cbType.GetMethod("Calibrate");
-                            MelonLoader.MelonDebug.Msg("IKTweaks.CalibrationManager.Calibrate " + ((ms_calibrate != null) ? "found" : "not found"));
+                            Logger.DebugMessage("IKTweaks.CalibrationManager.Calibrate " + ((ms_calibrate != null) ? "found" : "not found"));
                         }
                         break;
                     }
@@ -79,7 +81,7 @@ namespace ml_clv
                         if(l_cbType != null)
                         {
                             ms_applyStoredCalibration = l_cbType.GetMethod("ApplyStoredCalibration", BindingFlags.NonPublic | BindingFlags.Static);
-                            MelonLoader.MelonDebug.Msg("IKTweaks.CalibrationManager.ApplyStoredCalibration " + ((ms_applyStoredCalibration != null) ? "found" : "not found"));
+                            Logger.DebugMessage("IKTweaks.CalibrationManager.ApplyStoredCalibration " + ((ms_applyStoredCalibration != null) ? "found" : "not found"));
                         }
                         break;
                     }

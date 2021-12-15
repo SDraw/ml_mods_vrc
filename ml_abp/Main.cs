@@ -27,11 +27,12 @@ namespace ml_abp
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
 
+            
+
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuSettings.AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
             m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
-
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject f_obj) =>
             {
                 m_textComponent = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();

@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="IKTweaksHelper.cs" />
     <Compile Include="LiftedPlayer.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="LifterPlayer.cs" />
     <Compile Include="MethodsResolver.cs" />

@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="InteractedPlayer.cs" />
     <Compile Include="InteracterPlayer.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MethodsResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,4 @@
-﻿namespace ml_ahr
+﻿namespace ml_arh
 {
     public class Main : MelonLoader.MelonMod
     {
@@ -6,6 +6,7 @@
 
         public override void OnApplicationStart()
         {
+            MethodsResolver.Resolve();
             Settings.Load();
 
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;

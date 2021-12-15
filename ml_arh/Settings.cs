@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ml_ahr
+namespace ml_arh
 {
     static class Settings
     {
