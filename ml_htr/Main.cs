@@ -30,13 +30,13 @@
                 m_menuSettings.Hide();
         }
 
-        void OnRotate(float f_axisX, float f_axisY, float f_axisZ)
+        void OnRotate(float p_axisX, float p_axisY, float p_axisZ)
         {
-            var l_puckOffset = Utils.GetVRCTrackingSteam().field_Public_Transform_10;
+            UnityEngine.Transform l_puckOffset = Utils.GetVRCTrackingSteam().field_Public_Transform_10;
             if(l_puckOffset != null)
             {
-                var l_localRotation = l_puckOffset.localRotation;
-                l_localRotation = l_localRotation * UnityEngine.Quaternion.Euler(f_axisX,f_axisY,f_axisZ);
+                UnityEngine.Quaternion l_localRotation = l_puckOffset.localRotation;
+                l_localRotation = l_localRotation * UnityEngine.Quaternion.Euler(p_axisX,p_axisY,p_axisZ);
                 l_puckOffset.localRotation = l_localRotation;
             }
         }

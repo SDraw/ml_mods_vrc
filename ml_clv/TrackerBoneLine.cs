@@ -62,10 +62,10 @@ namespace ml_clv
             if((ms_controllerManager != null) && (m_index != -1) && (m_player != null))
             {
                 Vector3 l_start;
-                var l_animator = m_player.field_Internal_Animator_0;
+                Animator l_animator = m_player.field_Internal_Animator_0;
                 if((l_animator != null) && l_animator.isHuman)
                 {
-                    var l_bone = l_animator.GetBoneTransform(FindAssignedBone(l_animator));
+                    Transform l_bone = l_animator.GetBoneTransform(FindAssignedBone(l_animator));
                     l_start = (l_bone != null) ? l_bone.position : this.transform.position;
                 }
                 else 
@@ -80,7 +80,7 @@ namespace ml_clv
             }
         }
 
-        HumanBodyBones FindAssignedBone(Animator f_animator)
+        HumanBodyBones FindAssignedBone(Animator p_animator)
         {
             HumanBodyBones l_result = HumanBodyBones.LastBone;
 
@@ -109,9 +109,9 @@ namespace ml_clv
             {
                 // Find nearest bone
                 float l_distance = float.MaxValue;
-                foreach(var l_bone in ms_linkedBones)
+                foreach(HumanBodyBones l_bone in ms_linkedBones)
                 {
-                    var l_boneTransform = f_animator.GetBoneTransform(l_bone);
+                    Transform l_boneTransform = p_animator.GetBoneTransform(l_bone);
                     if(l_boneTransform != null)
                     {
                         float l_distanceToPuck = Vector3.Distance(l_boneTransform.position, this.transform.position);

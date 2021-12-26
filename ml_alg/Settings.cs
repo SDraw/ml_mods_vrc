@@ -15,7 +15,6 @@
         static bool ms_allowHandsPull = true;
         static bool ms_allowHipsPull = true;
         static bool ms_allowLegsPull = true;
-        static bool ms_useIKTweaks = false;
 
         public static void LoadSettings()
         {
@@ -33,9 +32,6 @@
             MelonLoader.MelonPreferences.CreateEntry("ALG", "Velocity", ms_useVelocity, "Apply velocity on pull");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "VelocityMultiplier", ms_velocityMultiplier, "Velocity multiplier (0-100)");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity");
-
-            if(IKTweaksHelper.Present)
-                MelonLoader.MelonPreferences.CreateEntry("ALG", "IKTweaks", ms_useIKTweaks, "Detect IKTweaks FBT (hands issues present)");
 
             ReloadSettings();
         }
@@ -56,9 +52,6 @@
             ms_velocityMultiplier = UnityEngine.Mathf.Clamp(MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "VelocityMultiplier"), 0f, 100f);
             MelonLoader.MelonPreferences.SetEntryValue("ALG", "VelocityMultiplier", ms_velocityMultiplier);
             ms_useAverageVelocity = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AverageVelocity");
-
-            if(IKTweaksHelper.Present)
-                ms_useIKTweaks = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "IKTweaks");
         }
 
         public static float GrabDistance
@@ -112,10 +105,6 @@
         public static bool UseAverageVelocity
         {
             get => ms_useAverageVelocity;
-        }
-        public static bool UseIKTweaks
-        {
-            get => ms_useIKTweaks;
         }
     }
 }

@@ -13,7 +13,7 @@
                 l_input = VRCInputManager.field_Private_Static_Dictionary_2_InputMethod_VRCInputProcessor_0[VRCInputManager.InputMethod.Vive];
                 if(l_input != null)
                 {
-                    var l_viveInput = l_input.TryCast<VRCInputProcessorVive>();
+                    VRCInputProcessorVive l_viveInput = l_input.TryCast<VRCInputProcessorVive>();
                     if(l_viveInput != null)
                         l_result = l_viveInput.field_Private_SteamVR_ControllerManager_0;
                 }

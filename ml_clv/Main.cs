@@ -55,7 +55,7 @@ namespace ml_clv
 
                 if(m_trackerLines.Count != 0)
                 {
-                    foreach(var l_trackerLine in m_trackerLines)
+                    foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                         l_trackerLine.gameObject.active = (Settings.Enabled && m_calibrationInProgress);
                 }
             }
@@ -76,7 +76,7 @@ namespace ml_clv
             var l_puckArray = Utils.GetSteamVRControllerManager().field_Public_ArrayOf_GameObject_0;
             for(int i = 0; i < l_puckArray.Length - 2; i++)
             {
-                var l_obj = new GameObject("BoneLine");
+                GameObject l_obj = new GameObject("BoneLine");
                 l_obj.active = false;
                 l_obj.layer = LayerMask.NameToLayer("Player");
                 l_obj.transform.parent = l_puckArray[i + 2].transform;
@@ -85,7 +85,7 @@ namespace ml_clv
                 Object.DontDestroyOnLoad(l_obj);
 
                 l_obj.AddComponent<LineRenderer>();
-                var l_boneLine = l_obj.AddComponent<TrackerBoneLine>();
+                TrackerBoneLine l_boneLine = l_obj.AddComponent<TrackerBoneLine>();
                 l_boneLine.Index = i + 2;
 
                 m_trackerLines.Add(l_boneLine);
@@ -100,7 +100,7 @@ namespace ml_clv
         {
             while(Utils.GetLocalPlayer() == null) yield return null;
 
-            foreach(var l_trackerLine in m_trackerLines)
+            foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                 l_trackerLine.Player = Utils.GetLocalPlayer();
         }
 
@@ -110,7 +110,7 @@ namespace ml_clv
 
             if(m_trackerLines.Count != 0)
             {
-                foreach(var l_trackerLine in m_trackerLines)
+                foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                     l_trackerLine.Player = null;
             }
         }
@@ -124,7 +124,7 @@ namespace ml_clv
 
                 if(m_trackerLines.Count != 0)
                 {
-                    foreach(var l_trackerLine in m_trackerLines)
+                    foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                         l_trackerLine.gameObject.active = true;
                 }
             }
@@ -139,7 +139,7 @@ namespace ml_clv
 
                 if(m_trackerLines.Count != 0)
                 {
-                    foreach(var l_trackerLine in m_trackerLines)
+                    foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                         l_trackerLine.gameObject.active = false;
                 }
             }

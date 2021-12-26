@@ -5,7 +5,6 @@
         static bool ms_enabled = false;
         static bool ms_leapHmdMode = false;
         static bool ms_headRoot = false;
-        static bool ms_sdk3Parameters = false;
         static bool ms_fingersTracking = false;
         static float ms_desktopOffsetY = -0.5f;
         static float ms_desktopOffsetZ = 0.4f;
@@ -19,7 +18,6 @@
             MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable hands tracking");
             MelonLoader.MelonPreferences.CreateEntry("LME", "LeapHmdMode", ms_leapHmdMode, "HMD mode");
             MelonLoader.MelonPreferences.CreateEntry("LME", "HeadRoot", ms_headRoot, "Head as root point");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "Sdk3Parameters", ms_sdk3Parameters, "Set avatar SDK3 parameters");
             MelonLoader.MelonPreferences.CreateEntry("LME", "FingersTracking", ms_fingersTracking, "Fingers tracking only");
             MelonLoader.MelonPreferences.CreateEntry("LME", "DesktopOffsetY", ms_desktopOffsetY, "Desktop Y axis (up) offset");
             MelonLoader.MelonPreferences.CreateEntry("LME", "DesktopOffsetZ", ms_desktopOffsetZ, "Desktop Z axis (forward) offset");
@@ -35,7 +33,6 @@
             ms_enabled = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "Enabled");
             ms_leapHmdMode = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "LeapHmdMode");
             ms_headRoot = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "HeadRoot");
-            ms_sdk3Parameters = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "Sdk3Parameters");
             ms_fingersTracking = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "FingersTracking");
             ms_desktopOffsetY = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "DesktopOffsetY");
             ms_desktopOffsetZ = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "DesktopOffsetZ");
@@ -57,11 +54,6 @@
         public static bool HeadRoot
         {
             get => ms_headRoot;
-        }
-
-        public static bool SDK3Parameters
-        {
-            get => ms_sdk3Parameters;
         }
 
         public static bool FingersTracking

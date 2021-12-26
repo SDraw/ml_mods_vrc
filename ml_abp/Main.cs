@@ -27,17 +27,15 @@ namespace ml_abp
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
 
-            
-
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuSettings.AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
             m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject f_obj) =>
+            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject p_obj) =>
             {
-                m_textComponent = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
 
-                var l_listener = f_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
+                var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
                 l_listener.OnEnabled += this.OnProximityToggleShown;
                 l_listener.OnDisabled += this.OnProximityToggleHidden;
             });
@@ -57,9 +55,9 @@ namespace ml_abp
                 if(m_update && (m_localInteracted != null))
                 {
                     // Remove or add component on friends 
-                    foreach(var l_remotePlayer in Utils.GetFriendsInInstance())
+                    foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
                     {
-                        var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                        InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                         if(l_component != null)
                         {
                             if(!Settings.AllowFriends)
@@ -89,12 +87,12 @@ namespace ml_abp
         {
             if(m_update && m_toggleVisibility)
             {
-                var l_selectedPlayer = Utils.GetPlayerQM();
+                VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
                 {
                     m_currentSelectedPlayer = l_selectedPlayer;
 
-                    var l_component = m_currentSelectedPlayer.GetComponent<InteracterPlayer>();
+                    InteracterPlayer l_component = m_currentSelectedPlayer.GetComponent<InteracterPlayer>();
                     m_textComponent.color = (l_component != null) ? Color.green : Color.white;
                 }
             }
@@ -121,36 +119,36 @@ namespace ml_abp
             m_localInteracted = null;
         }
 
-        void OnPlayerJoined(VRC.Player f_player)
+        void OnPlayerJoined(VRC.Player p_player)
         {
-            if(Utils.IsFriend(f_player) && Settings.AllowFriends)
+            if(Settings.AllowFriends && Utils.IsFriend(p_player))
             {
-                MelonLoader.MelonCoroutines.Start(CreateInteracterOnJoin(f_player));
+                MelonLoader.MelonCoroutines.Start(CreateInteracterOnJoin(p_player));
             }
         }
-        System.Collections.IEnumerator CreateInteracterOnJoin(VRC.Player f_player)
+        System.Collections.IEnumerator CreateInteracterOnJoin(VRC.Player p_player)
         {
             while(m_localInteracted == null)
                 yield return null;
-            var l_component = f_player.gameObject.AddComponent<InteracterPlayer>();
+            InteracterPlayer l_component = p_player.gameObject.AddComponent<InteracterPlayer>();
             m_localInteracted.AddInteracter(l_component);
         }
 
-        void OnPlayerLeft(VRC.Player f_player)
+        void OnPlayerLeft(VRC.Player p_player)
         {
-            var l_component = f_player.GetComponent<InteracterPlayer>();
+            InteracterPlayer l_component = p_player.GetComponent<InteracterPlayer>();
             if((l_component != null) && (m_localInteracted != null))
                 m_localInteracted.RemoveInteracter(l_component);
         }
 
-        void OnFriended(VRC.Core.APIUser f_apiPlayer)
+        void OnFriended(VRC.Core.APIUser p_apiPlayer)
         {
             if(m_update && (m_localInteracted != null) && Settings.AllowFriends)
             {
-                var l_remotePlayer = Utils.GetPlayerWithId(f_apiPlayer.id);
+                VRC.Player l_remotePlayer = Utils.GetPlayerWithId(p_apiPlayer.id);
                 if(l_remotePlayer != null)
                 {
-                    var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                    InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                     if(l_component == null)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<InteracterPlayer>();
@@ -160,14 +158,14 @@ namespace ml_abp
             }
         }
 
-        void OnUnfriended(string f_id)
+        void OnUnfriended(string p_id)
         {
             if(m_update && (m_localInteracted != null) && Settings.AllowFriends)
             {
-                var l_remotePlayer = Utils.GetPlayerWithId(f_id);
+                VRC.Player l_remotePlayer = Utils.GetPlayerWithId(p_id);
                 if(l_remotePlayer != null)
                 {
-                    var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                    InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                     if(l_component != null)
                     {
                         m_localInteracted.RemoveInteracter(l_component);
@@ -190,11 +188,11 @@ namespace ml_abp
                 var l_remotePlayers = Utils.GetPlayers();
                 if(l_remotePlayers != null)
                 {
-                    foreach(var l_remotePlayer in l_remotePlayers)
+                    foreach(VRC.Player l_remotePlayer in l_remotePlayers)
                     {
                         if(l_remotePlayer != null)
                         {
-                            var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                            InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                             if(l_component != null)
                             {
                                 m_localInteracted.RemoveInteracter(l_component);
@@ -216,10 +214,10 @@ namespace ml_abp
         {
             if(m_update && (m_localInteracted != null))
             {
-                var l_remotePlayer = Utils.GetPlayerQM();
+                VRC.Player l_remotePlayer = Utils.GetPlayerQM();
                 if(l_remotePlayer != null)
                 {
-                    var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                    InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                     if(l_component == null)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<InteracterPlayer>();
@@ -242,12 +240,12 @@ namespace ml_abp
         {
             m_toggleVisibility = true;
 
-            var l_remotePlayer = Utils.GetPlayerQM();
+            VRC.Player l_remotePlayer = Utils.GetPlayerQM();
             if(l_remotePlayer != null)
             {
                 m_currentSelectedPlayer = l_remotePlayer;
 
-                var l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
                 m_textComponent.color = (l_component != null) ? Color.green : Color.white;
             }
         }

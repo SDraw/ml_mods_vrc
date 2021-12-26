@@ -31,11 +31,11 @@ namespace ml_ht
                     float l_angle = Input.mouseScrollDelta.y;
                     if(l_angle != 0f)
                     {
-                        var l_neckRotator = m_inputController.field_Protected_NeckMouseRotator_0;
+                        NeckMouseRotator l_neckRotator = m_inputController.field_Protected_NeckMouseRotator_0;
                         if(l_neckRotator != null)
                         {
-                            var l_quat = l_neckRotator.field_Private_Quaternion_0;
-                            var l_vec = l_quat.eulerAngles;
+                            Quaternion l_quat = l_neckRotator.field_Private_Quaternion_0;
+                            Vector3 l_vec = l_quat.eulerAngles;
                             l_vec.z += l_angle * 5f;
                             if(!l_ignoreLimit)
                             {
@@ -54,7 +54,7 @@ namespace ml_ht
 
                 if(Input.GetKeyDown(KeyCode.LeftAlt) && !m_lockBodyRotation)
                 {
-                    var l_transform = m_player.prop_VRCAvatarManager_0.transform;
+                    Transform l_transform = m_player.prop_VRCAvatarManager_0.transform;
                     if(l_transform != null)
                     {
                         m_lockedBodyRotation = l_transform.rotation.eulerAngles.y;
@@ -63,7 +63,7 @@ namespace ml_ht
                 }
                 if((Input.GetKeyUp(KeyCode.LeftAlt) || !Application.isFocused) && m_lockBodyRotation)
                 {
-                    var l_transformAvatar = m_player.prop_VRCAvatarManager_0.transform;
+                    Transform l_transformAvatar = m_player.prop_VRCAvatarManager_0.transform;
                     if(l_transformAvatar != null)
                     {
                         l_transformAvatar.rotation = m_player.transform.rotation;
@@ -72,7 +72,7 @@ namespace ml_ht
                 }
                 if(m_lockBodyRotation)
                 {
-                    var l_animatorTransform = m_player.prop_VRCAvatarManager_0.transform;
+                    Transform l_animatorTransform = m_player.prop_VRCAvatarManager_0.transform;
                     if(l_animatorTransform != null)
                     {
                         if(!l_ignoreLimit)
@@ -85,8 +85,8 @@ namespace ml_ht
                             }
                         }
 
-                        var l_quat = l_animatorTransform.rotation;
-                        var l_vec = l_quat.eulerAngles;
+                        Quaternion l_quat = l_animatorTransform.rotation;
+                        Vector3 l_vec = l_quat.eulerAngles;
                         l_vec.y = m_lockedBodyRotation;
                         l_quat.eulerAngles = l_vec;
                         l_animatorTransform.rotation = l_quat;

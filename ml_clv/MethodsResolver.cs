@@ -53,7 +53,7 @@ namespace ml_clv
             // void IKTweaks.CalibrationManager.Calibrate(GameObject avatarRoot)
             if(ms_calibrate == null)
             {
-                foreach(var l_mod in MelonLoader.MelonHandler.Mods)
+                foreach(MelonLoader.MelonMod l_mod in MelonLoader.MelonHandler.Mods)
                 {
                     if(l_mod.Info.Name == "IKTweaks")
                     {
@@ -72,7 +72,7 @@ namespace ml_clv
             // Task IKTweaks.CalibrationManager.ApplyStoredCalibration(GameObject avatarRoot, string avatarId)
             if(ms_applyStoredCalibration == null)
             {
-                foreach(var l_mod in MelonLoader.MelonHandler.Mods)
+                foreach(MelonLoader.MelonMod l_mod in MelonLoader.MelonHandler.Mods)
                 {
                     if(l_mod.Info.Name == "IKTweaks")
                     {

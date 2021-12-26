@@ -25,12 +25,12 @@ namespace ml_alg
         }
         public static VRC.Player GetLocalPlayer() => VRC.Player.prop_Player_0;
 
-        public static bool IsFriend(VRC.Player f_player) => VRC.Core.APIUser.IsFriendsWith(f_player.prop_String_0);
+        public static bool IsFriend(VRC.Player p_player) => VRC.Core.APIUser.IsFriendsWith(p_player.prop_String_0);
         public static Il2CppSystem.Collections.Generic.List<VRC.Player> GetPlayers() => VRC.PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
 
-        public static VRC.Player GetPlayerWithId(string f_id)
+        public static VRC.Player GetPlayerWithId(string p_id)
         {
-            return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { f_id });
+            return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { p_id });
         }
 
         public static System.Collections.Generic.List<VRC.Player> GetFriendsInInstance()
@@ -39,7 +39,7 @@ namespace ml_alg
             var l_remotePlayers = GetPlayers();
             if(l_remotePlayers != null)
             {
-                foreach(var l_remotePlayer in l_remotePlayers)
+                foreach(VRC.Player l_remotePlayer in l_remotePlayers)
                 {
                     if((l_remotePlayer != null) && IsFriend(l_remotePlayer))
                         l_result.Add(l_remotePlayer);
@@ -48,32 +48,37 @@ namespace ml_alg
             return l_result;
         }
 
+        public static VRCTrackingManager GetVRCTrackingManager() => VRCTrackingManager.field_Private_Static_VRCTrackingManager_0;
+        public static VRCTrackingSteam GetVRCTrackingSteam() => GetVRCTrackingManager().field_Private_List_1_VRCTracking_0[0].TryCast<VRCTrackingSteam>();
+        public static Transform GetTrackingLeftController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_0.transform;
+        public static Transform GetTrackingRightController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_1.transform;
+
         // RootMotion.FinalIK.IKSolverVR extensions
-        public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR f_solver, HumanBodyBones f_leg, float f_weight, bool f_rotate)
+        public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight, bool p_rotate)
         {
-            var l_leg = (f_leg == HumanBodyBones.LeftFoot) ? f_solver.leftLeg : f_solver.rightLeg;
+            var l_leg = (p_leg == HumanBodyBones.LeftFoot) ? p_solver.leftLeg : p_solver.rightLeg;
             if(l_leg != null)
             {
-                l_leg.positionWeight = f_weight;
-                if(f_rotate)
-                    l_leg.rotationWeight = f_weight;
+                l_leg.positionWeight = p_weight;
+                if(p_rotate)
+                    l_leg.rotationWeight = p_weight;
             }
         }
 
         // UnityEngine.MonoBehaviour extensions
-        public static object ConvertToRuntimeType(this MonoBehaviour f_component, System.Type f_type)
+        public static object ConvertToRuntimeType(this MonoBehaviour p_component, System.Type p_type)
         {
-            return System.Convert.ChangeType(UnhollowerBaseLib.Runtime.ClassInjectorBase.GetMonoObjectFromIl2CppPointer(f_component.Pointer), f_type);
+            return System.Convert.ChangeType(UnhollowerBaseLib.Runtime.ClassInjectorBase.GetMonoObjectFromIl2CppPointer(p_component.Pointer), p_type);
         }
 
         // Math extensions
-        public static Matrix4x4 GetMatrix(this Transform f_transform, bool f_pos = true, bool f_rot = true, bool f_scl = false)
+        public static Matrix4x4 GetMatrix(this Transform p_transform, bool p_pos = true, bool p_rot = true, bool p_scl = false)
         {
-            return Matrix4x4.TRS(f_pos ? f_transform.position : Vector3.zero, f_rot ? f_transform.rotation : Quaternion.identity, f_scl ? f_transform.localScale : Vector3.one);
+            return Matrix4x4.TRS(p_pos ? p_transform.position : Vector3.zero, p_rot ? p_transform.rotation : Quaternion.identity, p_scl ? p_transform.localScale : Vector3.one);
         }
-        public static Matrix4x4 AsMatrix(this Quaternion f_quat)
+        public static Matrix4x4 AsMatrix(this Quaternion p_quat)
         {
-            return Matrix4x4.Rotate(f_quat);
+            return Matrix4x4.Rotate(p_quat);
         }
     }
 }

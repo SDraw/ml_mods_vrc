@@ -14,32 +14,6 @@ This mod allows you to use your Leap Motion controller for hands and fingers vis
 # Usage
 Check self-explanatory mod settings in UIExpansionKit's mods settings tab.
 
-# SDK3 avatars parameters
-You can retrieve hands presense, fingers bends and spreads by setting specific parameters in your avatar.  
-List of available additional parameters:
-* `_LeftHandPresent` - boolean
-* `_RightHandPresent` - boolean
-* `_LeftHandThumbBend` - float
-* `_LeftHandIndexBend` - float
-* `_LeftHandMiddleBend` - float
-* `_LeftHandRingBend` - float
-* `_LeftHandPinkyBend` - float
-* `_LeftHandThumbSpread` - float
-* `_LeftHandIndexSpread` - float
-* `_LeftHandMiddleSpread` - float
-* `_LeftHandRingSpread` - float
-* `_LeftHandPinkySpread` - float
-* `_RightHandThumbBend` - float
-* `_RightHandIndexBend` - float
-* `_RightHandMiddleBend` - float
-* `_RightHandRingBend` - float
-* `_RightHandPinkyBend` - float
-* `_RightHandThumbSpread` - float
-* `_RightHandIndexSpread` - float
-* `_RightHandMiddleSpread` - float
-* `_RightHandRingSpread` - float
-* `_RightHandPinkySpread` - float
-
 # Notes
 * In desktop mode be sure to disable gestures in "Action Menu (R) - Options - Gestures" to make avatar animation actions be in fixed state instead of on hold state.
 * Offset values correspond to SteamVR environment units.

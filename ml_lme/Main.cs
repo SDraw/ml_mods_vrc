@@ -35,10 +35,10 @@ namespace ml_lme
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
-            var l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
+            HarmonyLib.HarmonyMethod l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
             typeof(VRCInputManager).GetMethods().Where(x =>
-                    x.Name.StartsWith("Method_Public_Static_Boolean_InputMethod_")
-                ).ToList().ForEach(m => HarmonyInstance.Patch(m, l_patchMethod));
+                x.Name.StartsWith("Method_Public_Static_Boolean_InputMethod_")
+            ).ToList().ForEach(m => HarmonyInstance.Patch(m, l_patchMethod));
         }
 
         void OnUiManagerInit()
@@ -109,7 +109,6 @@ namespace ml_lme
                 if(m_localTracked != null)
                 {
                     m_localTracked.FingersOnly = Settings.FingersTracking;
-                    m_localTracked.Sdk3Parameters = Settings.SDK3Parameters;
                     if(!Settings.Enabled)
                         m_localTracked.ResetTracking();
                 }
@@ -120,7 +119,7 @@ namespace ml_lme
         {
             if(Settings.Enabled && m_leapController.IsConnected)
             {
-                var l_frame = m_leapController.Frame();
+                Leap.Frame l_frame = m_leapController.Frame();
                 if(l_frame != null)
                 {
                     GestureMatcher.GetGestures(l_frame, ref m_gesturesData);
@@ -161,7 +160,6 @@ namespace ml_lme
                 yield return null;
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<LeapTracked>();
             m_localTracked.FingersOnly = Settings.FingersTracking;
-            m_localTracked.Sdk3Parameters = Settings.SDK3Parameters;
         }
 
         void OnRoomLeft()
@@ -169,7 +167,7 @@ namespace ml_lme
             m_localTracked = null;
         }
 
-        void OnLeapDeviceInitialized(object f_sender, Leap.DeviceEventArgs f_args)
+        void OnLeapDeviceInitialized(object p_sender, Leap.DeviceEventArgs p_args)
         {
             if(!m_quit && (m_leapController != null))
             {
@@ -181,18 +179,18 @@ namespace ml_lme
             }
         }
 
-        static void ReorientateLeapToUnity(ref Vector3 f_pos, ref Quaternion f_rot, bool f_hmd)
+        static void ReorientateLeapToUnity(ref Vector3 p_pos, ref Quaternion p_rot, bool p_hmd)
         {
-            f_pos *= 0.001f;
-            f_pos.z *= -1f;
-            f_rot.x *= -1f;
-            f_rot.y *= -1f;
+            p_pos *= 0.001f;
+            p_pos.z *= -1f;
+            p_rot.x *= -1f;
+            p_rot.y *= -1f;
 
-            if(f_hmd)
+            if(p_hmd)
             {
-                f_pos.x *= -1f;
-                Utils.Swap(ref f_pos.y, ref f_pos.z);
-                f_rot = (ms_hmdRotationFix * f_rot);
+                p_pos.x *= -1f;
+                Utils.Swap(ref p_pos.y, ref p_pos.z);
+                p_rot = (ms_hmdRotationFix * p_rot);
             }
         }
 

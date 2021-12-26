@@ -61,7 +61,7 @@ namespace ml_kte
             m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
 
-        public void LateUpdateTransforms(Transform f_head, Transform f_hips, Transform f_leftLeg, Transform f_rightLeg, Transform f_leftHand, Transform f_rightHand)
+        public void LateUpdateTransforms(Transform p_head, Transform p_hips, Transform p_leftLeg, Transform p_rightLeg, Transform p_leftHand, Transform p_rightHand)
         {
             if(m_solver != null)
             {
@@ -69,21 +69,21 @@ namespace ml_kte
                 {
                     if(m_trackHead)
                     {
-                        m_solver.spine.headPosition = f_head.position;
-                        m_solver.spine.IKPositionHead = f_head.position;
+                        m_solver.spine.headPosition = p_head.position;
+                        m_solver.spine.IKPositionHead = p_head.position;
                         if(m_rotateHead)
                         {
-                            m_solver.spine.headRotation = f_head.rotation;
-                            m_solver.spine.IKRotationHead = f_head.rotation;
+                            m_solver.spine.headRotation = p_head.rotation;
+                            m_solver.spine.IKRotationHead = p_head.rotation;
                         }
                         if(m_solver.spine.headTarget != null)
                         {
-                            m_solver.spine.headTarget.parent.position = f_head.position;
-                            m_solver.spine.headTarget.position = f_head.position;
+                            m_solver.spine.headTarget.parent.position = p_head.position;
+                            m_solver.spine.headTarget.position = p_head.position;
                             if(m_rotateHead)
                             {
-                                m_solver.spine.headTarget.rotation = f_head.rotation;
-                                m_solver.spine.headTarget.parent.rotation = f_head.rotation;
+                                m_solver.spine.headTarget.rotation = p_head.rotation;
+                                m_solver.spine.headTarget.parent.rotation = p_head.rotation;
                             }
                         }
                     }
@@ -91,17 +91,17 @@ namespace ml_kte
                     if(m_trackHips)
                     {
                         m_solver.spine.pelvisPositionWeight = 1f;
-                        m_solver.spine.IKPositionPelvis = f_hips.position;
+                        m_solver.spine.IKPositionPelvis = p_hips.position;
                         if(m_rotateHips)
                         {
-                            m_solver.spine.IKRotationPelvis = f_hips.rotation;
+                            m_solver.spine.IKRotationPelvis = p_hips.rotation;
                             m_solver.spine.pelvisRotationWeight = 1f;
                         }
                         if(m_solver.spine.pelvisTarget != null)
                         {
-                            m_solver.spine.pelvisTarget.position = f_hips.position;
+                            m_solver.spine.pelvisTarget.position = p_hips.position;
                             if(m_rotateHips)
-                                m_solver.spine.pelvisTarget.rotation = f_hips.rotation;
+                                m_solver.spine.pelvisTarget.rotation = p_hips.rotation;
                         }
                     }
                 }
@@ -109,32 +109,32 @@ namespace ml_kte
                 if((m_solver.leftLeg != null) && m_trackLegs)
                 {
                     m_solver.leftLeg.positionWeight = 1f;
-                    m_solver.leftLeg.IKPosition = f_leftLeg.position;
+                    m_solver.leftLeg.IKPosition = p_leftLeg.position;
                     if(m_rotateLegs)
                     {
                         m_solver.leftLeg.rotationWeight = 1f;
-                        m_solver.leftLeg.IKRotation = f_leftLeg.rotation;
+                        m_solver.leftLeg.IKRotation = p_leftLeg.rotation;
                     }
                 }
 
                 if((m_solver.rightLeg != null) && m_trackLegs)
                 {
                     m_solver.rightLeg.positionWeight = 1f;
-                    m_solver.rightLeg.IKPosition = f_rightLeg.position;
+                    m_solver.rightLeg.IKPosition = p_rightLeg.position;
                     if(m_rotateLegs)
                     {
                         m_solver.rightLeg.rotationWeight = 1f;
-                        m_solver.rightLeg.IKRotation = f_rightLeg.rotation;
+                        m_solver.rightLeg.IKRotation = p_rightLeg.rotation;
                     }
                 }
 
                 if((m_solver.leftArm != null) && (m_solver.leftArm.target != null) && m_trackHands)
                 {
                     m_solver.leftArm.positionWeight = 1f;
-                    m_solver.leftArm.target.position = f_leftHand.position;
+                    m_solver.leftArm.target.position = p_leftHand.position;
                     if(m_rotateHands)
                     {
-                        m_solver.leftArm.target.rotation = f_leftHand.rotation;
+                        m_solver.leftArm.target.rotation = p_leftHand.rotation;
                         m_solver.leftArm.rotationWeight = 1f;
                     }
                 }
@@ -142,11 +142,11 @@ namespace ml_kte
                 if((m_solver.rightArm != null) && (m_solver.rightArm.target != null) && m_trackHands)
                 {
                     m_solver.rightArm.positionWeight = 1f;
-                    m_solver.rightArm.target.position = f_rightHand.position;
+                    m_solver.rightArm.target.position = p_rightHand.position;
                     if(m_rotateHands)
                     {
                         m_solver.rightArm.rotationWeight = 1f;
-                        m_solver.rightArm.target.rotation = f_rightHand.rotation;
+                        m_solver.rightArm.target.rotation = p_rightHand.rotation;
                     }
                 }
             }

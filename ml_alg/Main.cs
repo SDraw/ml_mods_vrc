@@ -4,6 +4,8 @@ namespace ml_alg
 {
     public class Main : MelonLoader.MelonMod
     {
+        static Main ms_instance = null;
+
         bool m_quit = false;
 
         LiftedPlayer m_localLiftedPlayer = null;
@@ -16,6 +18,8 @@ namespace ml_alg
 
         public override void OnApplicationStart()
         {
+            ms_instance = this;
+
             MethodsResolver.ResolveMethods();
             IKTweaksHelper.ResolveTypes();
             Settings.LoadSettings();
@@ -28,9 +32,9 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
 
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-            m_menuSettings.AddLabel("World pull permission:", (GameObject f_obj) =>
+            m_menuSettings.AddLabel("World pull permission:", (GameObject p_obj) =>
             {
-                var l_worldText = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                var l_worldText = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
                 if(l_worldText != null)
                     l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
             });
@@ -40,15 +44,19 @@ namespace ml_alg
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
 
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Allow limbs manipulation", this.OnManipulationAllow,
-                delegate (GameObject f_obj)
+                delegate (GameObject p_obj)
                 {
-                    m_textComponent = f_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                    m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
 
-                    var l_listener = f_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
+                    var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
                     l_listener.OnEnabled += this.OnAllowButtonShown;
                     l_listener.OnDisabled += this.OnAllowButtonHidden;
                 }
             );
+
+            // Patches
+            if(MethodsResolver.PreSetupVRIK != null)
+                HarmonyInstance.Patch(MethodsResolver.PreSetupVRIK, null, new HarmonyLib.HarmonyMethod(typeof(Main).GetMethod(nameof(OnPreSetupVRIK_PostfixPatch), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)));
         }
 
         public override void OnApplicationQuit()
@@ -65,9 +73,9 @@ namespace ml_alg
                 if(m_update && (m_localLiftedPlayer != null))
                 {
                     // Remove or add component on friends 
-                    foreach(var l_remotePlayer in Utils.GetFriendsInInstance())
+                    foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
                     {
-                        var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                        LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                         if(l_component != null)
                         {
                             if(!Settings.AllowFriends)
@@ -98,7 +106,6 @@ namespace ml_alg
                     m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
                     m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
                     m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
-                    m_localLiftedPlayer.UseIKTweaks = Settings.UseIKTweaks;
                     m_localLiftedPlayer.ReapplyPermissions();
                 }
             }
@@ -108,11 +115,11 @@ namespace ml_alg
         {
             if(m_update && m_buttonVisibility)
             {
-                var l_selectedPlayer = Utils.GetPlayerQM();
+                VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
                 {
                     m_currentSelectedPlayer = l_selectedPlayer;
-                    var l_component = m_currentSelectedPlayer.GetComponent<LifterPlayer>();
+                    LifterPlayer l_component = m_currentSelectedPlayer.GetComponent<LifterPlayer>();
                     m_textComponent.color = (l_component != null) ? Color.green : Color.white;
                 }
             }
@@ -140,7 +147,6 @@ namespace ml_alg
             m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
             m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
             m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
-            m_localLiftedPlayer.UseIKTweaks = Settings.UseIKTweaks;
         }
 
         void OnLeftRoom()
@@ -149,34 +155,34 @@ namespace ml_alg
             m_localLiftedPlayer = null;
         }
 
-        void OnPlayerJoined(VRC.Player f_player)
+        void OnPlayerJoined(VRC.Player p_player)
         {
-            if(Settings.AllowFriends && Utils.IsFriend(f_player))
-                MelonLoader.MelonCoroutines.Start(CreateLifterOnJoin(f_player));
+            if(Settings.AllowFriends && Utils.IsFriend(p_player))
+                MelonLoader.MelonCoroutines.Start(CreateLifterOnJoin(p_player));
         }
-        System.Collections.IEnumerator CreateLifterOnJoin(VRC.Player f_player)
+        System.Collections.IEnumerator CreateLifterOnJoin(VRC.Player p_player)
         {
             while(m_localLiftedPlayer == null)
                 yield return null;
-            var l_component = f_player.gameObject.AddComponent<LifterPlayer>();
+            LifterPlayer l_component = p_player.gameObject.AddComponent<LifterPlayer>();
             l_component.AddLifted(m_localLiftedPlayer);
         }
 
-        void OnPlayerLeft(VRC.Player f_player)
+        void OnPlayerLeft(VRC.Player p_player)
         {
-            var l_component = f_player.GetComponent<LifterPlayer>();
+            LifterPlayer l_component = p_player.GetComponent<LifterPlayer>();
             if((l_component != null) && (m_localLiftedPlayer != null))
                 m_localLiftedPlayer.UnassignRemoteLifter(l_component);
         }
 
-        void OnFriended(VRC.Core.APIUser f_apiPlayer)
+        void OnFriended(VRC.Core.APIUser p_apiPlayer)
         {
             if(m_update && (m_localLiftedPlayer != null) && Settings.AllowFriends)
             {
-                var l_remotePlayer = Utils.GetPlayerWithId(f_apiPlayer.id);
+                VRC.Player l_remotePlayer = Utils.GetPlayerWithId(p_apiPlayer.id);
                 if(l_remotePlayer != null)
                 {
-                    var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                    LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                     if(l_component == null)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
@@ -186,14 +192,14 @@ namespace ml_alg
             }
         }
 
-        void OnUnfriended(string f_id)
+        void OnUnfriended(string p_id)
         {
             if(m_update && (m_localLiftedPlayer != null) && Settings.AllowFriends)
             {
-                var l_player = Utils.GetPlayerWithId(f_id);
+                VRC.Player l_player = Utils.GetPlayerWithId(p_id);
                 if(l_player != null)
                 {
-                    var l_component = l_player.GetComponent<LifterPlayer>();
+                    LifterPlayer l_component = l_player.GetComponent<LifterPlayer>();
                     if(l_component != null)
                     {
                         m_localLiftedPlayer.UnassignRemoteLifter(l_component);
@@ -207,10 +213,10 @@ namespace ml_alg
         {
             if(m_update && (m_localLiftedPlayer != null))
             {
-                var l_remotePlayer = Utils.GetPlayerQM();
+                VRC.Player l_remotePlayer = Utils.GetPlayerQM();
                 if(l_remotePlayer != null)
                 {
-                    var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                    LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                     if(l_component == null)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
@@ -248,11 +254,11 @@ namespace ml_alg
                 var l_remotePlayers = Utils.GetPlayers();
                 if(l_remotePlayers != null)
                 {
-                    foreach(var l_remotePlayer in l_remotePlayers)
+                    foreach(VRC.Player l_remotePlayer in l_remotePlayers)
                     {
                         if(l_remotePlayer != null)
                         {
-                            var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                            LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                             if(l_component != null)
                             {
                                 m_localLiftedPlayer.UnassignRemoteLifter(l_component);
@@ -274,12 +280,12 @@ namespace ml_alg
         {
             m_buttonVisibility = true;
 
-            var l_remotePlayer = Utils.GetPlayerQM();
+            VRC.Player l_remotePlayer = Utils.GetPlayerQM();
             if(l_remotePlayer != null)
             {
                 m_currentSelectedPlayer = l_remotePlayer;
 
-                var l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                 m_textComponent.color = (l_component != null) ? Color.green : Color.white;
             }
         }
@@ -288,6 +294,13 @@ namespace ml_alg
         {
             m_buttonVisibility = false;
             m_currentSelectedPlayer = null;
+        }
+
+        static void OnPreSetupVRIK_PostfixPatch() => ms_instance?.OnPreSetupVRIK();
+        void OnPreSetupVRIK()
+        {
+            if(m_localLiftedPlayer != null)
+                m_localLiftedPlayer.DetectIKTweaks();
         }
     }
 }

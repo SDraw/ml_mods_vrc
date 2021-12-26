@@ -1,14 +1,16 @@
 ﻿using System.Linq;
+using System.Reflection;
 using UnhollowerRuntimeLib.XrefScans;
+using HarmonyLib;
 
 namespace ml_lme
 {
     static class MethodsResolver
     {
-        static System.Reflection.MethodInfo ms_isInVR = null;
-        static System.Reflection.MethodInfo ms_setAvatarIntParam = null;
-        static System.Reflection.MethodInfo ms_setAvatarFloatParam = null;
-        static System.Reflection.MethodInfo ms_setAvatarBoolParam = null;
+        static MethodInfo ms_isInVR = null;
+        static MethodInfo ms_setAvatarIntParam = null;
+        static MethodInfo ms_setAvatarFloatParam = null;
+        static MethodInfo ms_setAvatarBoolParam = null;
 
         public static void ResolveMethods()
         {
@@ -92,22 +94,22 @@ namespace ml_lme
             }
         }
 
-        public static System.Reflection.MethodInfo IsInVR
+        public static MethodInfo IsInVR
         {
             get => ms_isInVR;
         }
 
-        public static System.Reflection.MethodInfo SetAvatarIntParam
+        public static MethodInfo SetAvatarIntParam
         {
             get => ms_setAvatarIntParam;
         }
 
-        public static System.Reflection.MethodInfo SetAvatarFloatParam
+        public static MethodInfo SetAvatarFloatParam
         {
             get => ms_setAvatarFloatParam;
         }
 
-        public static System.Reflection.MethodInfo SetAvatarBoolParam
+        public static MethodInfo SetAvatarBoolParam
         {
             get => ms_setAvatarBoolParam;
         }

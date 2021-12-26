@@ -78,26 +78,26 @@ namespace ml_arh
                 UpdateHeight(Utils.GetTrackingHeight());
         }
 
-        public void UpdateHeight(float f_height)
+        public void UpdateHeight(float p_height)
         {
-            m_height = f_height;
+            m_height = p_height;
             m_center = m_height * 0.515151f;
             m_radius = m_height * 0.121212f;
 
             ChangeHeight(m_height, m_center);
         }
 
-        void ChangeHeight(float f_height, float f_center, bool f_updateRadius = true)
+        void ChangeHeight(float p_height, float p_center, bool p_radiusUpdate = true)
         {
             if(m_characterController != null)
             {
-                m_characterController.height = f_height;
+                m_characterController.height = p_height;
 
-                var l_center = m_characterController.center;
-                l_center.y = f_center;
+                Vector3 l_center = m_characterController.center;
+                l_center.y = p_center;
                 m_characterController.center = l_center;
 
-                if(f_updateRadius)
+                if(p_radiusUpdate)
                     m_characterController.radius = m_radius;
             }
         }

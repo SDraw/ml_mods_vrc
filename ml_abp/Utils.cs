@@ -2,9 +2,9 @@
 {
     static class Utils
     {
-        public static float QuadraticEaseOut(float f_value)
+        public static float QuadraticEaseOut(float p_value)
         {
-            return (1f - UnityEngine.Mathf.Pow(1f - f_value, 2f));
+            return (1f - UnityEngine.Mathf.Pow(1f - p_value, 2f));
         }
 
         // VRChat related
@@ -26,12 +26,12 @@
         }
         public static VRC.Player GetLocalPlayer() => VRC.Player.prop_Player_0;
 
-        public static bool IsFriend(VRC.Player f_player) => VRC.Core.APIUser.IsFriendsWith(f_player.prop_String_0);
+        public static bool IsFriend(VRC.Player p_player) => VRC.Core.APIUser.IsFriendsWith(p_player.prop_String_0);
         public static Il2CppSystem.Collections.Generic.List<VRC.Player> GetPlayers() => VRC.PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
 
-        public static VRC.Player GetPlayerWithId(string f_id)
+        public static VRC.Player GetPlayerWithId(string p_id)
         {
-            return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { f_id });
+            return (VRC.Player)MethodsResolver.GetPlayerById?.Invoke(null, new object[] { p_id });
         }
 
         public static System.Collections.Generic.List<VRC.Player> GetFriendsInInstance()
@@ -40,7 +40,7 @@
             var l_remotePlayers = GetPlayers();
             if(l_remotePlayers != null)
             {
-                foreach(var l_remotePlayer in l_remotePlayers)
+                foreach(VRC.Player l_remotePlayer in l_remotePlayers)
                 {
                     if((l_remotePlayer != null) && IsFriend(l_remotePlayer))
                         l_result.Add(l_remotePlayer);

@@ -17,7 +17,7 @@ namespace ml_kte
         static extern void TerminateKinect();
 
         [DllImport("ml_kte_cpp_v2.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern void GetKinectData(IntPtr f_positions, IntPtr f_rotations); // 75 floats, 100 floats
+        static extern void GetKinectData(IntPtr p_positions, IntPtr p_rotations); // 75 floats, 100 floats
 
         public static void Check()
         {
@@ -45,9 +45,9 @@ namespace ml_kte
         {
             if(ms_valid) TerminateKinect();
         }
-        public static void GetTrackingData(IntPtr f_positions, IntPtr f_rotations)
+        public static void GetTrackingData(IntPtr p_positions, IntPtr p_rotations)
         {
-            if(ms_valid) GetKinectData(f_positions, f_rotations);
+            if(ms_valid) GetKinectData(p_positions, p_rotations);
         }
     }
 }
