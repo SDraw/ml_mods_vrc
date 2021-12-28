@@ -1,5 +1,4 @@
-﻿// dllmain.cpp : Определяет точку входа для приложения DLL.
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CCore.h"
 
 BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD /*ul_reason_for_call*/, LPVOID /*lpReserved*/)
@@ -32,7 +31,7 @@ extern "C" __declspec(dllexport) void TerminateKinect()
     }
 }
 
-extern "C" __declspec(dllexport) void GetKinectData(float *f_positions, float *f_rotations)
+extern "C" __declspec(dllexport) void GetKinectData(float *p_positions, float *p_rotations)
 {
-    if (g_core) g_core->GetTrackingData(f_positions, f_rotations);
+    if (g_core) g_core->GetTrackingData(p_positions, p_rotations);
 }

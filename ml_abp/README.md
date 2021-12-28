@@ -9,32 +9,8 @@ MelonLoader mod for VRChat that brings additional avatar parameters for proximit
 * Put `ml_abp.dll` in `Mods` folder of game
 
 # Usage
-* Add additional parameters to your avatar(s) and animator(s). List of available additional parameters:
-  * _HeadProximity
-  * _HipsProximity
-  * _LeftHandProximity
-  * _RightHandProximity
-  * _LeftFootProximity
-  * _RightFootProximity
-  * _NeckProximity
-  * _LeftEyeProximity
-  * _RightEyeProximity
-  * _SpineProximity
-  * _ChestProximity
-  * _LeftShoulderProximity
-  * _RightShoulderProximity
-  * _LeftUpperArmProximity
-  * _RightUpperArmProximity
-  * _LeftLowerArmProximity
-  * _RightLowerArmProximity
-  * _LeftUpperLegProximity
-  * _RightUpperLegProximity
-  * _LeftLowerLegProximity
-  * _RightLowerLegProximity
-  * _LeftToesProximity
-  * _RightToesProximity
-  * _JawProximity
-  * Your own proximity target. For that your avatar parameter and game object in avatar hierarchy should have same name and start with `_ProximityTarget`.
+* Add additional parameters to your avatar(s) and animator(s) as pattern `_(BoneName)Proximity` (example: `_HeadProximity`). List of available bones is available on [this Unity documentation page](https://docs.unity3d.com/2019.4/Documentation/ScriptReference/HumanBodyBones.html).
+  * Or add your own proximity target. For that your avatar parameter and game object in avatar hierarchy should have same name and start with `_ProximityTarget` (example: `_ProximityTargetNose`).
 * Select player in quick menu.
 * Press `Toggle bones proximity` in UIExpansionKit quick menu.  
 

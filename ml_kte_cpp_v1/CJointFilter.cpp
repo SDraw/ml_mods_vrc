@@ -25,7 +25,7 @@ const glm::vec3& CJointFilter::GetFiltered() const
     return m_filteredJoint;
 }
 
-void CJointFilter::Update(const Vector4 &f_joint, _NUI_SKELETON_POSITION_TRACKING_STATE l_state)
+void CJointFilter::Update(const Vector4 &p_joint, _NUI_SKELETON_POSITION_TRACKING_STATE l_state)
 {
     if(l_state == NUI_SKELETON_POSITION_INFERRED)
     {
@@ -38,7 +38,7 @@ void CJointFilter::Update(const Vector4 &f_joint, _NUI_SKELETON_POSITION_TRACKIN
         m_maxDeviationRadius = 0.05f;
     }
 
-    const glm::vec3 l_rawPosition(f_joint.x, f_joint.y, f_joint.z);
+    const glm::vec3 l_rawPosition(p_joint.x, p_joint.y, p_joint.z);
     glm::vec3 l_filteredPosition;
     glm::vec3 l_predictedPosition;
     glm::vec3 l_diff;

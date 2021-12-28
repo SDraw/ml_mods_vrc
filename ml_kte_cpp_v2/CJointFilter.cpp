@@ -25,9 +25,9 @@ const glm::vec3& CJointFilter::GetFiltered() const
     return m_filteredJoint;
 }
 
-void CJointFilter::Update(const Joint &f_joint)
+void CJointFilter::Update(const Joint &p_joint)
 {
-    if(f_joint.TrackingState == TrackingState::TrackingState_Inferred)
+    if(p_joint.TrackingState == TrackingState::TrackingState_Inferred)
     {
         m_jitterRadius = 0.06f;
         m_maxDeviationRadius = 0.1f;
@@ -38,7 +38,7 @@ void CJointFilter::Update(const Joint &f_joint)
         m_maxDeviationRadius = 0.05f;
     }
 
-    const glm::vec3 l_rawPosition(f_joint.Position.X, f_joint.Position.Y, f_joint.Position.Z);
+    const glm::vec3 l_rawPosition(p_joint.Position.X, p_joint.Position.Y, p_joint.Position.Z);
     glm::vec3 l_filteredPosition;
     glm::vec3 l_predictedPosition;
     glm::vec3 l_diff;

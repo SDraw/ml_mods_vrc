@@ -86,9 +86,9 @@ bool CKinectHandler::IsPaused() const
     return m_paused;
 }
 
-void CKinectHandler::SetPaused(bool f_state)
+void CKinectHandler::SetPaused(bool p_state)
 {
-    m_paused = f_state;
+    m_paused = p_state;
 }
 
 void CKinectHandler::Update()

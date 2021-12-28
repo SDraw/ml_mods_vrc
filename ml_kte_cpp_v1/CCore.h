@@ -25,6 +25,6 @@ public:
     void Initialize();
     void Terminate();
 
-    void GetTrackingData(float *f_positions, float *f_rotations);
+    void GetTrackingData(float *p_positions, float *p_rotations);
 };
 

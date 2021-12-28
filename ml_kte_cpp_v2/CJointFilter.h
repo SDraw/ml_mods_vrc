@@ -25,5 +25,5 @@ public:
 
     const glm::vec3& GetFiltered() const;
 
-    void Update(const Joint &f_joint);
+    void Update(const Joint &p_joint);
 };

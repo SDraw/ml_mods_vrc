@@ -47,7 +47,7 @@ void CCore::Terminate()
     m_frameHistoryCount = 0U;
 }
 
-void CCore::GetTrackingData(float *f_positions, float *f_rotations)
+void CCore::GetTrackingData(float *p_positions, float *p_rotations)
 {
     if(m_kinectLock.try_lock())
     {
@@ -92,14 +92,14 @@ void CCore::GetTrackingData(float *f_positions, float *f_rotations)
             const glm::vec3 l_linearPos = glm::mix(l_jointPosA, l_jointPosB, l_smooth);
             const glm::quat l_linearRot = glm::slerp(l_jointRotA, l_jointRotB, l_smooth);
 
-            f_positions[i * 3] = l_linearPos.x;
-            f_positions[i * 3 + 1] = l_linearPos.y;
-            f_positions[i * 3 + 2] = l_linearPos.z;
+            p_positions[i * 3] = l_linearPos.x;
+            p_positions[i * 3 + 1] = l_linearPos.y;
+            p_positions[i * 3 + 2] = l_linearPos.z;
 
-            f_rotations[i * 4] = l_linearRot.x;
-            f_rotations[i * 4 + 1] = l_linearRot.y;
-            f_rotations[i * 4 + 2] = l_linearRot.z;
-            f_rotations[i * 4 + 3] = l_linearRot.w;
+            p_rotations[i * 4] = l_linearRot.x;
+            p_rotations[i * 4 + 1] = l_linearRot.y;
+            p_rotations[i * 4 + 2] = l_linearRot.z;
+            p_rotations[i * 4 + 3] = l_linearRot.w;
         }
     }
 }

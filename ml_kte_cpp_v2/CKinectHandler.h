@@ -37,7 +37,7 @@ public:
     const FrameData* GetFrameData() const;
 
     bool IsPaused() const;
-    void SetPaused(bool f_state);
+    void SetPaused(bool p_state);
 
     void Update();
 };

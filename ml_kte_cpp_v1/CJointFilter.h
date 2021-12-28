@@ -25,5 +25,5 @@ public:
 
     const glm::vec3& GetFiltered() const;
 
-    void Update(const Vector4 &f_joint, _NUI_SKELETON_POSITION_TRACKING_STATE l_state);
+    void Update(const Vector4 &p_joint, _NUI_SKELETON_POSITION_TRACKING_STATE l_state);
 };
