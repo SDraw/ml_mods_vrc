@@ -35,6 +35,7 @@ namespace ml_abp
             RecacheComponents();
         }
 
+        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public List<Transform> GetProximityTargets() => m_hands;
 
         void RecacheComponents()

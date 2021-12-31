@@ -1,7 +1,19 @@
-﻿namespace ml_lme
+﻿using UnityEngine;
+
+namespace ml_lme
 {
     static class GestureMatcher
     {
+
+        readonly static Vector2[] ms_fingerLimits =
+        {
+            new Vector2(0f,15f),
+            new Vector2(-20f,20f),
+            new Vector2(-50f,50f),
+            new Vector2(-7.5f,7.5f),
+            new Vector2(-20f,20f)
+        };
+
         public class GesturesData
         {
             readonly public static int ms_handsCount = 2;
@@ -54,13 +66,13 @@
                         case 0:
                         {
                             FillFingerBends(l_hand, ref p_data.m_leftFingersBends);
-                            FilFingerSpreads(l_hand, ref p_data.m_leftFingersBends, ref p_data.m_leftFingersSpreads);
+                            FilFingerSpreads(l_hand, ref p_data.m_leftFingersSpreads);
                         }
                         break;
                         case 1:
                         {
                             FillFingerBends(l_hand, ref p_data.m_rightFingersBends);
-                            FilFingerSpreads(l_hand, ref p_data.m_rightFingersBends, ref p_data.m_rightFingersSpreads);
+                            FilFingerSpreads(l_hand, ref p_data.m_rightFingersSpreads);
                         }
                         break;
                     }
@@ -68,14 +80,14 @@
             }
         }
 
-        static void FillHandPosition(Leap.Hand p_hand, ref UnityEngine.Vector3 p_pos)
+        static void FillHandPosition(Leap.Hand p_hand, ref Vector3 p_pos)
         {
             p_pos.x = p_hand.PalmPosition.x;
             p_pos.y = p_hand.PalmPosition.y;
             p_pos.z = p_hand.PalmPosition.z;
         }
 
-        static void FillHandRotation(Leap.Hand p_hand, ref UnityEngine.Quaternion p_rot)
+        static void FillHandRotation(Leap.Hand p_hand, ref Quaternion p_rot)
         {
             p_rot.x = p_hand.Rotation.x;
             p_rot.y = p_hand.Rotation.y;
@@ -87,68 +99,103 @@
         {
             foreach(Leap.Finger l_finger in p_hand.Fingers)
             {
-                int l_startBoneID = ((l_finger.Type == Leap.Finger.FingerType.TYPE_THUMB) ? 1 : 0);
-                UnityEngine.Vector3 l_prevDirection = new UnityEngine.Vector3(0f, 0f, 0f);
+                Quaternion l_prevSegment = Quaternion.identity;
 
-                for(int i = l_startBoneID; i < 4; i++)
+                float l_angle = 0f;
+                foreach(Leap.Bone l_bone in l_finger.bones)
                 {
-                    Leap.Bone l_bone = l_finger.Bone((Leap.Bone.BoneType)i);
-                    if(l_bone != null)
+                    if(l_bone.Type == Leap.Bone.BoneType.TYPE_METACARPAL)
                     {
-                        Leap.Vector l_leapDir = l_bone.NextJoint - l_bone.PrevJoint;
-                        UnityEngine.Vector3 l_dir = new UnityEngine.Vector3(l_leapDir.x, l_leapDir.y, l_leapDir.z);
-                        l_dir.Normalize();
-                        if(i > l_startBoneID)
-                            p_bends[(int)l_finger.Type] += UnityEngine.Mathf.Acos(UnityEngine.Vector3.Dot(l_dir, l_prevDirection));
-                        l_prevDirection = l_dir;
+                        l_prevSegment = new Quaternion(l_bone.Rotation.x, l_bone.Rotation.y, l_bone.Rotation.z, l_bone.Rotation.w);
+                        continue;
                     }
+
+                    Quaternion l_curSegment = new Quaternion(l_bone.Rotation.x, l_bone.Rotation.y, l_bone.Rotation.z, l_bone.Rotation.w);
+                    Quaternion l_diff = Quaternion.Inverse(l_prevSegment) * l_curSegment;
+                    l_prevSegment = l_curSegment;
+
+                    // Bend - local X rotation
+                    float l_curAngle = 360f - l_diff.eulerAngles.x;
+                    if(l_curAngle > 180f)
+                        l_curAngle -= 360f;
+                    l_angle += l_curAngle;
                 }
 
-                p_bends[(int)l_finger.Type] = UnityEngine.Mathf.InverseLerp((l_finger.Type == Leap.Finger.FingerType.TYPE_THUMB) ? 0f : (float)System.Math.PI * 0.125f, (l_finger.Type == Leap.Finger.FingerType.TYPE_THUMB) ? (float)System.Math.PI * 0.25f : (float)System.Math.PI, p_bends[(int)l_finger.Type]);
+                p_bends[(int)l_finger.Type] = Mathf.InverseLerp(0f, (l_finger.Type == Leap.Finger.FingerType.TYPE_THUMB) ? 90f : 180f, l_angle);
             }
         }
 
-        static void FilFingerSpreads(Leap.Hand p_hand, ref float[] p_bends, ref float[] p_spreads)
+        static void FilFingerSpreads(Leap.Hand p_hand, ref float[] p_spreads)
         {
-            UnityEngine.Quaternion l_palmRotation = new UnityEngine.Quaternion(p_hand.Rotation.x, p_hand.Rotation.y, p_hand.Rotation.z, p_hand.Rotation.w);
-            UnityEngine.Vector3 l_sideDir = l_palmRotation * (p_hand.IsLeft ? UnityEngine.Vector3.right : UnityEngine.Vector3.left);
-            UnityEngine.Vector3 l_handPos = new UnityEngine.Vector3(p_hand.PalmPosition.x, p_hand.PalmPosition.y, p_hand.PalmPosition.z);
 
             foreach(Leap.Finger l_finger in p_hand.Fingers)
             {
-                Leap.Bone l_bone = l_finger.Bone(Leap.Bone.BoneType.TYPE_PROXIMAL);
-                if(l_bone != null)
+                float l_angle = 0f;
+
+                Leap.Bone l_parent = l_finger.Bone(Leap.Bone.BoneType.TYPE_METACARPAL);
+                Leap.Bone l_child = l_finger.Bone(Leap.Bone.BoneType.TYPE_PROXIMAL);
+
+                Quaternion l_parentRot = new Quaternion(l_parent.Rotation.x, l_parent.Rotation.y, l_parent.Rotation.z, l_parent.Rotation.w);
+                Quaternion l_childRot = new Quaternion(l_child.Rotation.x, l_child.Rotation.y, l_child.Rotation.z, l_child.Rotation.w);
+
+                Quaternion l_diff = Quaternion.Inverse(l_parentRot) * l_childRot;
+
+                // Spread - local Y rotation, but thumb is obnoxious
+                l_angle = l_diff.eulerAngles.y;
+                if(l_angle > 180f)
+                    l_angle -= 360f;
+
+                // Pain
+                switch(l_finger.Type)
                 {
-                    Leap.Vector l_leapDir = l_bone.NextJoint - l_bone.PrevJoint;
-                    UnityEngine.Vector3 l_dir = new UnityEngine.Vector3(l_leapDir.x, l_leapDir.y, l_leapDir.z);
-                    l_dir.Normalize();
-
-                    if(l_finger.Type != Leap.Finger.FingerType.TYPE_THUMB)
-                        p_spreads[(int)l_finger.Type] = UnityEngine.Vector3.Dot(l_dir, l_sideDir) * 2f;
-                    else
+                    case Leap.Finger.FingerType.TYPE_THUMB:
                     {
-                        UnityEngine.Vector3 l_boneNext = new UnityEngine.Vector3(l_bone.NextJoint.x, l_bone.NextJoint.y, l_bone.NextJoint.z);
-                        p_spreads[(int)l_finger.Type] = 1f - UnityEngine.Mathf.InverseLerp(40f, 70f, UnityEngine.Vector3.Distance(l_boneNext, l_handPos));
+                        if(p_hand.IsRight)
+                            l_angle *= -1f;
+                        l_angle += ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_INDEX].y * 2f; // Magic value
+                        l_angle *= 0.5f;
                     }
+                    break;
 
-                    switch(l_finger.Type)
+                    case Leap.Finger.FingerType.TYPE_INDEX:
                     {
-                        case Leap.Finger.FingerType.TYPE_INDEX:
-                            p_spreads[(int)l_finger.Type] += 0.25f;
-                            break;
-                        case Leap.Finger.FingerType.TYPE_MIDDLE:
-                            p_spreads[(int)l_finger.Type] = p_spreads[(int)l_finger.Type] * 2.5f + 0.5f;
-                            break;
-                        case Leap.Finger.FingerType.TYPE_RING:
-                            p_spreads[(int)l_finger.Type] = -p_spreads[(int)l_finger.Type] * 3f - 0.75f;
-                            break;
-                        case Leap.Finger.FingerType.TYPE_PINKY:
-                            p_spreads[(int)l_finger.Type] = -p_spreads[(int)l_finger.Type] - 0.15f;
-                            break;
+                        if(p_hand.IsLeft)
+                            l_angle *= -1f;
+                        l_angle += ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_INDEX].y;
+                        l_angle *= 0.5f;
                     }
+                    break;
 
-                    if(p_bends[(int)l_finger.Type] > 0.5f)
-                        p_spreads[(int)l_finger.Type] = UnityEngine.Mathf.Lerp(p_spreads[(int)l_finger.Type], 0f, (p_bends[(int)l_finger.Type] - 0.5f) * 2f);
+                    case Leap.Finger.FingerType.TYPE_MIDDLE:
+                    {
+                        l_angle += (ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_MIDDLE].y * (p_hand.IsRight ? 0.125f : -0.125f));
+                        l_angle *= (p_hand.IsLeft ? -4f : 4f);
+                    }
+                    break;
+
+                    case Leap.Finger.FingerType.TYPE_RING:
+                    {
+                        if(p_hand.IsRight)
+                            l_angle *= -1f;
+                        l_angle += ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_RING].y;
+                        l_angle *= 0.5f;
+                    }
+                    break;
+
+                    case Leap.Finger.FingerType.TYPE_PINKY:
+                    {
+                        l_angle += (p_hand.IsRight ? ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_PINKY].x : ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_PINKY].y);
+                        l_angle *= (p_hand.IsRight ? -0.5f : 0.5f);
+                    }
+                    break;
+
+                }
+
+                p_spreads[(int)l_finger.Type] = Mathf.InverseLerp(ms_fingerLimits[(int)l_finger.Type].x, ms_fingerLimits[(int)l_finger.Type].y, l_angle);
+                if(l_finger.Type != Leap.Finger.FingerType.TYPE_THUMB)
+                {
+                    p_spreads[(int)l_finger.Type] *= 2f;
+                    p_spreads[(int)l_finger.Type] -= 1f;
                 }
             }
         }
