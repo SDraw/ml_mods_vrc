@@ -1,19 +1,19 @@
 ﻿namespace ml_htr
 {
-    public class Main : MelonLoader.MelonMod
+    public class HipTrackerRotator : MelonLoader.MelonMod
     {
-        UIExpansionKit.API.ICustomShowableLayoutedMenu m_menuSettings = null;
+        object m_menuSettings = null;
 
         public override void OnApplicationStart()
         {
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-            m_menuSettings.AddSimpleButton("Rotate hip offset +5 degrees around X axis ", () => this.OnRotate(5f,0f,0f));
-            m_menuSettings.AddSimpleButton("Rotate hip offset -5 degrees around X axis", () => this.OnRotate(-5f, 0f, 0f));
-            m_menuSettings.AddSimpleButton("Rotate hip offset +5 degrees around Y axis ", () => this.OnRotate(0f, 5f, 0f));
-            m_menuSettings.AddSimpleButton("Rotate hip offset -5 degrees around Y axis", () => this.OnRotate(0f, -5f, 0f));
-            m_menuSettings.AddSimpleButton("Rotate hip offset +5 degrees around Z axis ", () => this.OnRotate(0f, 0f, 5f));
-            m_menuSettings.AddSimpleButton("Rotate hip offset -5 degrees around Z axis", () => this.OnRotate(0f, 0f, -5f));
-            m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset +5 degrees around X axis ", () => this.OnRotate(5f, 0f, 0f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset -5 degrees around X axis", () => this.OnRotate(-5f, 0f, 0f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset +5 degrees around Y axis ", () => this.OnRotate(0f, 5f, 0f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset -5 degrees around Y axis", () => this.OnRotate(0f, -5f, 0f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset +5 degrees around Z axis ", () => this.OnRotate(0f, 0f, 5f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset -5 degrees around Z axis", () => this.OnRotate(0f, 0f, -5f));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
 
             UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Hips tracker rotator", this.OnMenuShow);
         }
@@ -21,13 +21,13 @@
         void OnMenuShow()
         {
             if(m_menuSettings != null)
-                m_menuSettings.Show();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Show();
         }
 
         void OnMenuClose()
         {
             if(m_menuSettings != null)
-                m_menuSettings.Hide();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
         }
 
         void OnRotate(float p_axisX, float p_axisY, float p_axisZ)
@@ -36,7 +36,7 @@
             if(l_puckOffset != null)
             {
                 UnityEngine.Quaternion l_localRotation = l_puckOffset.localRotation;
-                l_localRotation = l_localRotation * UnityEngine.Quaternion.Euler(p_axisX,p_axisY,p_axisZ);
+                l_localRotation = l_localRotation * UnityEngine.Quaternion.Euler(p_axisX, p_axisY, p_axisZ);
                 l_puckOffset.localRotation = l_localRotation;
             }
         }

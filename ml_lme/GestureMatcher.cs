@@ -152,7 +152,7 @@ namespace ml_lme
                     {
                         if(p_hand.IsRight)
                             l_angle *= -1f;
-                        l_angle += ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_INDEX].y * 2f; // Magic value
+                        l_angle += ms_fingerLimits[(int)Leap.Finger.FingerType.TYPE_INDEX].y * 2f;
                         l_angle *= 0.5f;
                     }
                     break;

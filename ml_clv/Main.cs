@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace ml_clv
 {
-    public class Main : MelonLoader.MelonMod
+    public class CalibrationLinesVisualizer : MelonLoader.MelonMod
     {
-        static Main ms_instance = null;
+        static CalibrationLinesVisualizer ms_instance = null;
         bool m_quit = false;
 
         List<TrackerBoneLine> m_trackerLines = null;
@@ -27,16 +27,16 @@ namespace ml_clv
 
             // Patches
             if(MethodsResolver.PrepareForCalibration != null)
-                HarmonyInstance.Patch(MethodsResolver.PrepareForCalibration, null, new HarmonyLib.HarmonyMethod(typeof(Main), nameof(VRCTrackingManager_PrepareForCalibration)));
+                HarmonyInstance.Patch(MethodsResolver.PrepareForCalibration, null, new HarmonyLib.HarmonyMethod(typeof(CalibrationLinesVisualizer), nameof(VRCTrackingManager_PrepareForCalibration)));
 
             if(MethodsResolver.RestoreTrackingAfterCalibration != null)
-                HarmonyInstance.Patch(MethodsResolver.RestoreTrackingAfterCalibration, null, new HarmonyLib.HarmonyMethod(typeof(Main), nameof(VRCTrackingManager_RestoreTrackingAfterCalibration)));
+                HarmonyInstance.Patch(MethodsResolver.RestoreTrackingAfterCalibration, null, new HarmonyLib.HarmonyMethod(typeof(CalibrationLinesVisualizer), nameof(VRCTrackingManager_RestoreTrackingAfterCalibration)));
 
             if(MethodsResolver.IKTweaks_Calibrate != null)
-                HarmonyInstance.Patch(MethodsResolver.IKTweaks_Calibrate, new HarmonyLib.HarmonyMethod(typeof(Main), nameof(VRCTrackingManager_PrepareForCalibration)), null);
+                HarmonyInstance.Patch(MethodsResolver.IKTweaks_Calibrate, new HarmonyLib.HarmonyMethod(typeof(CalibrationLinesVisualizer), nameof(VRCTrackingManager_PrepareForCalibration)), null);
 
             if(MethodsResolver.IKTweaks_ApplyStoredCalibration != null)
-                HarmonyInstance.Patch(MethodsResolver.IKTweaks_ApplyStoredCalibration, new HarmonyLib.HarmonyMethod(typeof(Main), nameof(VRCTrackingManager_RestoreTrackingAfterCalibration)), null);
+                HarmonyInstance.Patch(MethodsResolver.IKTweaks_ApplyStoredCalibration, new HarmonyLib.HarmonyMethod(typeof(CalibrationLinesVisualizer), nameof(VRCTrackingManager_RestoreTrackingAfterCalibration)), null);
         }
 
         public override void OnApplicationQuit()

@@ -1,6 +1,6 @@
 ﻿namespace ml_arh
 {
-    public class Main : MelonLoader.MelonMod
+    public class AvatarRealHeight : MelonLoader.MelonMod
     {
         HeightAdjuster m_localAdjuster = null;
 

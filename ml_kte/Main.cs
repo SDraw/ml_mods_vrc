@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ml_kte
 {
-    public class Main : MelonLoader.MelonMod
+    public class KinectTrackingExtension : MelonLoader.MelonMod
     {
         enum TrackedPoint
         {

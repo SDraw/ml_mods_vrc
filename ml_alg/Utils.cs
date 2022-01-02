@@ -54,21 +54,14 @@ namespace ml_alg
         public static Transform GetTrackingRightController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_1.transform;
 
         // RootMotion.FinalIK.IKSolverVR extensions
-        public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight, bool p_rotate)
+        public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight)
         {
             var l_leg = (p_leg == HumanBodyBones.LeftFoot) ? p_solver.leftLeg : p_solver.rightLeg;
             if(l_leg != null)
             {
                 l_leg.positionWeight = p_weight;
-                if(p_rotate)
-                    l_leg.rotationWeight = p_weight;
+                l_leg.rotationWeight = p_weight;
             }
-        }
-
-        // UnityEngine.MonoBehaviour extensions
-        public static object ConvertToRuntimeType(this MonoBehaviour p_component, System.Type p_type)
-        {
-            return System.Convert.ChangeType(UnhollowerBaseLib.Runtime.ClassInjectorBase.GetMonoObjectFromIl2CppPointer(p_component.Pointer), p_type);
         }
 
         // Math extensions

@@ -1,6 +1,4 @@
-﻿using HarmonyLib;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using UnhollowerRuntimeLib.XrefScans;
 
@@ -9,7 +7,6 @@ namespace ml_alg
     static class MethodsResolver
     {
         static MethodInfo ms_getPlayerById = null;
-        static MethodInfo ms_preSetupVrIk = null; // IKTweaks
 
         public static void ResolveMethods()
         {
@@ -30,34 +27,11 @@ namespace ml_alg
                 else
                     Logger.Warning("Can't resolve VRC.PlayerManager.GetPlayer");
             }
-
-            if(ms_preSetupVrIk == null)
-            {
-                foreach(MelonLoader.MelonMod l_mod in MelonLoader.MelonHandler.Mods)
-                {
-                    if(l_mod.Info.Name == "IKTweaks")
-                    {
-                        Type l_fbhType = null;
-                        l_mod.Assembly.GetTypes().DoIf(t => t.Name == "FullBodyHandling", t => l_fbhType = t);
-                        if(l_fbhType != null)
-                        {
-                            ms_preSetupVrIk = l_fbhType.GetMethod("PreSetupVrIk", BindingFlags.Static | BindingFlags.NonPublic);
-                            Logger.DebugMessage("IKTweaks.FullBodyHandling.PreSetupVrIk " + ((ms_preSetupVrIk != null) ? "found" : "not found"));
-                        }
-                        break;
-                    }
-                }
-            }
         }
 
         public static MethodInfo GetPlayerById
         {
             get => ms_getPlayerById;
-        }
-
-        public static MethodInfo PreSetupVRIK
-        {
-            get => ms_preSetupVrIk;
         }
     }
 }

@@ -39,6 +39,11 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <Private>False</Private>
     </Reference>
+    <Reference Include="IKTweaks, Version=1.0.23.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Games\Steam\steamapps\common\VRChat\Mods\IKTweaks.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>C:\Games\Steam\steamapps\common\VRChat\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
       <Private>False</Private>
@@ -99,6 +104,7 @@
   <ItemGroup>
     <Compile Include="DependenciesHandler.cs" />
     <Compile Include="GestureMatcher.cs" />
+    <Compile Include="IKTweaksHelper.cs" />
     <Compile Include="LeapTracked.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />

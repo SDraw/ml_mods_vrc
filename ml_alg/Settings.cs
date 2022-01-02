@@ -5,9 +5,6 @@
         static float ms_grabDistance = 0.25f;
         static bool ms_allowFriends = true;
         static bool ms_savePose = false;
-        static bool ms_useHipsRotation = true;
-        static bool ms_useLegsRotation = true;
-        static bool ms_useHandsRotation = true;
         static bool ms_useVelocity = false;
         static float ms_velocityMultiplier = 5f;
         static bool ms_useAverageVelocity = true;
@@ -26,9 +23,6 @@
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHipsPull", ms_allowHipsPull, "Allow hips pull");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowLegsPull", ms_allowLegsPull, "Allow legs pull");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "SavePose", ms_savePose, "Preserve manipulated pose");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "HipsRotation", ms_useHipsRotation, "Apply rotation to hips");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "LegsRotation", ms_useLegsRotation, "Apply rotation to legs");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "HandsRotation", ms_useHandsRotation, "Apply rotation to hands");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "Velocity", ms_useVelocity, "Apply velocity on pull");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "VelocityMultiplier", ms_velocityMultiplier, "Velocity multiplier (0-100)");
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity");
@@ -45,9 +39,6 @@
             ms_allowHipsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHipsPull");
             ms_allowLegsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowLegsPull");
             ms_savePose = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "SavePose");
-            ms_useHipsRotation = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "HipsRotation");
-            ms_useLegsRotation = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "LegsRotation");
-            ms_useHandsRotation = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "HandsRotation");
             ms_useVelocity = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "Velocity");
             ms_velocityMultiplier = UnityEngine.Mathf.Clamp(MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "VelocityMultiplier"), 0f, 100f);
             MelonLoader.MelonPreferences.SetEntryValue("ALG", "VelocityMultiplier", ms_velocityMultiplier);
@@ -81,18 +72,6 @@
         public static bool SavePose
         {
             get => ms_savePose;
-        }
-        public static bool UseHipsRotation
-        {
-            get => ms_useHipsRotation;
-        }
-        public static bool UseLegsRotation
-        {
-            get => ms_useLegsRotation;
-        }
-        public static bool UseHandsRotation
-        {
-            get => ms_useHandsRotation;
         }
         public static bool UseVelocity
         {

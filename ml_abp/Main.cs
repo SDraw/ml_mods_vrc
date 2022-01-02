@@ -2,14 +2,14 @@
 
 namespace ml_abp
 {
-    public class Main : MelonLoader.MelonMod
+    public class AvatarBonesProximity : MelonLoader.MelonMod
     {
         bool m_quit = false;
 
         InteractedPlayer m_localInteracted = null;
 
         UnityEngine.UI.Text m_textComponent = null;
-        UIExpansionKit.API.ICustomShowableLayoutedMenu m_menuSettings = null;
+        object m_menuSettings = null;
 
         bool m_update = false;
         bool m_toggleVisibility = false;
@@ -27,18 +27,21 @@ namespace ml_abp
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
 
-            m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-            m_menuSettings.AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
-            m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject p_obj) =>
+            if(VRChatUtilityKit.Utilities.VRCUtils.IsUIXPresent)
             {
-                m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
+                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
+                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject p_obj) =>
+                {
+                    m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
 
-                var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
-                l_listener.OnEnabled += this.OnProximityToggleShown;
-                l_listener.OnDisabled += this.OnProximityToggleHidden;
-            });
+                    var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
+                    l_listener.OnEnabled += this.OnProximityToggleShown;
+                    l_listener.OnDisabled += this.OnProximityToggleHidden;
+                });
+            }
         }
 
         public override void OnApplicationQuit()
@@ -178,7 +181,7 @@ namespace ml_abp
         void OnMenuShow()
         {
             if(m_update && (m_menuSettings != null))
-                m_menuSettings.Show();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Show();
         }
 
         void OnDisableAll()
@@ -207,7 +210,7 @@ namespace ml_abp
         void OnMenuClose()
         {
             if(m_update && (m_menuSettings != null))
-                m_menuSettings.Hide();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
         }
 
         void OnProximityToggle()

@@ -2,15 +2,15 @@
 
 namespace ml_alg
 {
-    public class Main : MelonLoader.MelonMod
+    public class AvatarLimbsGrabber : MelonLoader.MelonMod
     {
-        static Main ms_instance = null;
+        static AvatarLimbsGrabber ms_instance = null;
 
         bool m_quit = false;
 
         LiftedPlayer m_localLiftedPlayer = null;
         UnityEngine.UI.Text m_textComponent = null;
-        UIExpansionKit.API.ICustomShowableLayoutedMenu m_menuSettings = null;
+        object m_menuSettings = null;
 
         bool m_update = false;
         bool m_buttonVisibility = false;
@@ -21,7 +21,7 @@ namespace ml_alg
             ms_instance = this;
 
             MethodsResolver.ResolveMethods();
-            IKTweaksHelper.ResolveTypes();
+            IKTweaksHelper.Resolve();
             Settings.LoadSettings();
 
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
@@ -31,32 +31,35 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
 
-            m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-            m_menuSettings.AddLabel("World pull permission:", (GameObject p_obj) =>
+            if(VRChatUtilityKit.Utilities.VRCUtils.IsUIXPresent)
             {
-                var l_worldText = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
-                if(l_worldText != null)
-                    l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
-            });
-            m_menuSettings.AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
-            m_menuSettings.AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
-            m_menuSettings.AddSimpleButton("Close", this.OnMenuClose);
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
-
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Allow limbs manipulation", this.OnManipulationAllow,
-                delegate (GameObject p_obj)
+                m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddLabel("World pull permission:", (GameObject p_obj) =>
                 {
-                    m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                    UnityEngine.UI.Text l_worldText = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                    if(l_worldText != null)
+                        l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
+                });
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
+                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
 
-                    var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
-                    l_listener.OnEnabled += this.OnAllowButtonShown;
-                    l_listener.OnDisabled += this.OnAllowButtonHidden;
-                }
-            );
+                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Allow limbs manipulation", this.OnManipulationAllow,
+                    delegate (GameObject p_obj)
+                    {
+                        m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
+
+                        var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
+                        l_listener.OnEnabled += this.OnAllowButtonShown;
+                        l_listener.OnDisabled += this.OnAllowButtonHidden;
+                    }
+                );
+            }
 
             // Patches
-            if(MethodsResolver.PreSetupVRIK != null)
-                HarmonyInstance.Patch(MethodsResolver.PreSetupVRIK, null, new HarmonyLib.HarmonyMethod(typeof(Main).GetMethod(nameof(OnPreSetupVRIK_PostfixPatch), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)));
+            if(IKTweaksHelper.Present && (IKTweaksHelper.PreSetupVRIK != null))
+                HarmonyInstance.Patch(IKTweaksHelper.PreSetupVRIK, null, new HarmonyLib.HarmonyMethod(typeof(AvatarLimbsGrabber).GetMethod(nameof(OnPreSetupVRIK_PostfixPatch), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)));
         }
 
         public override void OnApplicationQuit()
@@ -99,9 +102,6 @@ namespace ml_alg
                     m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
                     m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
                     m_localLiftedPlayer.GrabDistance = Settings.GrabDistance;
-                    m_localLiftedPlayer.RotateHips = Settings.UseHipsRotation;
-                    m_localLiftedPlayer.RotateLegs = Settings.UseLegsRotation;
-                    m_localLiftedPlayer.RotateHands = Settings.UseHandsRotation;
                     m_localLiftedPlayer.SavePose = Settings.SavePose;
                     m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
                     m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
@@ -140,9 +140,6 @@ namespace ml_alg
             m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
             m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
             m_localLiftedPlayer.GrabDistance = Settings.GrabDistance;
-            m_localLiftedPlayer.RotateHips = Settings.UseHipsRotation;
-            m_localLiftedPlayer.RotateLegs = Settings.UseLegsRotation;
-            m_localLiftedPlayer.RotateHands = Settings.UseHandsRotation;
             m_localLiftedPlayer.SavePose = Settings.SavePose;
             m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
             m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
@@ -238,7 +235,7 @@ namespace ml_alg
         void OnMenuShow()
         {
             if(m_update && (m_menuSettings != null))
-                m_menuSettings.Show();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Show();
         }
 
         void OnPoseReset()
@@ -273,7 +270,7 @@ namespace ml_alg
         void OnMenuClose()
         {
             if(m_update && (m_menuSettings != null))
-                m_menuSettings.Hide();
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
         }
 
         void OnAllowButtonShown()
