@@ -8,6 +8,7 @@
         public static SteamVR_Camera GetCamera() => GetVRCTrackingSteam().field_Private_SteamVR_Camera_0;
         public static UnityEngine.Transform GetTrackingLeftController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_0.transform;
         public static UnityEngine.Transform GetTrackingRightController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_1.transform;
+
         public static SteamVR_ControllerManager GetSteamVRControllerManager()
         {
             SteamVR_ControllerManager l_result = null;
@@ -23,6 +24,16 @@
                 }
             }
             return l_result;
+        }
+
+        public static bool AreHandsTracked()
+        {
+            return (VRCTrackingManager.Method_Public_Static_Boolean_ID_0(VRCTracking.ID.HandTracker_LeftWrist) || VRCTrackingManager.Method_Public_Static_Boolean_ID_0(VRCTracking.ID.HandTracker_RightWrist));
+        }
+
+        public static bool IsInVRMode()
+        {
+            return (bool)MethodsResolver.IsInVRMode?.Invoke(null, null);
         }
 
         public static void Swap<T>(ref T lhs, ref T rhs)

@@ -8,15 +8,15 @@ namespace ml_lme
 {
     static class MethodsResolver
     {
-        static MethodInfo ms_isInVR = null;
+        static MethodInfo ms_isInVRMode = null;
         static MethodInfo ms_setAvatarIntParam = null;
         static MethodInfo ms_setAvatarFloatParam = null;
         static MethodInfo ms_setAvatarBoolParam = null;
 
         public static void ResolveMethods()
         {
-            // static bool VRCTrackingManager.IsInVR()
-            if(ms_isInVR == null)
+            // static bool VRCTrackingManager.IsInVRMode()
+            if(ms_isInVRMode == null)
             {
                 var l_methodsList = typeof(VRCTrackingManager).GetMethods().Where(m =>
                     m.Name.StartsWith("Method_Public_Static_Boolean_") && (m.ReturnType == typeof(bool)) && !m.GetParameters().Any() &&
@@ -27,8 +27,8 @@ namespace ml_lme
 
                 if(l_methodsList.Any())
                 {
-                    ms_isInVR = l_methodsList.First();
-                    Logger.DebugMessage("VRCTrackingManager.IsInVR -> VRCTrackingManager." + ms_isInVR.Name);
+                    ms_isInVRMode = l_methodsList.First();
+                    Logger.DebugMessage("VRCTrackingManager.IsInVR -> VRCTrackingManager." + ms_isInVRMode.Name);
                 }
                 else
                     Logger.Warning("Can't resolve VRCTrackingManager.IsInVR");
@@ -95,9 +95,9 @@ namespace ml_lme
             }
         }
 
-        public static MethodInfo IsInVR
+        public static MethodInfo IsInVRMode
         {
-            get => ms_isInVR;
+            get => ms_isInVRMode;
         }
 
         public static MethodInfo SetAvatarIntParam

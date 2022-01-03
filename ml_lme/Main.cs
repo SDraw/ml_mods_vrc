@@ -203,8 +203,7 @@ namespace ml_lme
 
         static bool VRCIM_ControllersType(ref bool __result, VRCInputManager.InputMethod __0)
         {
-            // Need to account presence of VR controllers to allow mouse input for controler-less VR
-            if(Settings.Enabled && (bool)MethodsResolver.IsInVR?.Invoke(null, null))
+            if(Settings.Enabled && Utils.IsInVRMode() && Utils.AreHandsTracked())
             {
                 if(__0 == VRCInputManager.InputMethod.Index)
                 {
