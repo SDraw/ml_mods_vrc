@@ -25,7 +25,14 @@ namespace ml_alg
         }
         public static VRC.Player GetLocalPlayer() => VRC.Player.prop_Player_0;
 
-        public static bool IsFriend(VRC.Player p_player) => VRC.Core.APIUser.IsFriendsWith(p_player.prop_String_0);
+        public static bool IsFriend(VRC.Player p_player)
+        {
+            bool l_result = false;
+            if(p_player.field_Private_APIUser_0 != null)
+                l_result = p_player.field_Private_APIUser_0.isFriend;
+            return l_result;
+        }
+
         public static Il2CppSystem.Collections.Generic.List<VRC.Player> GetPlayers() => VRC.PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
 
         public static VRC.Player GetPlayerWithId(string p_id)
