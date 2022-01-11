@@ -13,6 +13,7 @@ MelonLoader mod for VRChat that brings limbs manipulation of local player by rem
 # Usage
 * Select player in quick menu.
 * Press `Allow limbs manipulation` in UIExpansionKit quick menu.
+  * Friends are allowed by default. 
 
 After that selected player can:
 * Move you around by grabbing (fist gesture) around your avatar head bone
@@ -21,7 +22,7 @@ After that selected player can:
 Also, check self-explanatory mod settings in UIExpansionKit's mods settings tab.
 
 # Notes
-* Early [IKTweaks](https://github.com/knah/VRCMods) support, use recalibration to reset manipulated bones.
+* [IKTweaks](https://github.com/knah/VRCMods) support will be removed due to several issues after release tag [`r51`](https://github.com/SDraw/ml_mods/tree/r51).
 * You can't be picked up in worlds that don't allow risky functions.
 * Shame on you for using it in ERP.
 * Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.

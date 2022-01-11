@@ -12,8 +12,7 @@ namespace ml_alg
         enum BodyTrackingMode
         {
             Generic = 0,
-            FBT,
-            IKTweaks
+            FBT
         }
 
         enum OffsetReapplyState
@@ -51,7 +50,6 @@ namespace ml_alg
         Animator m_animator = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
-        MonoBehaviour m_iktFbtIK = null;
         BodyTrackingMode m_trackingMode = BodyTrackingMode.Generic;
 
         public VRCPlayer Player
@@ -140,12 +138,7 @@ namespace ml_alg
             // Recheck tracking mode
             m_trackingMode = BodyTrackingMode.Generic;
             if((m_fbtIK != null) && m_fbtIK.enabled)
-            {
-                if((m_iktFbtIK != null) && m_iktFbtIK.enabled)
-                    m_trackingMode = BodyTrackingMode.IKTweaks;
-                else
-                    m_trackingMode = BodyTrackingMode.FBT;
-            }
+                m_trackingMode = BodyTrackingMode.FBT;
 
             foreach(int i in ms_updateBones)
             {
@@ -316,44 +309,6 @@ namespace ml_alg
                             }
                         }
                         break;
-
-                        case BodyTrackingMode.IKTweaks:
-                        {
-                            if(m_iktFbtIK != null)
-                            {
-                                switch(i)
-                                {
-                                    case (int)HumanBodyBones.Hips:
-                                        IKTweaksHelper.SetHipsIK(m_iktFbtIK, m_liftBodyParts[i].m_targetPos, m_liftBodyParts[i].m_targetRot);
-                                        break;
-                                    case (int)HumanBodyBones.LeftHand:
-                                    {
-                                        Transform l_controller = Utils.GetTrackingLeftController();
-                                        if(l_controller != null)
-                                        {
-                                            l_controller.position = m_liftBodyParts[i].m_targetPos;
-                                            l_controller.rotation = m_liftBodyParts[i].m_targetRot;
-                                        }
-                                    }
-                                    break;
-                                    case (int)HumanBodyBones.RightHand:
-                                    {
-                                        Transform l_controller = Utils.GetTrackingRightController();
-                                        if(l_controller != null)
-                                        {
-                                            l_controller.position = m_liftBodyParts[i].m_targetPos;
-                                            l_controller.rotation = m_liftBodyParts[i].m_targetRot;
-                                        }
-                                    }
-                                    break;
-                                    case (int)HumanBodyBones.LeftFoot:
-                                    case (int)HumanBodyBones.RightFoot:
-                                        IKTweaksHelper.SetLegIK(m_iktFbtIK, (HumanBodyBones)i, m_liftBodyParts[i].m_targetPos, m_liftBodyParts[i].m_targetRot);
-                                        break;
-                                }
-                            }
-                        }
-                        break;
                     }
                 }
             }
@@ -367,7 +322,6 @@ namespace ml_alg
             else
                 m_solver = null; // Generic avatar
             m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
-            m_iktFbtIK = null;
         }
 
         public void OnLifterGesture(LifterPlayer p_lifter, HumanBodyBones p_hand, bool p_state)
@@ -439,82 +393,34 @@ namespace ml_alg
 
                 case HumanBodyBones.Hips:
                 {
-                    switch(m_trackingMode)
-                    {
-                        case BodyTrackingMode.IKTweaks:
-                        {
-                            Transform l_trackerPoint = IKTweaksHelper.GetHipsTarget(m_iktFbtIK);
-                            if((l_trackerPoint != null) && (l_trackerPoint.parent != null))
-                            {
-                                m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_trackerPoint.parent.GetMatrix();
-                            }
-                        }
-                        break;
-                        default:
-                            m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
-                            break;
-                    }
+                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
                 }
                 break;
 
                 case HumanBodyBones.LeftHand:
                 case HumanBodyBones.RightHand:
                 {
-                    switch(m_trackingMode)
-                    {
-                        case BodyTrackingMode.IKTweaks:
-                        {
-                            Transform l_trackerPoint = (p_localBone == HumanBodyBones.LeftHand) ? Utils.GetTrackingLeftController() : Utils.GetTrackingRightController();
-                            if(l_trackerPoint != null)
-                            {
-                                m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_trackerPoint.GetMatrix();
-                            }
-                        }
-                        break;
-
-                        default:
-                        {
-                            m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
-                            m_liftBodyParts[(int)p_localBone].m_reapplyOffset = OffsetReapplyState.Await;
-                        }
-                        break;
-                    }
+                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
+                    m_liftBodyParts[(int)p_localBone].m_reapplyOffset = OffsetReapplyState.Await;
                 }
                 break;
 
                 case HumanBodyBones.LeftFoot:
                 case HumanBodyBones.RightFoot:
                 {
-                    switch(m_trackingMode)
+                    Transform l_footTransform = null;
+                    if(m_trackingMode == BodyTrackingMode.Generic)
                     {
-                        case BodyTrackingMode.IKTweaks:
-                        {
-                            Transform l_trackerPoint = IKTweaksHelper.GetLegTarget(m_iktFbtIK, p_localBone);
-                            if((l_trackerPoint != null) && (l_trackerPoint.parent != null))
-                            {
-                                m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_trackerPoint.parent.GetMatrix();
-                            }
-                        }
-                        break;
-
-                        default:
-                        {
-                            Transform l_footTransform = null;
-                            if(m_trackingMode == BodyTrackingMode.Generic)
-                            {
-                                // Consider toes
-                                l_footTransform = m_animator.GetBoneTransform((p_localBone == HumanBodyBones.LeftFoot) ? HumanBodyBones.LeftToes : HumanBodyBones.RightToes);
-                                if(l_footTransform == null)
-                                    l_footTransform = m_animator.GetBoneTransform(p_localBone);
-                                m_solver?.SetLegIKWeight(p_localBone, 1f);
-                            }
-                            else
-                                l_footTransform = m_animator.GetBoneTransform(p_localBone);
-
-                            m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_footTransform.GetMatrix();
-                        }
-                        break;
+                        // Consider toes
+                        l_footTransform = m_animator.GetBoneTransform((p_localBone == HumanBodyBones.LeftFoot) ? HumanBodyBones.LeftToes : HumanBodyBones.RightToes);
+                        if(l_footTransform == null)
+                            l_footTransform = m_animator.GetBoneTransform(p_localBone);
+                        m_solver?.SetLegIKWeight(p_localBone, 1f);
                     }
+                    else
+                        l_footTransform = m_animator.GetBoneTransform(p_localBone);
+
+                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_footTransform.GetMatrix();
                 }
                 break;
             }
@@ -698,13 +604,6 @@ namespace ml_alg
                 }
                 break;
             }
-        }
-
-        // Shoud not be called if IKTweaks isn't present
-        public void DetectIKTweaks()
-        {
-            if((m_iktFbtIK == null) && (m_animator != null))
-                m_iktFbtIK = m_animator.GetComponent<RootMotionNew.FinalIK.VRIK_New>();
         }
     }
 }

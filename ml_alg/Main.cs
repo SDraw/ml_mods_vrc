@@ -4,8 +4,6 @@ namespace ml_alg
 {
     public class AvatarLimbsGrabber : MelonLoader.MelonMod
     {
-        static AvatarLimbsGrabber ms_instance = null;
-
         bool m_quit = false;
 
         LiftedPlayer m_localLiftedPlayer = null;
@@ -18,10 +16,7 @@ namespace ml_alg
 
         public override void OnApplicationStart()
         {
-            ms_instance = this;
-
             MethodsResolver.ResolveMethods();
-            IKTweaksHelper.Resolve();
             Settings.LoadSettings();
 
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
@@ -56,10 +51,6 @@ namespace ml_alg
                     }
                 );
             }
-
-            // Patches
-            if(IKTweaksHelper.Present && (IKTweaksHelper.PreSetupVRIK != null))
-                HarmonyInstance.Patch(IKTweaksHelper.PreSetupVRIK, null, new HarmonyLib.HarmonyMethod(typeof(AvatarLimbsGrabber).GetMethod(nameof(OnPreSetupVRIK_PostfixPatch), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)));
         }
 
         public override void OnApplicationQuit()
@@ -291,13 +282,6 @@ namespace ml_alg
         {
             m_buttonVisibility = false;
             m_currentSelectedPlayer = null;
-        }
-
-        static void OnPreSetupVRIK_PostfixPatch() => ms_instance?.OnPreSetupVRIK();
-        void OnPreSetupVRIK()
-        {
-            if(m_localLiftedPlayer != null)
-                m_localLiftedPlayer.DetectIKTweaks();
         }
     }
 }

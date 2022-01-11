@@ -7,7 +7,6 @@ namespace ml_lme
     {
         static readonly Quaternion ms_hmdRotationFix = new Quaternion(0f, 0.7071068f, 0.7071068f, 0f);
 
-        static LeapMotionExtention ms_instance = null;
         bool m_quit = false;
 
         Leap.Controller m_leapController = null;
@@ -20,11 +19,8 @@ namespace ml_lme
 
         public override void OnApplicationStart()
         {
-            ms_instance = this;
-
             DependenciesHandler.ExtractDependencies();
             MethodsResolver.ResolveMethods();
-            IKTweaksHelper.Resolve();
             Settings.LoadSettings();
 
             m_leapController = new Leap.Controller();
@@ -43,9 +39,6 @@ namespace ml_lme
             typeof(VRCInputManager).GetMethods().Where(x =>
                 x.Name.StartsWith("Method_Public_Static_Boolean_InputMethod_")
             ).ToList().ForEach(m => HarmonyInstance.Patch(m, l_patchMethod));
-
-            if(IKTweaksHelper.Present && (IKTweaksHelper.PreSetupVRIK != null))
-                HarmonyInstance.Patch(IKTweaksHelper.PreSetupVRIK, null, new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention).GetMethod(nameof(OnPreSetupVRIK_PostfixPatch), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)));
         }
 
         void OnUiManagerInit()
@@ -218,13 +211,6 @@ namespace ml_lme
             }
             else
                 return true;
-        }
-
-        static void OnPreSetupVRIK_PostfixPatch() => ms_instance?.OnPreSetupVRIK();
-        void OnPreSetupVRIK()
-        {
-            if(m_localTracked != null)
-                m_localTracked.DetectIKTweaks();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ml_lme
@@ -7,26 +6,17 @@ namespace ml_lme
     [MelonLoader.RegisterTypeInIl2Cpp]
     class LeapTracked : MonoBehaviour
     {
-        static readonly Quaternion[] ms_fixRotations =
-        {
-            Quaternion.Euler(0f,0f,-90f),
-            Quaternion.Euler(0f,0f,90f),
-        };
-
         enum TrackingMode
         {
             Generic = 0,
-            FBT,
-            IKTweaks
+            FBT
         }
 
         VRCPlayer m_player = null;
         HandGestureController m_handGestureController = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
-        MonoBehaviour m_iktFbtIK = null;
         TrackingMode m_trackigMode = TrackingMode.Generic;
-        Animator m_animator = null;
 
         bool m_fingersOnly = false;
 
@@ -40,7 +30,6 @@ namespace ml_lme
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
-            m_animator = m_player.field_Internal_Animator_0;
 
             m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
@@ -49,12 +38,7 @@ namespace ml_lme
         {
             m_trackigMode = TrackingMode.Generic;
             if((m_fbtIK != null) && m_fbtIK.enabled)
-            {
-                if((m_iktFbtIK != null) && m_iktFbtIK.enabled)
-                    m_trackigMode = TrackingMode.IKTweaks;
-                else
-                    m_trackigMode = TrackingMode.FBT;
-            }
+                m_trackigMode = TrackingMode.FBT;
         }
 
         [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
@@ -129,30 +113,6 @@ namespace ml_lme
                         }
                     }
                     break;
-
-                    case TrackingMode.IKTweaks:
-                    {
-                        if(p_gesturesData.m_handsPresenses[0])
-                        {
-                            Transform l_controller = Utils.GetTrackingLeftController();
-                            if(l_controller != null)
-                            {
-                                l_controller.position = p_left.position;
-                                l_controller.rotation = p_left.rotation * ms_fixRotations[0];
-                            }
-                        }
-
-                        if(p_gesturesData.m_handsPresenses[1])
-                        {
-                            Transform l_controller = Utils.GetTrackingRightController();
-                            if(l_controller != null)
-                            {
-                                l_controller.position = p_right.position;
-                                l_controller.rotation = p_right.rotation * ms_fixRotations[1];
-                            }
-                        }
-                    }
-                    break;
                 }
             }
 
@@ -177,14 +137,12 @@ namespace ml_lme
 
         void RecacheComponents()
         {
-            m_animator = m_player.field_Internal_Animator_0;
             m_handGestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
             if(m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
             else
                 m_solver = null; // Generic avatar
             m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
-            m_iktFbtIK = null;
         }
 
         public void ResetTracking()
@@ -194,12 +152,6 @@ namespace ml_lme
                 m_handGestureController.field_Internal_Boolean_0 = false;
                 m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Mouse;
             }
-        }
-
-        public void DetectIKTweaks()
-        {
-            if((m_iktFbtIK == null) && (m_animator != null))
-                m_iktFbtIK = m_animator.GetComponent<RootMotionNew.FinalIK.VRIK_New>();
         }
     }
 }
