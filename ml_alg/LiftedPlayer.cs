@@ -33,7 +33,7 @@ namespace ml_alg
             public bool m_saved;
         };
 
-        LiftBodyPart[] m_liftBodyParts = null;
+        readonly LiftBodyPart[] m_liftBodyParts = null;
         float m_grabDistance = 0.25f;
         Vector3 m_lastPoint;
         Vector3 m_frameVelocity;

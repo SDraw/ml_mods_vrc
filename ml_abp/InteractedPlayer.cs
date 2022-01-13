@@ -19,8 +19,8 @@ namespace ml_abp
         AvatarPlayableController m_playableController = null;
         Animator m_animator = null;
 
-        List<InteracterPlayer> m_interacterPlayers = null;
-        List<CustomParameter> m_parameters = null;
+        readonly List<InteracterPlayer> m_interacterPlayers = null;
+        readonly List<CustomParameter> m_parameters = null;
         float m_boneProximity = 0.25f;
         float m_playersProximity = 5f;
         bool m_useCustomTargets = false;

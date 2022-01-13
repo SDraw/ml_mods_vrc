@@ -14,7 +14,7 @@ namespace ml_abp
 
         VRCPlayer m_player = null;
 
-        List<Transform> m_hands = null;
+        readonly List<Transform> m_hands = null;
         Animator m_animator = null;
 
         public VRCPlayer Player
