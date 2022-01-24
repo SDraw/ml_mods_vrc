@@ -33,7 +33,10 @@ namespace ml_ps
             try
             {
                 if(Settings.IgnorePlayer)
+                {
                     l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
+                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("MirrorReflection")); // Player's clone
+                }
                 if(Settings.IgnorePlayers)
                     l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
                 if(Settings.IgnoreUI)
@@ -94,10 +97,14 @@ namespace ml_ps
                     l_camera.transform.localRotation = Quaternion.identity;
 
                     l_camera.fieldOfView = Utils.GetStreamCamera().GetComponent<Camera>().fieldOfView;
+                    l_camera.cullingMask = Utils.GetStreamCamera().GetComponent<Camera>().cullingMask;
                     l_camera.stereoTargetEye = StereoTargetEyeMask.None;
 
                     if(Settings.IgnorePlayer)
+                    {
                         l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
+                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("MirrorReflection")); // Player's clone
+                    }
                     if(Settings.IgnorePlayers)
                         l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
                     if(Settings.IgnoreUI)
