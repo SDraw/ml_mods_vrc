@@ -56,13 +56,14 @@ namespace ml_ps
                 l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
                 l_resultTex.Apply();
 
-                CheckDirectories();
+                DateTime l_now = DateTime.Now;
+                CheckDirectories(l_now.Year, l_now.Month);
 
                 byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
                 System.IO.File.WriteAllBytes(string.Format("{0}/VRChat/Panorama/{1}-{2}/{1}-{2}-{3} {4}-{5}-{6} ({7}).png",
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                    DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
-                    DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second,
+                    l_now.Year, l_now.Month, l_now.Day,
+                    l_now.Hour, l_now.Minute, l_now.Second,
                     Utils.CleanupAsFilename(Utils.GetCurrentWorldName())), l_bytes
                 );
 
@@ -88,7 +89,7 @@ namespace ml_ps
 
                 try
                 {
-                    l_camera.transform.parent = VRC.UserCamera.UserCameraController.field_Internal_Static_UserCameraController_0.field_Private_Camera_0.transform;
+                    l_camera.transform.parent = Utils.GetStreamCamera().transform;
                     l_camera.transform.localPosition = Vector3.zero;
                     l_camera.transform.localRotation = Quaternion.identity;
 
@@ -123,13 +124,14 @@ namespace ml_ps
                     l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
                     l_resultTex.Apply();
 
-                    CheckDirectories();
+                    DateTime l_now = DateTime.Now;
+                    CheckDirectories(l_now.Year, l_now.Month);
 
                     byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
                     System.IO.File.WriteAllBytes(string.Format("{0}/VRChat/Panorama/{1}-{2}/{1}-{2}-{3} {4}-{5}-{6} ({7}).png",
                         Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                        DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
-                        DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second,
+                        l_now.Year, l_now.Month, l_now.Day,
+                        l_now.Hour, l_now.Minute, l_now.Second,
                         Utils.CleanupAsFilename(Utils.GetCurrentWorldName())), l_bytes
                     );
 
@@ -149,7 +151,7 @@ namespace ml_ps
             }
         }
 
-        static void CheckDirectories()
+        static void CheckDirectories(int p_year, int p_month)
         {
             string l_picturesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             l_picturesDir += "/VRChat";
@@ -160,7 +162,7 @@ namespace ml_ps
             if(!System.IO.Directory.Exists(l_picturesDir))
                 System.IO.Directory.CreateDirectory(l_picturesDir);
 
-            l_picturesDir += string.Format("/{0}-{1}", DateTime.Now.Year, DateTime.Now.Month);
+            l_picturesDir += string.Format("/{0}-{1}", p_year, p_month);
             if(!System.IO.Directory.Exists(l_picturesDir))
                 System.IO.Directory.CreateDirectory(l_picturesDir);
         }
