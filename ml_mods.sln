@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ml_kte_cpp_v1", "ml_kte_cpp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_arh", "ml_arh\ml_arh.csproj", "{8BCFE17A-9C39-4C93-A669-841B35D1DA4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_ps", "ml_ps\ml_ps.csproj", "{CC8E36EA-59A2-4585-8D1F-7382683F1908}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -79,6 +81,10 @@ Global
 		{8BCFE17A-9C39-4C93-A669-841B35D1DA4E}.Debug|x64.Build.0 = Debug|x64
 		{8BCFE17A-9C39-4C93-A669-841B35D1DA4E}.Release|x64.ActiveCfg = Release|x64
 		{8BCFE17A-9C39-4C93-A669-841B35D1DA4E}.Release|x64.Build.0 = Release|x64
+		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Debug|x64.ActiveCfg = Debug|x64
+		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Debug|x64.Build.0 = Debug|x64
+		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Release|x64.ActiveCfg = Release|x64
+		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
