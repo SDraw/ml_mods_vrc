@@ -26,13 +26,12 @@ namespace ml_ps
 
         void OnPanoramaMain()
         {
+            RenderTexture l_activeRt = RenderTexture.active;
+            Camera l_camera = Utils.GetMainCamera();
+            int l_oldCullMask = l_camera.cullingMask;
+
             try
             {
-                RenderTexture l_activeRt = RenderTexture.active;
-
-                Camera l_camera = Utils.GetMainCamera();
-                int l_oldCullMask = l_camera.cullingMask;
-
                 if(Settings.IgnorePlayer)
                     l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
                 if(Settings.IgnorePlayers)
@@ -57,8 +56,6 @@ namespace ml_ps
                 l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
                 l_resultTex.Apply();
 
-                RenderTexture.active = l_activeRt;
-
                 CheckDirectories();
 
                 byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
@@ -72,24 +69,25 @@ namespace ml_ps
                 UnityEngine.Object.DestroyImmediate(l_rtA);
                 UnityEngine.Object.DestroyImmediate(l_rtB);
                 UnityEngine.Object.DestroyImmediate(l_resultTex);
-
-                l_camera.cullingMask = l_oldCullMask;
             }
             catch(Exception e)
             {
                 Logger.Warning(e.Message);
             }
+
+            RenderTexture.active = l_activeRt;
+            l_camera.cullingMask = l_oldCullMask;
         }
 
         void OnPanoramaStream()
         {
             if(Utils.GetStreamCamera().activeInHierarchy)
             {
+                RenderTexture l_activeRt = RenderTexture.active;
+                Camera l_camera = new GameObject("PanoramaCamera").AddComponent<Camera>();
+
                 try
                 {
-                    RenderTexture l_activeRt = RenderTexture.active;
-
-                    Camera l_camera = new GameObject("PanoramaCamera").AddComponent<Camera>();
                     l_camera.transform.parent = VRC.UserCamera.UserCameraController.field_Internal_Static_UserCameraController_0.field_Private_Camera_0.transform;
                     l_camera.transform.localPosition = Vector3.zero;
                     l_camera.transform.localRotation = Quaternion.identity;
@@ -125,8 +123,6 @@ namespace ml_ps
                     l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
                     l_resultTex.Apply();
 
-                    RenderTexture.active = l_activeRt;
-
                     CheckDirectories();
 
                     byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
@@ -140,13 +136,15 @@ namespace ml_ps
                     UnityEngine.Object.DestroyImmediate(l_rtA);
                     UnityEngine.Object.DestroyImmediate(l_rtB);
                     UnityEngine.Object.DestroyImmediate(l_resultTex);
-                    UnityEngine.Object.DestroyImmediate(l_camera.gameObject);
                 }
                 catch(Exception e)
                 {
                     Logger.Warning(e.Message);
                 }
 
+                UnityEngine.Object.DestroyImmediate(l_camera.gameObject);
+
+                RenderTexture.active = l_activeRt;
                 Utils.GetPhotoCamera().active = true;
             }
         }
