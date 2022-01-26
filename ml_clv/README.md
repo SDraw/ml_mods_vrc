@@ -10,8 +10,7 @@ Inspired by [ChilloutVR](https://store.steampowered.com/app/661130/ChilloutVR), 
 * Put `ml_clv.dll` in `Mods` folder of game.
 
 # Usage
-Enabled by default.
-Also check self-explanatory mod settings in UIExpansionKit's mods settings tab.
-
-# Notes
-* Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.
+## Settings
+Available mod's settings through UIExpansionKit:
+* **Enable lines for trackers:** enable lines rendering, enabled by default.
+* **Red/green/blue color component for lines:** lines color to be drawn with, green color by default.

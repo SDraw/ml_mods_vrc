@@ -9,8 +9,10 @@ MelonLoader mod for VRChat that sets local player collision height to avatar and
 * Put `ml_arh.dll` in `Mods` folder of game
 
 # Usage
-Enabled by default. Toggles for avatar height and pose height are available in UIExpansionKit's mods settings tab.
+## Settings
+Available mod's settings through UIExpansionKit:
+* **Use avatar height collision:** change collision capsule height on avatar change, enabled by default.
+* **Pose height:** change collision capsule height upon standing, crouching and crawling, enabled by default.
 
 # Notes
 * Default height is set in worlds that don't allow risky functions
-* Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.

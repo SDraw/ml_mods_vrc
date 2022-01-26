@@ -13,6 +13,3 @@ MelonLoader mod for VRChat that allows to turn head regardless of body rotation.
 * Hold `Left Alt` to lock body rotation.
   * Use `Mouse wheel` to roll your head.
   * Hold `Left Control` to ignore rotation limits.
-
-# Notes
-* Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.
