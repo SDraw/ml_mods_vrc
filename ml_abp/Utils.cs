@@ -29,8 +29,8 @@
         public static bool IsFriend(VRC.Player p_player)
         {
             bool l_result = false;
-            if(p_player.field_Private_APIUser_0 != null)
-                l_result = p_player.field_Private_APIUser_0.isFriend;
+            if((p_player.field_Private_APIUser_0 != null) && (p_player.field_Private_VRCPlayerApi_0 != null))
+                l_result = (p_player.field_Private_APIUser_0.isFriend && !p_player.field_Private_VRCPlayerApi_0.isLocal);
             return l_result;
         }
 
