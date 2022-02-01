@@ -11,6 +11,9 @@ namespace ml_ps
         public static UnityEngine.GameObject GetStreamCamera() => VRC.UserCamera.UserCameraController.field_Internal_Static_UserCameraController_0.field_Private_Camera_0.gameObject;
         public static UnityEngine.GameObject GetPhotoCamera() => VRC.UserCamera.UserCameraController.field_Internal_Static_UserCameraController_0.field_Private_Camera_1.gameObject;
         public static UnityEngine.GameObject GetUserCamera() => VRC.UserCamera.UserCameraController.field_Internal_Static_UserCameraController_0.gameObject;
+        public static void PlayCameraShutterSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_0, 1f });
+        public static void PlayXyloSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_1, 1f });
+        public static void PlayBlockedSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_2, 1f });
 
         public static string CleanupAsFilename(string p_string)
         {

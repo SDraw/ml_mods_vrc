@@ -7,6 +7,7 @@ namespace ml_ps
     {
         public override void OnApplicationStart()
         {
+            MethodsResolver.ResolveMethods();
             Settings.Load();
 
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
@@ -30,6 +31,7 @@ namespace ml_ps
             Camera l_camera = Utils.GetMainCamera();
             int l_oldCullMask = l_camera.cullingMask;
 
+            Utils.PlayCameraShutterSound();
             try
             {
                 if(Settings.IgnorePlayer)
@@ -73,9 +75,12 @@ namespace ml_ps
                 UnityEngine.Object.DestroyImmediate(l_rtA);
                 UnityEngine.Object.DestroyImmediate(l_rtB);
                 UnityEngine.Object.DestroyImmediate(l_resultTex);
+
+                Utils.PlayXyloSound();
             }
             catch(Exception e)
             {
+                Utils.PlayBlockedSound();
                 Logger.Warning(e.Message);
             }
 
@@ -90,6 +95,7 @@ namespace ml_ps
                 RenderTexture l_activeRt = RenderTexture.active;
                 Camera l_camera = new GameObject("PanoramaCamera").AddComponent<Camera>();
 
+                Utils.PlayCameraShutterSound();
                 try
                 {
                     l_camera.transform.parent = Utils.GetStreamCamera().transform;
@@ -145,9 +151,12 @@ namespace ml_ps
                     UnityEngine.Object.DestroyImmediate(l_rtA);
                     UnityEngine.Object.DestroyImmediate(l_rtB);
                     UnityEngine.Object.DestroyImmediate(l_resultTex);
+
+                    Utils.PlayXyloSound();
                 }
                 catch(Exception e)
                 {
+                    Utils.PlayBlockedSound();
                     Logger.Warning(e.Message);
                 }
 
@@ -155,6 +164,10 @@ namespace ml_ps
 
                 RenderTexture.active = l_activeRt;
                 Utils.GetPhotoCamera().active = true;
+            }
+            else
+            {
+                Utils.PlayBlockedSound();
             }
         }
 

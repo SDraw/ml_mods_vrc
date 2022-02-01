@@ -1,0 +1,2 @@
+Material Design icons by Google, licensed under Apache-2.0 License.
+https://github.com/google/material-design-icons
