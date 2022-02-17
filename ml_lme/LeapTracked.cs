@@ -16,9 +16,15 @@ namespace ml_lme
         HandGestureController m_handGestureController = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
+
+        bool m_enabled = false;
+        bool m_fingersOnly = false;
         TrackingMode m_trackigMode = TrackingMode.Generic;
 
-        bool m_fingersOnly = false;
+        public bool Enabled
+        {
+            set => m_enabled = value;
+        }
 
         public bool FingersOnly
         {
@@ -39,6 +45,8 @@ namespace ml_lme
             m_trackigMode = TrackingMode.Generic;
             if((m_fbtIK != null) && m_fbtIK.enabled)
                 m_trackigMode = TrackingMode.FBT;
+            if(m_enabled && HandGestureController.field_Private_Static_Boolean_1)
+                HandGestureController.field_Private_Static_Boolean_1 = false;
         }
 
         [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
@@ -151,6 +159,7 @@ namespace ml_lme
             {
                 m_handGestureController.field_Internal_Boolean_0 = false;
                 m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Mouse;
+                HandGestureController.field_Private_Static_Boolean_1 = (PlayerPrefs.GetInt("VRC_PLAYER_GESTURE_TOGGLE") == 1);
             }
         }
     }

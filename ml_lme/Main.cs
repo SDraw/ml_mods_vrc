@@ -108,6 +108,7 @@ namespace ml_lme
 
                 if(m_localTracked != null)
                 {
+                    m_localTracked.Enabled = Settings.Enabled;
                     m_localTracked.FingersOnly = Settings.FingersTracking;
                     if(!Settings.Enabled)
                         m_localTracked.ResetTracking();
@@ -159,6 +160,7 @@ namespace ml_lme
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<LeapTracked>();
+            m_localTracked.Enabled = Settings.Enabled;
             m_localTracked.FingersOnly = Settings.FingersTracking;
         }
 
