@@ -33,9 +33,9 @@ namespace ml_abp
             // VRC.Player VRC.PlayerManager.GetPlayer(string userId)
             if(ms_getPlayerById == null)
             {
-                var l_methodsList = typeof(VRC.PlayerManager).GetMethods().Where(m => 
-                    m.Name.StartsWith("Method_Public_Static_Player_String_") && (m.ReturnType == typeof(VRC.Player)) && (m.GetParameters().Count() == 1) && 
-                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.Management.ModerationManager))).Any() && 
+                var l_methodsList = typeof(VRC.PlayerManager).GetMethods().Where(m =>
+                    m.Name.StartsWith("Method_Public_Static_Player_String_") && (m.ReturnType == typeof(VRC.Player)) && (m.GetParameters().Count() == 1) &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.Management.ModerationManager))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRC.UI.PageUserInfo))).Any()
                 );
 

@@ -7,11 +7,11 @@ namespace ml_lme
 
         readonly static Vector2[] ms_fingerLimits =
         {
-            new Vector2(0f,15f),
-            new Vector2(-20f,20f),
-            new Vector2(-50f,50f),
-            new Vector2(-7.5f,7.5f),
-            new Vector2(-20f,20f)
+            new Vector2(0f, 15f),
+            new Vector2(-20f, 20f),
+            new Vector2(-50f, 50f),
+            new Vector2(-7.5f, 7.5f),
+            new Vector2(-20f, 20f)
         };
 
         public class GesturesData

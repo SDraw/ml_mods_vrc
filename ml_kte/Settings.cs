@@ -8,6 +8,8 @@
             V2
         }
 
+        static bool ms_settingsUpdated = false;
+
         static bool ms_enabled = false;
         static int ms_kinectVersion = (int)KinectVersion.V1;
         static float ms_rootPositionX = 0f;
@@ -29,23 +31,23 @@
         public static void Load()
         {
             MelonLoader.MelonPreferences.CreateCategory("KTE", "Kinect Tracking Extensions");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "Enabled", ms_enabled, "Enable Kinect tracking");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "Version", ms_kinectVersion, "Kinect version (1 or 2)");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetX", ms_rootPositionX, "Root position X");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetY", ms_rootPositionY, "Root position Y");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetZ", ms_rootPositionZ, "Root position Z");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRX", ms_rootRotationX, "Root rotation X");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRY", ms_rootRotationY, "Root rotation Y");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRZ", ms_rootRotationZ, "Root rotation Z");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "ShowPoints", ms_showPoints, "Show tracking points");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHead", ms_trackHead, "Head tracking");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHips", ms_trackHips, "Hips tracking");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackLegs", ms_trackLegs, "Legs tracking");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHands", ms_trackHands, "Hands tracking");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHead", ms_rotateHead, "Head rotation");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHips", ms_rotateHips, "Hips rotation");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateLegs", ms_rotateLegs, "Legs rotation");
-            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHands", ms_rotateHands, "Hands rotation");
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "Enabled", ms_enabled, "Enable Kinect tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "Version", ms_kinectVersion, "Kinect version (1 or 2)").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetX", ms_rootPositionX, "Root position X").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetY", ms_rootPositionY, "Root position Y").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetZ", ms_rootPositionZ, "Root position Z").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRX", ms_rootRotationX, "Root rotation X").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRY", ms_rootRotationY, "Root rotation Y").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "OffsetRZ", ms_rootRotationZ, "Root rotation Z").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "ShowPoints", ms_showPoints, "Show tracking points").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHead", ms_trackHead, "Head tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHips", ms_trackHips, "Hips tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackLegs", ms_trackLegs, "Legs tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "TrackHands", ms_trackHands, "Hands tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHead", ms_rotateHead, "Head rotation").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHips", ms_rotateHips, "Hips rotation").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateLegs", ms_rotateLegs, "Legs rotation").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("KTE", "RotateHands", ms_rotateHands, "Hands rotation").OnValueChanged += OnAnyEntryUpdate;
 
             Reload();
         }
@@ -72,6 +74,14 @@
             ms_rotateHips = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateHips");
             ms_rotateLegs = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateLegs");
             ms_rotateHands = MelonLoader.MelonPreferences.GetEntryValue<bool>("KTE", "RotateHands");
+        }
+
+        static void OnAnyEntryUpdate<T>(T p_oldValue, T p_newValue) => ms_settingsUpdated = true;
+        public static bool IsAnyEntryUpdated()
+        {
+            bool l_result = ms_settingsUpdated;
+            ms_settingsUpdated = false;
+            return l_result;
         }
 
         public static bool Enabled

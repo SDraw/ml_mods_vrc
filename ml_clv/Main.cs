@@ -49,14 +49,16 @@ namespace ml_clv
             if(!m_quit) // This is not a joke
             {
                 Settings.ReloadSettings();
-
-                if(TrackerBoneLine.GetLineMaterial() != null)
-                    TrackerBoneLine.GetLineMaterial().color = new Color(Settings.ColorR, Settings.ColorG, Settings.ColorB);
-
-                if(m_trackerLines.Count != 0)
+                if(Settings.IsAnyEntryUpdated())
                 {
-                    foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
-                        l_trackerLine.gameObject.active = (Settings.Enabled && m_calibrationInProgress);
+                    if(TrackerBoneLine.GetLineMaterial() != null)
+                        TrackerBoneLine.GetLineMaterial().color = new Color(Settings.ColorR, Settings.ColorG, Settings.ColorB);
+
+                    if(m_trackerLines.Count != 0)
+                    {
+                        foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
+                            l_trackerLine.gameObject.active = (Settings.Enabled && m_calibrationInProgress);
+                    }
                 }
             }
         }
@@ -67,7 +69,12 @@ namespace ml_clv
         }
         System.Collections.IEnumerator CreateTrackerLines()
         {
-            while(Utils.GetSteamVRControllerManager() == null) yield return null;
+            while(Utils.GetVRCTrackingManager() == null)
+                yield return null;
+            while(Utils.GetVRCTrackingSteam() == null)
+                yield return null;
+            while(Utils.GetSteamVRControllerManager() == null)
+                yield return null;
 
             TrackerBoneLine.ControllerManager = Utils.GetSteamVRControllerManager();
             if(TrackerBoneLine.GetLineMaterial() != null)
@@ -98,7 +105,8 @@ namespace ml_clv
         }
         System.Collections.IEnumerator AssignPlayerToTrackerLines()
         {
-            while(Utils.GetLocalPlayer() == null) yield return null;
+            while(Utils.GetLocalPlayer() == null)
+                yield return null;
 
             foreach(TrackerBoneLine l_trackerLine in m_trackerLines)
                 l_trackerLine.Player = Utils.GetLocalPlayer();

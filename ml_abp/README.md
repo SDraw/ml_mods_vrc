@@ -5,8 +5,8 @@ MelonLoader mod for VRChat that brings additional avatar parameters for proximit
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
 * Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
 * Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods)
-* Get [latest release DLL](../../../releases/latest)
-* Put `ml_abp.dll` in `Mods` folder of game
+* Get [latest release DLL](../../../releases/latest):
+  * Put `ml_abp.dll` in `Mods` folder of game
 
 # Usage
 ## Settings

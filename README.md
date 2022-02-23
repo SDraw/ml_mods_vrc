@@ -10,6 +10,7 @@ Merged set of MelonLoader mods for VRChat.
 * [Kinect Tracking Extension (ml_kte)](../../tree/master/ml_kte)
 * [Hip Tracker Rotator (ml_htr)](../../tree/master/ml_htr)
 * [Panorama Screenshot (ml_ps)](../../tree/master/ml_ps)
+* [VSeeFace Extension (ml_vsf)](../../tree/master/ml_vsf)
 
 # Notes
 * Usage of mods breaks ToS of VRChat and can lead to ban. Use at your own risk.

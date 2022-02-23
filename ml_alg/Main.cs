@@ -64,26 +64,29 @@ namespace ml_alg
             {
                 Settings.ReloadSettings();
 
-                if(m_update && (m_localLiftedPlayer != null))
+                if(m_update && (m_localLiftedPlayer != null) && Settings.IsAnyEntryUpdated())
                 {
-                    // Remove or add component on friends 
-                    foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
+                    if(Settings.IsFriendsEntryUpdated())
                     {
-                        LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
-                        if(l_component != null)
+                        // Remove or add component on friends 
+                        foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
                         {
-                            if(!Settings.AllowFriends)
+                            LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
+                            if(l_component != null)
                             {
-                                m_localLiftedPlayer.UnassignRemoteLifter(l_component);
-                                Object.Destroy(l_component);
+                                if(!Settings.AllowFriends)
+                                {
+                                    m_localLiftedPlayer.UnassignRemoteLifter(l_component);
+                                    Object.Destroy(l_component);
+                                }
                             }
-                        }
-                        else
-                        {
-                            if(Settings.AllowFriends)
+                            else
                             {
-                                l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
-                                l_component.AddLifted(m_localLiftedPlayer);
+                                if(Settings.AllowFriends)
+                                {
+                                    l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
+                                    l_component.AddLifted(m_localLiftedPlayer);
+                                }
                             }
                         }
                     }

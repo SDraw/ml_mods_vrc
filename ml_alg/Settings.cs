@@ -2,6 +2,11 @@
 {
     static class Settings
     {
+        static MelonLoader.MelonPreferences_Entry<bool> ms_friendsEntry = null;
+
+        static bool ms_settingsUpdated = false;
+        static bool ms_setingsUpdatedFriends = false; // Separated because components aren't that cheap
+
         static float ms_grabDistance = 0.25f;
         static bool ms_allowFriends = true;
         static bool ms_savePose = false;
@@ -16,16 +21,20 @@
         public static void LoadSettings()
         {
             MelonLoader.MelonPreferences.CreateCategory("ALG", "Avatar Limbs Grabber");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "GrabRadius", ms_grabDistance, "Maximal distance to limbs");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowFriends", ms_allowFriends, "Allow friends to manipulate you");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowPull", ms_allowPull, "Allow pull");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHandsPull", ms_allowHandsPull, "Allow hands pull");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHipsPull", ms_allowHipsPull, "Allow hips pull");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowLegsPull", ms_allowLegsPull, "Allow legs pull");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "SavePose", ms_savePose, "Preserve manipulated pose");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "Velocity", ms_useVelocity, "Apply velocity on pull");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "VelocityMultiplier", ms_velocityMultiplier, "Velocity multiplier (0-100)");
-            MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity");
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "GrabRadius", ms_grabDistance, "Maximal distance to limbs").OnValueChanged += OnAnyEntryUpdate;
+
+            ms_friendsEntry = MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowFriends", ms_allowFriends, "Allow friends to manipulate you");
+            ms_friendsEntry.OnValueChanged += OnAnyEntryUpdate;
+            ms_friendsEntry.OnValueChanged += OnFriendsEntryUpdate;
+
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowPull", ms_allowPull, "Allow pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHandsPull", ms_allowHandsPull, "Allow hands pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHipsPull", ms_allowHipsPull, "Allow hips pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowLegsPull", ms_allowLegsPull, "Allow legs pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "SavePose", ms_savePose, "Preserve manipulated pose").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "Velocity", ms_useVelocity, "Apply velocity on pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "VelocityMultiplier", ms_velocityMultiplier, "Velocity multiplier (0-100)").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity").OnValueChanged += OnAnyEntryUpdate;
 
             ReloadSettings();
         }
@@ -33,7 +42,7 @@
         public static void ReloadSettings()
         {
             ms_grabDistance = MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "GrabRadius");
-            ms_allowFriends = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowFriends");
+            ms_allowFriends = ms_friendsEntry.Value;
             ms_allowPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowPull");
             ms_allowHandsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHandsPull");
             ms_allowHipsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHipsPull");
@@ -43,6 +52,22 @@
             ms_velocityMultiplier = UnityEngine.Mathf.Clamp(MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "VelocityMultiplier"), 0f, 100f);
             MelonLoader.MelonPreferences.SetEntryValue("ALG", "VelocityMultiplier", ms_velocityMultiplier);
             ms_useAverageVelocity = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AverageVelocity");
+        }
+
+        static void OnAnyEntryUpdate<T>(T p_oldValue, T p_newValue) => ms_settingsUpdated = true;
+        public static bool IsAnyEntryUpdated()
+        {
+            bool l_result = ms_settingsUpdated;
+            ms_settingsUpdated = false;
+            return l_result;
+        }
+
+        static void OnFriendsEntryUpdate(bool p_oldValue, bool p_newValue) => ms_setingsUpdatedFriends = true;
+        public static bool IsFriendsEntryUpdated()
+        {
+            bool l_result = ms_setingsUpdatedFriends;
+            ms_setingsUpdatedFriends = false;
+            return l_result;
         }
 
         public static float GrabDistance

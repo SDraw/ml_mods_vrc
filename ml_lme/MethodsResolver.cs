@@ -7,9 +7,9 @@ namespace ml_lme
     static class MethodsResolver
     {
         static MethodInfo ms_isInVRMode = null;
-        static MethodInfo ms_setAvatarIntParam = null;
+        /*static MethodInfo ms_setAvatarIntParam = null;
         static MethodInfo ms_setAvatarFloatParam = null;
-        static MethodInfo ms_setAvatarBoolParam = null;
+        static MethodInfo ms_setAvatarBoolParam = null;*/
 
         public static void ResolveMethods()
         {
@@ -32,6 +32,7 @@ namespace ml_lme
                     Logger.Warning("Can't resolve VRCTrackingManager.IsInVR");
             }
 
+            /*
             // void AvatarPlayableController.SetAvatarIntParam(int paramHash, int val)
             if(ms_setAvatarIntParam == null)
             {
@@ -90,7 +91,7 @@ namespace ml_lme
                 }
                 else
                     Logger.Warning("Can't resolve AvatarPlayableController.SetAvatarBoolParam");
-            }
+            }*/
         }
 
         public static MethodInfo IsInVRMode
@@ -98,7 +99,7 @@ namespace ml_lme
             get => ms_isInVRMode;
         }
 
-        public static MethodInfo SetAvatarIntParam
+        /*public static MethodInfo SetAvatarIntParam
         {
             get => ms_setAvatarIntParam;
         }
@@ -111,6 +112,6 @@ namespace ml_lme
         public static MethodInfo SetAvatarBoolParam
         {
             get => ms_setAvatarBoolParam;
-        }
+        }*/
     }
 }

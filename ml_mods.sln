@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_arh", "ml_arh\ml_arh.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_ps", "ml_ps\ml_ps.csproj", "{CC8E36EA-59A2-4585-8D1F-7382683F1908}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_vsf", "ml_vsf\ml_vsf.csproj", "{2C321ABF-C826-4A4A-BB07-D7FED0D190E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ml_vsf_wrapper", "ml_vsf_wrapper\ml_vsf_wrapper.csproj", "{300F8E24-FC8A-4589-B60B-D3B363C8ECF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -85,6 +89,14 @@ Global
 		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Debug|x64.Build.0 = Debug|x64
 		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Release|x64.ActiveCfg = Release|x64
 		{CC8E36EA-59A2-4585-8D1F-7382683F1908}.Release|x64.Build.0 = Release|x64
+		{2C321ABF-C826-4A4A-BB07-D7FED0D190E3}.Debug|x64.ActiveCfg = Debug|x64
+		{2C321ABF-C826-4A4A-BB07-D7FED0D190E3}.Debug|x64.Build.0 = Debug|x64
+		{2C321ABF-C826-4A4A-BB07-D7FED0D190E3}.Release|x64.ActiveCfg = Release|x64
+		{2C321ABF-C826-4A4A-BB07-D7FED0D190E3}.Release|x64.Build.0 = Release|x64
+		{300F8E24-FC8A-4589-B60B-D3B363C8ECF5}.Debug|x64.ActiveCfg = Debug|x64
+		{300F8E24-FC8A-4589-B60B-D3B363C8ECF5}.Debug|x64.Build.0 = Debug|x64
+		{300F8E24-FC8A-4589-B60B-D3B363C8ECF5}.Release|x64.ActiveCfg = Release|x64
+		{300F8E24-FC8A-4589-B60B-D3B363C8ECF5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

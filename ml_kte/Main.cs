@@ -81,58 +81,11 @@ namespace ml_kte
 
         public override void OnApplicationQuit()
         {
-            m_quit = true;
-
-            if(Settings.Enabled)
+            if(!m_quit) // This is not a joke
             {
-                switch(Settings.DeviceVersion)
-                {
-                    case Settings.KinectVersion.V1:
-                        KinectHandlerV1.Terminate();
-                        break;
-                    case Settings.KinectVersion.V2:
-                        KinectHandlerV2.Terminate();
-                        break;
-                }
-            }
-
-            m_positionFloatsAlloc.Free();
-            m_rotationFloatsAlloc.Free();
-
-            m_trackedPoints = null;
-            m_trackedRoot = null;
-        }
-
-        public override void OnPreferencesSaved()
-        {
-            if(!m_quit)
-            {
-                bool l_oldState = Settings.Enabled;
-                Settings.Reload();
-
-                switch(Settings.DeviceVersion)
-                {
-                    case Settings.KinectVersion.V1:
-                        KinectHandlerV1.Check();
-                        break;
-                    case Settings.KinectVersion.V2:
-                        KinectHandlerV2.Check();
-                        break;
-                }
+                m_quit = true;
 
                 if(Settings.Enabled)
-                {
-                    switch(Settings.DeviceVersion)
-                    {
-                        case Settings.KinectVersion.V1:
-                            KinectHandlerV1.Launch();
-                            break;
-                        case Settings.KinectVersion.V2:
-                            KinectHandlerV2.Launch();
-                            break;
-                    }
-                }
-                else
                 {
                     switch(Settings.DeviceVersion)
                     {
@@ -143,32 +96,85 @@ namespace ml_kte
                             KinectHandlerV2.Terminate();
                             break;
                     }
-
-                    if(l_oldState && (Utils.GetLocalPlayer() != null))
-                        VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
                 }
 
-                if(m_trackedRoot != null)
-                {
-                    m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
-                    m_trackedRoot.transform.localRotation = Quaternion.Euler(Settings.OffsetRX, Settings.OffsetRY, Settings.OffsetRZ);
+                m_positionFloatsAlloc.Free();
+                m_rotationFloatsAlloc.Free();
 
-                    for(int i = 0; i < (int)TrackedPoint.Count; i++)
+                m_trackedPoints = null;
+                m_trackedRoot = null;
+            }
+        }
+
+        public override void OnPreferencesSaved()
+        {
+            if(!m_quit)
+            {
+                bool l_oldState = Settings.Enabled;
+                Settings.Reload();
+
+                if(Settings.IsAnyEntryUpdated())
+                {
+                    switch(Settings.DeviceVersion)
                     {
-                        m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
+                        case Settings.KinectVersion.V1:
+                            KinectHandlerV1.Check();
+                            break;
+                        case Settings.KinectVersion.V2:
+                            KinectHandlerV2.Check();
+                            break;
                     }
-                }
 
-                if(m_localTracked != null)
-                {
-                    m_localTracked.TrackHead = Settings.TrackHead;
-                    m_localTracked.TrackHips = Settings.TrackHips;
-                    m_localTracked.TrackLegs = Settings.TrackLegs;
-                    m_localTracked.TrackHands = Settings.TrackHands;
-                    m_localTracked.RotateHead = Settings.RotateHead;
-                    m_localTracked.RotateHips = Settings.RotateHips;
-                    m_localTracked.RotateLegs = Settings.RotateLegs;
-                    m_localTracked.RotateHands = Settings.RotateHands;
+                    if(Settings.Enabled)
+                    {
+                        switch(Settings.DeviceVersion)
+                        {
+                            case Settings.KinectVersion.V1:
+                                KinectHandlerV1.Launch();
+                                break;
+                            case Settings.KinectVersion.V2:
+                                KinectHandlerV2.Launch();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch(Settings.DeviceVersion)
+                        {
+                            case Settings.KinectVersion.V1:
+                                KinectHandlerV1.Terminate();
+                                break;
+                            case Settings.KinectVersion.V2:
+                                KinectHandlerV2.Terminate();
+                                break;
+                        }
+
+                        if(l_oldState && (Utils.GetLocalPlayer() != null))
+                            VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                    }
+
+                    if(m_trackedRoot != null)
+                    {
+                        m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
+                        m_trackedRoot.transform.localRotation = Quaternion.Euler(Settings.OffsetRX, Settings.OffsetRY, Settings.OffsetRZ);
+
+                        for(int i = 0; i < (int)TrackedPoint.Count; i++)
+                        {
+                            m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
+                        }
+                    }
+
+                    if(m_localTracked != null)
+                    {
+                        m_localTracked.TrackHead = Settings.TrackHead;
+                        m_localTracked.TrackHips = Settings.TrackHips;
+                        m_localTracked.TrackLegs = Settings.TrackLegs;
+                        m_localTracked.TrackHands = Settings.TrackHands;
+                        m_localTracked.RotateHead = Settings.RotateHead;
+                        m_localTracked.RotateHips = Settings.RotateHips;
+                        m_localTracked.RotateLegs = Settings.RotateLegs;
+                        m_localTracked.RotateHands = Settings.RotateHands;
+                    }
                 }
             }
         }
@@ -259,7 +265,7 @@ namespace ml_kte
 
         void OnRoomLeft()
         {
-            m_localTracked = null;  
+            m_localTracked = null;
         }
     }
 }

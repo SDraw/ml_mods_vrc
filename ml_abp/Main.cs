@@ -30,7 +30,7 @@ namespace ml_abp
             if(VRChatUtilityKit.Utilities.VRCUtils.IsUIXPresent)
             {
                 m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disable bones proximity from everyone in room", this.OnDisableAll);
+                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disable bones proximity for everyone in room", this.OnDisableAll);
                 ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
                 UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
                 UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject p_obj) =>
@@ -55,26 +55,29 @@ namespace ml_abp
             {
                 Settings.ReloadSettings();
 
-                if(m_update && (m_localInteracted != null))
+                if(m_update && (m_localInteracted != null) && Settings.IsAnyEntryUpdated())
                 {
-                    // Remove or add component on friends 
-                    foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
+                    if(Settings.IsFriendsEntryUpdated())
                     {
-                        InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
-                        if(l_component != null)
+                        // Remove or add component on friends 
+                        foreach(VRC.Player l_remotePlayer in Utils.GetFriendsInInstance())
                         {
-                            if(!Settings.AllowFriends)
+                            InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
+                            if(l_component != null)
                             {
-                                m_localInteracted.RemoveInteracter(l_component);
-                                Object.Destroy(l_component);
+                                if(!Settings.AllowFriends)
+                                {
+                                    m_localInteracted.RemoveInteracter(l_component);
+                                    Object.Destroy(l_component);
+                                }
                             }
-                        }
-                        else
-                        {
-                            if(Settings.AllowFriends)
+                            else
                             {
-                                l_component = l_remotePlayer.gameObject.AddComponent<InteracterPlayer>();
-                                m_localInteracted.AddInteracter(l_component);
+                                if(Settings.AllowFriends)
+                                {
+                                    l_component = l_remotePlayer.gameObject.AddComponent<InteracterPlayer>();
+                                    m_localInteracted.AddInteracter(l_component);
+                                }
                             }
                         }
                     }

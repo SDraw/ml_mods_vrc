@@ -68,7 +68,7 @@ namespace ml_clv
                     Transform l_bone = l_animator.GetBoneTransform(FindAssignedBone(l_animator));
                     l_start = (l_bone != null) ? l_bone.position : this.transform.position;
                 }
-                else 
+                else
                     l_start = this.transform.position;
 
                 if(m_lineRenderer != null)

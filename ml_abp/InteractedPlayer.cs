@@ -142,7 +142,8 @@ namespace ml_abp
                             break;
                         }
                     }
-                    if(l_skip) continue;
+                    if(l_skip)
+                        continue;
 
                     if(m_useCustomTargets && (l_transforms != null) && (l_param.field_Public_AvatarParameter_0 != null) && l_param.field_Public_AvatarParameter_0.field_Private_String_0.StartsWith("_ProximityTarget"))
                     {

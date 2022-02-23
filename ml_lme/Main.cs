@@ -47,6 +47,10 @@ namespace ml_lme
         }
         System.Collections.IEnumerator CreateLeapObjects()
         {
+            while(Utils.GetVRCTrackingManager() == null)
+                yield return null;
+            while(Utils.GetVRCTrackingSteam() == null)
+                yield return null;
             while(Utils.GetSteamVRControllerManager() == null)
                 yield return null;
 
@@ -66,14 +70,17 @@ namespace ml_lme
 
         public override void OnApplicationQuit()
         {
-            m_quit = true;
+            if(!m_quit) // This is not a joke
+            {
+                m_quit = true;
 
-            m_leapTrackingRoot = null;
-            m_localTracked = null;
+                m_leapTrackingRoot = null;
+                m_localTracked = null;
 
-            m_leapController.StopConnection();
-            m_leapController.Dispose();
-            m_leapController = null;
+                m_leapController.StopConnection();
+                m_leapController.Dispose();
+                m_leapController = null;
+            }
         }
 
         public override void OnPreferencesSaved()
@@ -82,36 +89,39 @@ namespace ml_lme
             {
                 Settings.ReloadSettings();
 
-                // Update Leap controller
-                if(m_leapController != null)
+                if(Settings.IsAnyEntryUpdated())
                 {
-                    if(Settings.Enabled)
+                    // Update Leap controller
+                    if(m_leapController != null)
                     {
-                        m_leapController.StartConnection();
-                        m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
-                        if(Settings.LeapHmdMode)
-                            m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                        if(Settings.Enabled)
+                        {
+                            m_leapController.StartConnection();
+                            m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
+                            if(Settings.LeapHmdMode)
+                                m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                            else
+                                m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                        }
                         else
-                            m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                            m_leapController.StopConnection();
                     }
-                    else
-                        m_leapController.StopConnection();
-                }
 
-                // Update tracking transforms
-                if(m_leapTrackingRoot != null)
-                {
-                    m_leapTrackingRoot.transform.parent = (Settings.HeadRoot ? Utils.GetCamera().transform : Utils.GetSteamVRControllerManager().transform);
-                    m_leapTrackingRoot.transform.localPosition = new Vector3(0f, (Settings.HeadRoot ? Settings.HmdOffsetY : Settings.DesktopOffsetY), (Settings.HeadRoot ? Settings.HmdOffsetZ : Settings.DesktopOffsetZ));
-                    m_leapTrackingRoot.transform.localRotation = Quaternion.Euler(Settings.RootRotation, 0f, 0f);
-                }
+                    // Update tracking transforms
+                    if(m_leapTrackingRoot != null)
+                    {
+                        m_leapTrackingRoot.transform.parent = (Settings.HeadRoot ? Utils.GetCamera().transform : Utils.GetSteamVRControllerManager().transform);
+                        m_leapTrackingRoot.transform.localPosition = new Vector3(0f, (Settings.HeadRoot ? Settings.HmdOffsetY : Settings.DesktopOffsetY), (Settings.HeadRoot ? Settings.HmdOffsetZ : Settings.DesktopOffsetZ));
+                        m_leapTrackingRoot.transform.localRotation = Quaternion.Euler(Settings.RootRotation, 0f, 0f);
+                    }
 
-                if(m_localTracked != null)
-                {
-                    m_localTracked.Enabled = Settings.Enabled;
-                    m_localTracked.FingersOnly = Settings.FingersTracking;
-                    if(!Settings.Enabled)
-                        m_localTracked.ResetTracking();
+                    if(m_localTracked != null)
+                    {
+                        m_localTracked.Enabled = Settings.Enabled;
+                        m_localTracked.FingersOnly = Settings.FingersTracking;
+                        if(!Settings.Enabled)
+                            m_localTracked.ResetTracking();
+                    }
                 }
             }
         }

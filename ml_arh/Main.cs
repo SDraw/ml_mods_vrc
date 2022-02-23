@@ -17,7 +17,7 @@
         {
             Settings.Reload();
 
-            if(m_localAdjuster != null)
+            if((m_localAdjuster != null) && Settings.IsAnyEntryUpdated())
             {
                 m_localAdjuster.Enabled = (Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
                 m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);

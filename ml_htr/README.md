@@ -4,8 +4,8 @@ MelonLoader mod that allows manual rotation fix for hips tracker. Designed prima
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
 * Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
-* Get [latest release DLL](../../../releases/latest).
-* Put `ml_htr.dll` in `Mods` folder of game.
+* Get [latest release DLL](../../../releases/latest):
+  * Put `ml_htr.dll` in `Mods` folder of game
 
 # Usage
 Available `Hip Tracker Rotator` menu button in main UIExpansionKit quick menu tab:

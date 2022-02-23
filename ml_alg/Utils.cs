@@ -29,7 +29,7 @@ namespace ml_alg
         {
             bool l_result = false;
             if(p_player.field_Private_APIUser_0 != null)
-                l_result = p_player.field_Private_APIUser_0.isFriend;
+                l_result = VRC.Core.APIUser.IsFriendsWith(p_player.field_Private_APIUser_0.id);
             if(p_player.field_Private_VRCPlayerApi_0 != null)
                 l_result = (l_result && !p_player.field_Private_VRCPlayerApi_0.isLocal);
             return l_result;
@@ -56,11 +56,6 @@ namespace ml_alg
             }
             return l_result;
         }
-
-        public static VRCTrackingManager GetVRCTrackingManager() => VRCTrackingManager.field_Private_Static_VRCTrackingManager_0;
-        public static VRCTrackingSteam GetVRCTrackingSteam() => GetVRCTrackingManager().field_Private_List_1_VRCTracking_0[0].TryCast<VRCTrackingSteam>();
-        public static Transform GetTrackingLeftController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_0.transform;
-        public static Transform GetTrackingRightController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_1.transform;
 
         // RootMotion.FinalIK.IKSolverVR extensions
         public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight)

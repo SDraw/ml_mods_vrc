@@ -7,8 +7,8 @@ This mod recreates removed panoramic screenshots feature with configurable optio
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
 * Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods)
 * Install [latest UIExpansionKit](https://github.com/knah/VRCMods)
-* Get [latest release DLL](../../../releases/latest)
-* Put `ml_ps.dll` in `Mods` folder of game
+* Get [latest release DLL](../../../releases/latest):
+  * Put `ml_ps.dll` in `Mods` folder of game
 
 # Usage
 New buttons available in quick menu camera tab:

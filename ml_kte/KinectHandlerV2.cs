@@ -39,15 +39,18 @@ namespace ml_kte
 
         public static void Launch()
         {
-            if(ms_valid) LaunchKinect();
+            if(ms_valid)
+                LaunchKinect();
         }
         public static void Terminate()
         {
-            if(ms_valid) TerminateKinect();
+            if(ms_valid)
+                TerminateKinect();
         }
         public static void GetTrackingData(IntPtr p_positions, IntPtr p_rotations)
         {
-            if(ms_valid) GetKinectData(p_positions, p_rotations);
+            if(ms_valid)
+                GetKinectData(p_positions, p_rotations);
         }
     }
 }
