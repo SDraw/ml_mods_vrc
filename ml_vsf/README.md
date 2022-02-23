@@ -4,7 +4,7 @@ MelonLoader mod for VRChat that retrieves head tracking from VSeeFace and applie
 [![](.github/img_01.png)](https://youtu.be/SHHU15Y_JLQ)
 
 # Installation
-* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader) for VRChat and VSeeFace (1.13.36p)
+* Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader) for VRChat and VSeeFace
 * Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods) for VRChat
 * Install [latest UIExpansionKit](https://github.com/knah/VRCMods) for VRChat
 * Get [latest release DLLs](../../../releases/latest):
