@@ -6,6 +6,11 @@
 
         public override void OnApplicationStart()
         {
+            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
+        }
+
+        void OnUiManagerInit()
+        {
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset +5 degrees around X axis ", () => this.OnRotate(5f, 0f, 0f));
             ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Rotate hip offset -5 degrees around X axis", () => this.OnRotate(-5f, 0f, 0f));

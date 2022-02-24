@@ -24,7 +24,7 @@ Added parameters change value according to proximity of another player's hands t
 
 ## Menu
 * Select player from quick menu.
-* Press `Toggle bones proximity` in UIExpansionKit quick menu.
+* Press `Bones proximity` toggle in UIExpansionKit quick menu.
 
 # Notes
 * This mod is made specificaly for SDK3 avatars creators, but will be obsolete after physics bones update release.

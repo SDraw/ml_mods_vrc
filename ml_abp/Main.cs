@@ -6,42 +6,25 @@ namespace ml_abp
     {
         bool m_quit = false;
 
-        InteractedPlayer m_localInteracted = null;
-
-        UnityEngine.UI.Text m_textComponent = null;
         object m_menuSettings = null;
+        object m_buttonPlayerAllow = null;
 
         bool m_update = false;
-        bool m_toggleVisibility = false;
-        VRC.Player m_currentSelectedPlayer = null;
+        InteractedPlayer m_localInteracted = null;
+        VRC.Player m_selectedPlayer = null;
 
         public override void OnApplicationStart()
         {
             MethodsResolver.ResolveMethods();
             Settings.LoadSettings();
 
+            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
-
-            if(VRChatUtilityKit.Utilities.VRCUtils.IsUIXPresent)
-            {
-                m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disable bones proximity for everyone in room", this.OnDisableAll);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
-                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
-                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Toggle bones proximity", this.OnProximityToggle, (GameObject p_obj) =>
-                {
-                    m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
-
-                    var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
-                    l_listener.OnEnabled += this.OnProximityToggleShown;
-                    l_listener.OnDisabled += this.OnProximityToggleHidden;
-                });
-            }
         }
 
         public override void OnApplicationQuit()
@@ -91,17 +74,25 @@ namespace ml_abp
 
         public override void OnUpdate()
         {
-            if(m_update && m_toggleVisibility)
+            if(m_update && ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Visible)
             {
                 VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
-                if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
+                if((l_selectedPlayer != null) && (m_selectedPlayer != l_selectedPlayer))
                 {
-                    m_currentSelectedPlayer = l_selectedPlayer;
-
-                    InteracterPlayer l_component = m_currentSelectedPlayer.GetComponent<InteracterPlayer>();
-                    m_textComponent.color = (l_component != null) ? Color.green : Color.white;
+                    m_selectedPlayer = l_selectedPlayer;
+                    ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Selected = (m_selectedPlayer.GetComponent<InteracterPlayer>() != null);
                 }
             }
+        }
+
+        void OnUiManagerInit()
+        {
+            m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disable bones proximity for everyone in room", this.OnDisableAll);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
+            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar bones proximity", this.OnMenuShow);
+
+            m_buttonPlayerAllow = UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddToggleButton("Bones proximity", this.OnProximityToggle, null);
         }
 
         void OnRoomJoined()
@@ -216,7 +207,7 @@ namespace ml_abp
                 ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
         }
 
-        void OnProximityToggle()
+        void OnProximityToggle(bool p_state)
         {
             if(m_update && (m_localInteracted != null))
             {
@@ -224,42 +215,18 @@ namespace ml_abp
                 if(l_remotePlayer != null)
                 {
                     InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
-                    if(l_component == null)
+                    if((l_component == null) && p_state)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<InteracterPlayer>();
                         m_localInteracted.AddInteracter(l_component);
-
-                        m_textComponent.color = Color.green;
                     }
-                    else
+                    else if((l_component != null) && !p_state)
                     {
                         m_localInteracted.RemoveInteracter(l_component);
                         Object.Destroy(l_component);
-
-                        m_textComponent.color = Color.white;
                     }
                 }
             }
-        }
-
-        void OnProximityToggleShown()
-        {
-            m_toggleVisibility = true;
-
-            VRC.Player l_remotePlayer = Utils.GetPlayerQM();
-            if(l_remotePlayer != null)
-            {
-                m_currentSelectedPlayer = l_remotePlayer;
-
-                InteracterPlayer l_component = l_remotePlayer.GetComponent<InteracterPlayer>();
-                m_textComponent.color = (l_component != null) ? Color.green : Color.white;
-            }
-        }
-
-        void OnProximityToggleHidden()
-        {
-            m_toggleVisibility = false;
-            m_currentSelectedPlayer = null;
         }
     }
 }

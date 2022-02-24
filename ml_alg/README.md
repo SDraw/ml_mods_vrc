@@ -26,7 +26,7 @@ Available mod's settings through UIExpansionKit:
 
 ## Menu
 * Select player in quick menu.
-* Press `Allow limbs manipulation` in UIExpansionKit quick menu.
+* Press `Limbs manipulation` toggle in UIExpansionKit quick menu.
 
 Also, available additional `Avatar limbs grabber` menu button in main UIExpansionKit quick menu tab:
 * **World pull permission:** shows if pulling head grab is allowed in this world.

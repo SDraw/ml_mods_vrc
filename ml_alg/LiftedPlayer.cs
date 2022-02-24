@@ -88,7 +88,7 @@ namespace ml_alg
             {
                 m_savePose = value;
                 if(!m_savePose)
-                    ClearSavedLiftedBones();
+                    ClearSavedPose();
             }
         }
 
@@ -532,7 +532,7 @@ namespace ml_alg
             m_liftBodyParts[(int)p_bone].m_reapplyOffset = OffsetReapplyState.None;
         }
 
-        public void ClearSavedLiftedBones()
+        public void ClearSavedPose()
         {
             if(m_liftBodyParts != null)
             {

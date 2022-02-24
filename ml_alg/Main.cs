@@ -6,51 +6,26 @@ namespace ml_alg
     {
         bool m_quit = false;
 
-        LiftedPlayer m_localLiftedPlayer = null;
-        UnityEngine.UI.Text m_textComponent = null;
         object m_menuSettings = null;
+        object m_menuLabelWorld = null;
+        object m_buttonPlayerAllow = null;
 
         bool m_update = false;
-        bool m_buttonVisibility = false;
-        VRC.Player m_currentSelectedPlayer = null;
+        LiftedPlayer m_localLiftedPlayer = null;
+        VRC.Player m_selectedPlayer = null;
 
         public override void OnApplicationStart()
         {
             MethodsResolver.ResolveMethods();
             Settings.LoadSettings();
 
+            VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnLeftRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
-
-            if(VRChatUtilityKit.Utilities.VRCUtils.IsUIXPresent)
-            {
-                m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddLabel("World pull permission:", (GameObject p_obj) =>
-                {
-                    UnityEngine.UI.Text l_worldText = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
-                    if(l_worldText != null)
-                        l_worldText.text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
-                });
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
-                ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
-                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
-
-                UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddSimpleButton("Allow limbs manipulation", this.OnManipulationAllow,
-                    delegate (GameObject p_obj)
-                    {
-                        m_textComponent = p_obj.GetComponentInChildren<UnityEngine.UI.Text>();
-
-                        var l_listener = p_obj.AddComponent<UIExpansionKit.Components.EnableDisableListener>();
-                        l_listener.OnEnabled += this.OnAllowButtonShown;
-                        l_listener.OnDisabled += this.OnAllowButtonHidden;
-                    }
-                );
-            }
         }
 
         public override void OnApplicationQuit()
@@ -107,16 +82,27 @@ namespace ml_alg
 
         public override void OnUpdate()
         {
-            if(m_update && m_buttonVisibility)
+            if(m_update && ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Visible)
             {
                 VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
-                if((l_selectedPlayer != null) && (m_currentSelectedPlayer != l_selectedPlayer))
+                if((l_selectedPlayer != null) && (m_selectedPlayer != l_selectedPlayer))
                 {
-                    m_currentSelectedPlayer = l_selectedPlayer;
-                    LifterPlayer l_component = m_currentSelectedPlayer.GetComponent<LifterPlayer>();
-                    m_textComponent.color = (l_component != null) ? Color.green : Color.white;
+                    m_selectedPlayer = l_selectedPlayer;
+                    ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Selected = (m_selectedPlayer.GetComponent<LifterPlayer>() != null);
                 }
             }
+        }
+
+        void OnUiManagerInit()
+        {
+            m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
+            m_menuLabelWorld = ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddLabel("");
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
+            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
+
+            m_buttonPlayerAllow = UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddToggleButton("Limbs manipulation", this.OnManipulationToggle, null);
         }
 
         void OnJoinedRoom()
@@ -128,6 +114,7 @@ namespace ml_alg
         {
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
+
             m_localLiftedPlayer = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
             m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
             m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
@@ -138,6 +125,8 @@ namespace ml_alg
             m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
             m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
             m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
+
+            ((UIExpansionKit.API.Controls.IMenuLabel)m_menuLabelWorld).Text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
         }
 
         void OnLeftRoom()
@@ -155,6 +144,7 @@ namespace ml_alg
         {
             while(m_localLiftedPlayer == null)
                 yield return null;
+
             LifterPlayer l_component = p_player.gameObject.AddComponent<LifterPlayer>();
             l_component.AddLifted(m_localLiftedPlayer);
         }
@@ -200,7 +190,7 @@ namespace ml_alg
             }
         }
 
-        void OnManipulationAllow()
+        void OnManipulationToggle(bool p_state)
         {
             if(m_update && (m_localLiftedPlayer != null))
             {
@@ -208,19 +198,16 @@ namespace ml_alg
                 if(l_remotePlayer != null)
                 {
                     LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
-                    if(l_component == null)
+                    if((l_component == null) && p_state)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
                         l_component.AddLifted(m_localLiftedPlayer);
-
-                        m_textComponent.color = Color.green;
                     }
-                    else
+                    else if((l_component != null) && !p_state)
                     {
                         l_component.RemoveLifted(m_localLiftedPlayer);
                         m_localLiftedPlayer.UnassignRemoteLifter(l_component);
                         Object.Destroy(l_component);
-                        m_textComponent.color = Color.white;
                     }
                 }
             }
@@ -235,7 +222,7 @@ namespace ml_alg
         void OnPoseReset()
         {
             if(m_update && (m_localLiftedPlayer != null) && Settings.SavePose)
-                m_localLiftedPlayer.ClearSavedLiftedBones();
+                m_localLiftedPlayer.ClearSavedPose();
         }
 
         void OnDisallowAll()
@@ -265,26 +252,6 @@ namespace ml_alg
         {
             if(m_update && (m_menuSettings != null))
                 ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
-        }
-
-        void OnAllowButtonShown()
-        {
-            m_buttonVisibility = true;
-
-            VRC.Player l_remotePlayer = Utils.GetPlayerQM();
-            if(l_remotePlayer != null)
-            {
-                m_currentSelectedPlayer = l_remotePlayer;
-
-                LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
-                m_textComponent.color = (l_component != null) ? Color.green : Color.white;
-            }
-        }
-
-        void OnAllowButtonHidden()
-        {
-            m_buttonVisibility = false;
-            m_currentSelectedPlayer = null;
         }
     }
 }
