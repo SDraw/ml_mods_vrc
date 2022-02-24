@@ -1,19 +1,13 @@
 ﻿using System;
+using UnityEngine;
 
 namespace ml_vsf
 {
     [MelonLoader.RegisterTypeInIl2Cpp]
-    class VsfTracked : UnityEngine.MonoBehaviour
+    class VsfTracked : MonoBehaviour
     {
         VRCPlayer m_player = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
-
-        float m_headHeight = 1f;
-
-        public float HeadHeight
-        {
-            get => m_headHeight;
-        }
 
         public VsfTracked(IntPtr ptr) : base(ptr) { }
 
@@ -24,7 +18,7 @@ namespace ml_vsf
         }
 
         // LateUpdate only
-        public void UpdateHeadTransform(UnityEngine.Transform p_transform)
+        public void UpdateHeadTransform(Transform p_transform)
         {
             if((m_solver != null) && (m_solver.spine != null))
             {
@@ -46,19 +40,10 @@ namespace ml_vsf
 
         void RecacheComponents()
         {
+            m_solver = null;
+
             if(m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
-            {
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
-                if((m_solver.spine != null) && (m_solver.spine.headTarget != null) && (m_solver.spine.headTarget.parent != null))
-                    m_headHeight = m_solver.spine.headTarget.parent.localPosition.y + m_solver.spine.headTarget.localPosition.y;
-                else
-                    m_headHeight = 1f;
-            }
-            else
-            {
-                m_solver = null;
-                m_headHeight = 1f;
-            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ml_vsf
+﻿using UnityEngine;
+
+namespace ml_vsf
 {
     public class VsfExtension : MelonLoader.MelonMod
     {
@@ -6,9 +8,11 @@
 
         MemoryMapReader m_mapReader = null;
         byte[] m_buffer = null;
+
         VsfTracked m_localTracked = null;
-        UnityEngine.GameObject m_headTracker = null;
-        float m_heightOffset = 0f;
+        GameObject m_headTracker = null;
+        FaceData m_faceData;
+        Vector3 m_headOffset;
 
         public override void OnApplicationStart()
         {
@@ -51,10 +55,18 @@
         {
             if(Settings.Enabled && m_mapReader.Read(ref m_buffer) && (m_localTracked != null))
             {
-                FaceData l_faceData = FaceData.ToObject(m_buffer);
+                m_faceData = FaceData.ToObject(m_buffer);
 
-                m_headTracker.transform.localPosition = UnityEngine.Vector3.Lerp(new UnityEngine.Vector3(Settings.Mirroring ? -l_faceData.m_headPositionX : l_faceData.m_headPositionX, l_faceData.m_headPositionY + m_heightOffset, l_faceData.m_headPositionZ), m_headTracker.transform.localPosition, Settings.Blending);
-                m_headTracker.transform.localRotation = UnityEngine.Quaternion.Slerp(new UnityEngine.Quaternion(l_faceData.m_headRotationX, Settings.Mirroring ? -l_faceData.m_headRotationY : l_faceData.m_headRotationY, Settings.Mirroring ? -l_faceData.m_headRotationZ : l_faceData.m_headRotationZ, l_faceData.m_headRotationW), m_headTracker.transform.localRotation, Settings.Blending);
+                m_headTracker.transform.localPosition = Vector3.Lerp(
+                    new Vector3(Settings.Mirroring ? -m_faceData.m_headPositionX : m_faceData.m_headPositionX, m_faceData.m_headPositionY, m_faceData.m_headPositionZ) + m_headOffset,
+                    m_headTracker.transform.localPosition,
+                    Settings.Blending
+                );
+                m_headTracker.transform.localRotation = Quaternion.Slerp(
+                    new Quaternion(m_faceData.m_headRotationX, Settings.Mirroring ? -m_faceData.m_headRotationY : m_faceData.m_headRotationY, Settings.Mirroring ? -m_faceData.m_headRotationZ : m_faceData.m_headRotationZ, m_faceData.m_headRotationW),
+                    m_headTracker.transform.localRotation,
+                    Settings.Blending
+                );
             }
         }
 
@@ -81,10 +93,10 @@
             while(Utils.GetSteamVRControllerManager() == null)
                 yield return null;
 
-            m_headTracker = new UnityEngine.GameObject("VSF_HeadTracker");
+            m_headTracker = new GameObject("VSF_HeadTracker");
             m_headTracker.transform.parent = Utils.GetSteamVRControllerManager().transform;
-            m_headTracker.transform.localPosition = UnityEngine.Vector3.zero;
-            m_headTracker.transform.localRotation = UnityEngine.Quaternion.identity;
+            m_headTracker.transform.localPosition = Vector3.zero;
+            m_headTracker.transform.localRotation = Quaternion.identity;
         }
 
         void OnRoomJoined()
@@ -106,14 +118,11 @@
 
         void OnHeightReset()
         {
-            if(Settings.Enabled && (m_localTracked != null))
+            if(Settings.Enabled && (m_localTracked != null) && (m_headTracker != null))
             {
-                float l_bindHeight = m_localTracked.transform.position.y + m_localTracked.HeadHeight;
-                UnityEngine.Vector3 l_prevLocal = m_headTracker.transform.localPosition;
-                UnityEngine.Vector3 l_prevGloval = m_headTracker.transform.position;
-                m_headTracker.transform.position = new UnityEngine.Vector3(l_prevGloval.x, l_bindHeight, l_prevGloval.z);
-                m_heightOffset = m_headTracker.transform.localPosition.y - l_prevLocal.y;
-                m_headTracker.transform.localPosition = new UnityEngine.Vector3(l_prevLocal.x, l_prevLocal.y + m_heightOffset, l_prevLocal.z);
+                m_headTracker.transform.position = m_localTracked.transform.position + m_localTracked.transform.rotation * new Vector3(0f, VRCTrackingManager.field_Private_Static_Vector3_0.y - VRCTrackingManager.field_Private_Static_Vector3_1.y * 1.22f, 0f);
+                m_headOffset = m_headTracker.transform.localPosition;
+                m_headOffset.y -= m_faceData.m_headPositionY;
             }
         }
     }
