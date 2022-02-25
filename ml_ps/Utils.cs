@@ -14,9 +14,9 @@ namespace ml_ps
 
         public static string GetCurrentWorldName() => RoomManager.field_Internal_Static_ApiWorld_0.name;
 
-        public static void PlayCameraShutterSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_0, 1f });
-        public static void PlayXyloSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_1, 1f });
-        public static void PlayBlockedSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { Eyeshot360cam.Eyeshot360cam.field_Private_Static_Eyeshot360cam_0.field_Public_AudioClip_2, 1f });
+        public static void PlayCameraShutterSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique.field_Private_Static_MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique_0.field_Public_AudioClip_0, 1f });
+        public static void PlayXyloSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique.field_Private_Static_MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique_0.field_Public_AudioClip_1, 1f });
+        public static void PlayBlockedSound() => MethodsResolver.PlaySound?.Invoke(null, new object[] { MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique.field_Private_Static_MonoBehaviourPublicStAcSt1TeStKeSiKeObUnique_0.field_Public_AudioClip_2, 1f });
 
         public static string CleanupAsFilename(string p_string)
         {
