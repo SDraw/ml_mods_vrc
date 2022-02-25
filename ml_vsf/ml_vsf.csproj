@@ -79,7 +79,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FaceData.cs" />
+    <Compile Include="..\ml_vsf_wrapper\FaceData.cs">
+      <Link>FaceData.cs</Link>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="MemoryMapReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

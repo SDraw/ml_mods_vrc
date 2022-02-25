@@ -120,7 +120,9 @@ namespace ml_vsf
         {
             if(Settings.Enabled && (m_localTracked != null) && (m_headTracker != null))
             {
-                m_headTracker.transform.position = m_localTracked.transform.position + m_localTracked.transform.rotation * new Vector3(0f, VRCTrackingManager.field_Private_Static_Vector3_0.y - VRCTrackingManager.field_Private_Static_Vector3_1.y * 1.22f, 0f);
+                m_headTracker.transform.parent = Utils.GetVRCTrackingManager().transform;
+                m_headTracker.transform.position = m_localTracked.transform.position + m_localTracked.transform.rotation * new Vector3(0f, Utils.GetAvatarViewPoint().y - Utils.GetAvatarHeadToViewPoint().y * 1.22f, 0f);
+                m_headTracker.transform.parent = Utils.GetSteamVRControllerManager().transform;
                 m_headOffset = m_headTracker.transform.localPosition;
                 m_headOffset.y -= m_faceData.m_headPositionY;
             }

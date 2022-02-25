@@ -18,9 +18,11 @@ namespace ml_lme
             {
                 var l_methodsList = typeof(VRCTrackingManager).GetMethods().Where(m =>
                     m.Name.StartsWith("Method_Public_Static_Boolean_") && (m.ReturnType == typeof(bool)) && !m.GetParameters().Any() &&
-                    (XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarDebugConsole))).Count() > 1) &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AvatarDebugConsole))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCFlowManager))).Any() &&
-                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(SpawnManager))).Any()
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCInputManager))).Any() &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(LocomotionInputController))).Any() &&
+                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCVrCamera))).Any()
                 );
 
                 if(l_methodsList.Any())
