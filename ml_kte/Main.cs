@@ -75,8 +75,6 @@ namespace ml_kte
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-
-            OnPreferencesSaved();
         }
 
         public override void OnApplicationQuit()
@@ -114,68 +112,7 @@ namespace ml_kte
                 Settings.Reload();
 
                 if(Settings.IsAnyEntryUpdated())
-                {
-                    switch(Settings.DeviceVersion)
-                    {
-                        case Settings.KinectVersion.V1:
-                            KinectHandlerV1.Check();
-                            break;
-                        case Settings.KinectVersion.V2:
-                            KinectHandlerV2.Check();
-                            break;
-                    }
-
-                    if(Settings.Enabled)
-                    {
-                        switch(Settings.DeviceVersion)
-                        {
-                            case Settings.KinectVersion.V1:
-                                KinectHandlerV1.Launch();
-                                break;
-                            case Settings.KinectVersion.V2:
-                                KinectHandlerV2.Launch();
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch(Settings.DeviceVersion)
-                        {
-                            case Settings.KinectVersion.V1:
-                                KinectHandlerV1.Terminate();
-                                break;
-                            case Settings.KinectVersion.V2:
-                                KinectHandlerV2.Terminate();
-                                break;
-                        }
-
-                        if(l_oldState && (Utils.GetLocalPlayer() != null))
-                            VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
-                    }
-
-                    if(m_trackedRoot != null)
-                    {
-                        m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
-                        m_trackedRoot.transform.localRotation = Quaternion.Euler(Settings.OffsetRX, Settings.OffsetRY, Settings.OffsetRZ);
-
-                        for(int i = 0; i < (int)TrackedPoint.Count; i++)
-                        {
-                            m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
-                        }
-                    }
-
-                    if(m_localTracked != null)
-                    {
-                        m_localTracked.TrackHead = Settings.TrackHead;
-                        m_localTracked.TrackHips = Settings.TrackHips;
-                        m_localTracked.TrackLegs = Settings.TrackLegs;
-                        m_localTracked.TrackHands = Settings.TrackHands;
-                        m_localTracked.RotateHead = Settings.RotateHead;
-                        m_localTracked.RotateHips = Settings.RotateHips;
-                        m_localTracked.RotateLegs = Settings.RotateLegs;
-                        m_localTracked.RotateHands = Settings.RotateHands;
-                    }
-                }
+                    ApplySettings(l_oldState);
             }
         }
 
@@ -240,6 +177,72 @@ namespace ml_kte
                 m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
                 Object.DontDestroyOnLoad(m_trackedPoints[i]);
                 Object.Destroy(m_trackedPoints[i].GetComponent<SphereCollider>());
+            }
+
+            ApplySettings(Settings.Enabled);
+        }
+
+        void ApplySettings(bool p_oldState)
+        {
+            switch(Settings.DeviceVersion)
+            {
+                case Settings.KinectVersion.V1:
+                    KinectHandlerV1.Check();
+                    break;
+                case Settings.KinectVersion.V2:
+                    KinectHandlerV2.Check();
+                    break;
+            }
+
+            if(Settings.Enabled)
+            {
+                switch(Settings.DeviceVersion)
+                {
+                    case Settings.KinectVersion.V1:
+                        KinectHandlerV1.Launch();
+                        break;
+                    case Settings.KinectVersion.V2:
+                        KinectHandlerV2.Launch();
+                        break;
+                }
+            }
+            else
+            {
+                switch(Settings.DeviceVersion)
+                {
+                    case Settings.KinectVersion.V1:
+                        KinectHandlerV1.Terminate();
+                        break;
+                    case Settings.KinectVersion.V2:
+                        KinectHandlerV2.Terminate();
+                        break;
+                }
+
+                if(p_oldState && (Utils.GetLocalPlayer() != null))
+                    VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+            }
+
+            if(m_trackedRoot != null)
+            {
+                m_trackedRoot.transform.localPosition = new Vector3(Settings.OffsetX, Settings.OffsetY, Settings.OffsetZ);
+                m_trackedRoot.transform.localRotation = Quaternion.Euler(Settings.OffsetRX, Settings.OffsetRY, Settings.OffsetRZ);
+
+                for(int i = 0; i < (int)TrackedPoint.Count; i++)
+                {
+                    m_trackedPoints[i].GetComponent<MeshRenderer>().enabled = (Settings.Enabled && Settings.ShowPoints);
+                }
+            }
+
+            if(m_localTracked != null)
+            {
+                m_localTracked.TrackHead = Settings.TrackHead;
+                m_localTracked.TrackHips = Settings.TrackHips;
+                m_localTracked.TrackLegs = Settings.TrackLegs;
+                m_localTracked.TrackHands = Settings.TrackHands;
+                m_localTracked.RotateHead = Settings.RotateHead;
+                m_localTracked.RotateHips = Settings.RotateHips;
+                m_localTracked.RotateLegs = Settings.RotateLegs;
+                m_localTracked.RotateHands = Settings.RotateHands;
             }
         }
 

@@ -21,9 +21,9 @@ Available mod's settings through UIExpansionKit:
 * **Desktop Y/Z axis:** up/forward offset position in desktop orientation mode, (-0.5, 0.4) by default.
 * **HMD Y/Z axis:** up/forward offset position in head-mounted orientation mode, (-0.15, 0.15) by default.
 * **Root X axis rotation:** root rotation around X axis, useful for neck mounts, 0 by default.
+* **Gestures based on fingers tracking:** avatar gestures based on fingers tracking, if disabled original gestures from controllers input will be used, VR only, disabled by default.
 
 # Notes
-* In desktop mode be sure to disable gestures in "Action Menu (R) - Options - Gestures" to make avatar animation actions be in fixed state instead of on hold state.
 * Due to tracking changes of VRChat it's recommended to toggle on option `Head as root point` in VR mode.
 * Offset values correspond to SteamVR environment units.
 * Tracked hands don't change transformation of picked up objects.

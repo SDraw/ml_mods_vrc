@@ -20,6 +20,9 @@
             return (bool)MethodsResolver.IsInVRMode?.Invoke(null, null);
         }
 
+        public static bool GetGesturesToggle() => (UnityEngine.PlayerPrefs.GetInt(HandGestureController.field_Private_Static_String_0) == 1);
+        public static VRCInputManager.InputMethod GetCurrentInput() => VRCInputManager.field_Private_Static_InputMethod_0;
+
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
             T temp = lhs;

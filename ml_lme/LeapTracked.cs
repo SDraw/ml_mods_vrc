@@ -45,18 +45,13 @@ namespace ml_lme
             m_trackigMode = TrackingMode.Generic;
             if((m_fbtIK != null) && m_fbtIK.enabled)
                 m_trackigMode = TrackingMode.FBT;
-            if(m_enabled && HandGestureController.field_Private_Static_Boolean_1)
-                HandGestureController.field_Private_Static_Boolean_1 = false;
         }
 
         [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public void UpdateFromGestures(GestureMatcher.GesturesData p_gesturesData)
         {
-            if(m_handGestureController != null)
+            if(m_enabled && (m_handGestureController != null))
             {
-                m_handGestureController.field_Internal_Boolean_0 = true;
-                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Index;
-
                 for(int i = 0; i < 2; i++)
                 {
                     if(p_gesturesData.m_handsPresenses[i])
@@ -73,70 +68,71 @@ namespace ml_lme
         }
 
         [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
-        public void UpdateHandsPositions(GestureMatcher.GesturesData p_gesturesData, Transform p_left, Transform p_right)
+        public void UpdateTracking(GestureMatcher.GesturesData p_gesturesData, Transform p_left, Transform p_right)
         {
-            if(!m_fingersOnly)
+            if(m_enabled)
             {
-                switch(m_trackigMode)
+                if(!m_fingersOnly)
                 {
-                    case TrackingMode.Generic:
+                    switch(m_trackigMode)
                     {
-                        if(p_gesturesData.m_handsPresenses[0] && (m_solver?.leftArm?.target != null))
+                        case TrackingMode.Generic:
                         {
-                            m_solver.leftArm.positionWeight = 1f;
-                            m_solver.leftArm.rotationWeight = 1f;
-                            m_solver.leftArm.target.position = p_left.position;
-                            m_solver.leftArm.target.rotation = p_left.rotation;
-                        }
-
-                        if(p_gesturesData.m_handsPresenses[1] && (m_solver?.rightArm?.target != null))
-                        {
-                            m_solver.rightArm.positionWeight = 1f;
-                            m_solver.rightArm.rotationWeight = 1f;
-                            m_solver.rightArm.target.position = p_right.position;
-                            m_solver.rightArm.target.rotation = p_right.rotation;
-                        }
-                    }
-                    break;
-
-                    case TrackingMode.FBT:
-                    {
-                        if(m_fbtIK != null)
-                        {
-                            if(p_gesturesData.m_handsPresenses[0] && (m_fbtIK.solver?.leftHandEffector != null))
+                            if(p_gesturesData.m_handsPresenses[0] && (m_solver?.leftArm?.target != null))
                             {
-                                m_fbtIK.solver.leftHandEffector.position = p_left.position;
-                                m_fbtIK.solver.leftHandEffector.rotation = p_left.rotation;
-                                m_fbtIK.solver.leftHandEffector.target.position = p_left.position;
-                                m_fbtIK.solver.leftHandEffector.target.rotation = p_left.rotation;
+                                m_solver.leftArm.positionWeight = 1f;
+                                m_solver.leftArm.rotationWeight = 1f;
+                                m_solver.leftArm.target.position = p_left.position;
+                                m_solver.leftArm.target.rotation = p_left.rotation;
                             }
 
-                            if(p_gesturesData.m_handsPresenses[1] && (m_fbtIK.solver?.rightHandEffector != null))
+                            if(p_gesturesData.m_handsPresenses[1] && (m_solver?.rightArm?.target != null))
                             {
-                                m_fbtIK.solver.rightHandEffector.position = p_right.position;
-                                m_fbtIK.solver.rightHandEffector.rotation = p_right.rotation;
-                                m_fbtIK.solver.rightHandEffector.target.position = p_right.position;
-                                m_fbtIK.solver.rightHandEffector.target.rotation = p_right.rotation;
+                                m_solver.rightArm.positionWeight = 1f;
+                                m_solver.rightArm.rotationWeight = 1f;
+                                m_solver.rightArm.target.position = p_right.position;
+                                m_solver.rightArm.target.rotation = p_right.rotation;
                             }
                         }
+                        break;
+
+                        case TrackingMode.FBT:
+                        {
+                            if(m_fbtIK != null)
+                            {
+                                if(p_gesturesData.m_handsPresenses[0] && (m_fbtIK.solver?.leftHandEffector != null))
+                                {
+                                    m_fbtIK.solver.leftHandEffector.position = p_left.position;
+                                    m_fbtIK.solver.leftHandEffector.rotation = p_left.rotation;
+                                    m_fbtIK.solver.leftHandEffector.target.position = p_left.position;
+                                    m_fbtIK.solver.leftHandEffector.target.rotation = p_left.rotation;
+                                }
+
+                                if(p_gesturesData.m_handsPresenses[1] && (m_fbtIK.solver?.rightHandEffector != null))
+                                {
+                                    m_fbtIK.solver.rightHandEffector.position = p_right.position;
+                                    m_fbtIK.solver.rightHandEffector.rotation = p_right.rotation;
+                                    m_fbtIK.solver.rightHandEffector.target.position = p_right.position;
+                                    m_fbtIK.solver.rightHandEffector.target.rotation = p_right.rotation;
+                                }
+                            }
+                        }
+                        break;
                     }
-                    break;
                 }
-            }
 
-            if(m_handGestureController != null)
-            {
-                m_handGestureController.field_Internal_Boolean_0 = true;
-                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Index;
-                for(int i = 0; i < 2; i++)
+                if(m_handGestureController != null)
                 {
-                    if(p_gesturesData.m_handsPresenses[i])
+                    for(int i = 0; i < 2; i++)
                     {
-                        for(int j = 0; j < 5; j++)
+                        if(p_gesturesData.m_handsPresenses[i])
                         {
-                            int l_dataIndex = i * 5 + j;
-                            m_handGestureController.field_Private_ArrayOf_VRCInput_0[l_dataIndex].field_Public_Single_0 = 1.0f - ((i == 0) ? p_gesturesData.m_leftFingersBends[j] : p_gesturesData.m_rightFingersBends[j]); // Bend
-                            m_handGestureController.field_Private_ArrayOf_VRCInput_1[l_dataIndex].field_Public_Single_0 = ((i == 0) ? p_gesturesData.m_leftFingersSpreads[j] : p_gesturesData.m_rightFingersSpreads[j]); // Spread
+                            for(int j = 0; j < 5; j++)
+                            {
+                                int l_dataIndex = i * 5 + j;
+                                m_handGestureController.field_Private_ArrayOf_VRCInput_0[l_dataIndex].field_Public_Single_0 = 1.0f - ((i == 0) ? p_gesturesData.m_leftFingersBends[j] : p_gesturesData.m_rightFingersBends[j]); // Bend
+                                m_handGestureController.field_Private_ArrayOf_VRCInput_1[l_dataIndex].field_Public_Single_0 = ((i == 0) ? p_gesturesData.m_leftFingersSpreads[j] : p_gesturesData.m_rightFingersSpreads[j]); // Spread
+                            }
                         }
                     }
                 }
@@ -145,21 +141,34 @@ namespace ml_lme
 
         void RecacheComponents()
         {
-            m_handGestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
+            m_solver = null;
+            m_fbtIK = null;
+            m_handGestureController = null;
+
             if(m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
-            else
-                m_solver = null; // Generic avatar
             m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
+            m_handGestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
+
+            ReapplyTracking();
         }
 
-        public void ResetTracking()
+        public void ReapplyTracking()
         {
             if(m_handGestureController != null)
             {
-                m_handGestureController.field_Internal_Boolean_0 = false;
-                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Mouse;
-                HandGestureController.field_Private_Static_Boolean_1 = (PlayerPrefs.GetInt("VRC_PLAYER_GESTURE_TOGGLE") == 1);
+                m_handGestureController.field_Private_InputMethod_0 = ((m_enabled && !Utils.IsInVRMode()) ? VRCInputManager.InputMethod.Index : VRCInputManager.InputMethod.Count);
+                HandGestureController.field_Private_Static_Boolean_1 = ((m_enabled && !Utils.IsInVRMode()) ? false : Utils.GetGesturesToggle());
+            }
+        }
+
+        public void ForceIndexTracking(HandGestureController p_controller)
+        {
+            if(m_handGestureController == p_controller)
+            {
+                // Spaceballs!
+                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Index;
+                VRC.PoseRecorder.field_Internal_Static_Int32_0 |= (int)0x200u;
             }
         }
     }
