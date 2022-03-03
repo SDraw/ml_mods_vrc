@@ -16,6 +16,7 @@ namespace ml_lme
 
         GameObject m_leapTrackingRoot = null;
         GameObject[] m_leapHands = null;
+        GameObject m_leapControllerModel = null;
 
         LeapTracked m_localTracked = null;
 
@@ -69,6 +70,8 @@ namespace ml_lme
             while(Utils.GetSteamVRControllerManager() == null)
                 yield return null;
 
+            AssetsHandler.Load();
+
             m_leapTrackingRoot = new GameObject("LeapTrackingRoot");
             m_leapTrackingRoot.transform.parent = Utils.GetSteamVRControllerManager().transform;
             m_leapTrackingRoot.transform.localPosition = Vector3.zero;
@@ -84,6 +87,15 @@ namespace ml_lme
                 Object.DontDestroyOnLoad(m_leapHands[i]);
             }
 
+            m_leapControllerModel = AssetsHandler.GetAsset("assets/models/leapmotion/leap_motion_1_0.obj");
+            if(m_leapControllerModel != null)
+            {
+                m_leapControllerModel.name = "LeapModel";
+                m_leapControllerModel.transform.parent = m_leapTrackingRoot.transform;
+                m_leapControllerModel.transform.localPosition = Vector3.zero;
+                m_leapControllerModel.transform.localRotation = Quaternion.identity;
+            }
+
             ApplySettings();
         }
 
@@ -91,16 +103,19 @@ namespace ml_lme
         {
             if(!m_quit) // This is not a joke
             {
-                ms_instance = null;
-
                 m_quit = true;
 
+                ms_instance = null;
+
+                m_leapControllerModel = null;
                 m_leapTrackingRoot = null;
                 m_localTracked = null;
 
                 m_leapController.StopConnection();
                 m_leapController.Dispose();
                 m_leapController = null;
+
+                AssetsHandler.Unload();
             }
         }
 
@@ -171,8 +186,14 @@ namespace ml_lme
             if(m_leapTrackingRoot != null)
             {
                 m_leapTrackingRoot.transform.parent = (Settings.HeadRoot ? Utils.GetCamera().transform : Utils.GetSteamVRControllerManager().transform);
-                m_leapTrackingRoot.transform.localPosition = new Vector3(0f, (Settings.HeadRoot ? Settings.HmdOffsetY : Settings.DesktopOffsetY), (Settings.HeadRoot ? Settings.HmdOffsetZ : Settings.DesktopOffsetZ));
+                m_leapTrackingRoot.transform.localPosition = new Vector3(0f, (Settings.HeadRoot ? Settings.HeadOffsetY : Settings.DesktopOffsetY), (Settings.HeadRoot ? Settings.HeadOffsetZ : Settings.DesktopOffsetZ));
                 m_leapTrackingRoot.transform.localRotation = Quaternion.Euler(Settings.RootRotation, 0f, 0f);
+            }
+
+            if(m_leapControllerModel != null)
+            {
+                m_leapControllerModel.transform.localRotation = (Settings.LeapHmdMode ? Quaternion.Euler(270f, 180f, 0f) : Quaternion.identity);
+                m_leapControllerModel.active = Settings.ShowModel;
             }
 
             if(m_localTracked != null)
