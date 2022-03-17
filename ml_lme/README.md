@@ -28,6 +28,7 @@ Available mod's settings through UIExpansionKit:
 * Due to tracking changes of VRChat it's recommended to enable `Attach to head` option in VR mode.
 * Offset values correspond to SteamVR environment units.
 * Tracked hands don't change transformation of picked up objects.
+* If your system can't run latest Ultraleap Gemini tracking software for [(un/)known reasons](https://support.leapmotion.com/hc/en-us/articles/4412486302353-Known-Issues-Gemini-), alternatively you can install Ultraleap Gemini v5.0.0-preview and use `ml_lme_gp.dll` from latest release. This build version isn't added to VRCMG mods list.
 
 # Credits
 * Thanks to [Magic3000](https://github.com/Magic3000) for patch to enable remote finger tracking in VR mode.
