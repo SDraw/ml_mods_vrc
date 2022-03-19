@@ -13,12 +13,13 @@ MelonLoader mod for VRChat that brings limbs manipulation of local player by rem
 # Usage
 ## Settings
 Available mod's settings through UIExpansionKit:
-* **Maximal distance to limbs:** maximal distance to limbs for successful grab, 0.25 by default.
+* **Maximal distance to limbs:** maximal distance to limbs for successful grab, 0.25 by default, scaled by avatar height.
 * **Allow friends to manipulate you:** allow manipulation for friends in room (includes new joiners and option toggle), enabled by default.
-* **Allow pull:** allow pulling head grab, enabled by default.
-* **Allow hands pull:** allow hand limbs pulling, enabled by default.
+* **Allow pull:** allow player pulling, enabled by default.
+* **Allow head pull:** allow head pulling, enabled by default.
+* **Allow hands pull:** allow hands pulling, enabled by default.
 * **Allow hips pull:** allow hips pulling, enabled by default.
-* **Allow legs pull:** allow leg limbs pulling, enabled by default.
+* **Allow legs pull:** allow legs pulling, enabled by default.
 * **Preserve manipulated pose:** lock manipulated limbs upon grab release, disabled by default.
 * **Apply velocity on pull:** enable throwing upon releasing head grab, disabled by default.
 * **Velocity multiplier:** throwing velocity multiplier, 5.0 by default.
@@ -40,4 +41,7 @@ Index users should enabled gestures from action menu settings.
 # Notes
 * [IKTweaks](https://github.com/knah/VRCMods) support is removed due to several issues after release tag [`r51`](https://github.com/SDraw/ml_mods/tree/r51).
 * You can't be picked up in worlds that don't allow risky functions.
+* Self pulling is possible with limitations:
+  * You can't move yourself as others do
+  * You can't pull your head because of weird VRChat's behaviour
 * Shame on you for using it in ERP.

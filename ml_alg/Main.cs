@@ -67,6 +67,7 @@ namespace ml_alg
                     }
 
                     m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+                    m_localLiftedPlayer.AllowHeadPull = Settings.AllowHeadPull;
                     m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
                     m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
                     m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
@@ -117,6 +118,7 @@ namespace ml_alg
 
             m_localLiftedPlayer = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
             m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+            m_localLiftedPlayer.AllowHeadPull = Settings.AllowHeadPull;
             m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
             m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
             m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;

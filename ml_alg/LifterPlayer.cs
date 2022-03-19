@@ -38,6 +38,12 @@ namespace ml_alg
             m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
         }
 
+        void OnDestroy()
+        {
+            if(m_animator != null)
+                m_animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
+        }
+
         void Update()
         {
             if(m_gestureController != null)
@@ -78,6 +84,8 @@ namespace ml_alg
             {
                 foreach(LiftedPlayer l_lifted in m_liftedPlayers)
                     l_lifted.UnassignRemoteLifter(this);
+
+                m_animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             }
         }
     }

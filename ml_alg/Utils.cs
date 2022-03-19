@@ -4,8 +4,6 @@ namespace ml_alg
 {
     static class Utils
     {
-        public static readonly Vector4 ms_pointVector = new Vector4(0f, 0f, 0f, 1f);
-
         // VRChat related
         static VRC.UI.Elements.QuickMenu ms_quickMenu = null;
         public static VRC.Player GetPlayerQM() // Thanks, now I hate this new menu
@@ -56,6 +54,10 @@ namespace ml_alg
             }
             return l_result;
         }
+
+        public static VRCTrackingManager GetVRCTrackingManager() => VRCTrackingManager.field_Private_Static_VRCTrackingManager_0;
+
+        public static float GetTrackingScale() => GetVRCTrackingManager().transform.localScale.x;
 
         // RootMotion.FinalIK.IKSolverVR extensions
         public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight)

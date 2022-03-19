@@ -14,6 +14,7 @@
         static float ms_velocityMultiplier = 5f;
         static bool ms_useAverageVelocity = true;
         static bool ms_allowPull = true;
+        static bool ms_allowHeadPull = true;
         static bool ms_allowHandsPull = true;
         static bool ms_allowHipsPull = true;
         static bool ms_allowLegsPull = true;
@@ -28,6 +29,7 @@
             ms_friendsEntry.OnValueChanged += OnFriendsEntryUpdate;
 
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowPull", ms_allowPull, "Allow pull").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHeadPull", ms_allowHeadPull, "Allow head pull").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHandsPull", ms_allowHandsPull, "Allow hands pull").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowHipsPull", ms_allowHipsPull, "Allow hips pull").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AllowLegsPull", ms_allowLegsPull, "Allow legs pull").OnValueChanged += OnAnyEntryUpdate;
@@ -44,6 +46,7 @@
             ms_grabDistance = MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "GrabRadius");
             ms_allowFriends = ms_friendsEntry.Value;
             ms_allowPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowPull");
+            ms_allowHeadPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHeadPull");
             ms_allowHandsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHandsPull");
             ms_allowHipsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowHipsPull");
             ms_allowLegsPull = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AllowLegsPull");
@@ -81,6 +84,10 @@
         public static bool AllowPull
         {
             get => ms_allowPull;
+        }
+        public static bool AllowHeadPull
+        {
+            get => ms_allowHeadPull;
         }
         public static bool AllowHandsPull
         {
