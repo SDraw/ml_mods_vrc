@@ -1,6 +1,8 @@
 # Avatar Real Height
 MelonLoader mod for VRChat that sets local player collision height to avatar and pose height.
 
+[![](.github/img_01.png)](https://youtu.be/5yWTa_Z7oQA)
+
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
 * Install [latest VRChatUtilityKit](https://github.com/SleepyVRC/Mods)

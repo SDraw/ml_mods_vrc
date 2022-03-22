@@ -1,7 +1,8 @@
 # Kinect Tracking Extension
-
 MelonLoader mod for VRChat that brings Kinect tracking.  
 Supports Kinect for XBox One / Kinect 2 for Windows and Kinect for XBox 360.
+
+[![](.github/img_01.png)](https://youtu.be/hiqPSsD8Y0I)
 
 # Installation
 * Install [latest MelonLoader](https://github.com/LavaGang/MelonLoader)
