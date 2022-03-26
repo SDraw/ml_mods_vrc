@@ -47,6 +47,7 @@ namespace ml_alg
         bool m_savePose = false;
         bool m_useVelocity = false;
         bool m_averageVelocity = true;
+        bool m_distanceScale = true;
 
         VRCPlayer m_player;
         Animator m_animator = null;
@@ -112,6 +113,11 @@ namespace ml_alg
         public bool AverageVelocity
         {
             set => m_averageVelocity = value;
+        }
+
+        public bool DistanceScale
+        {
+            set => m_distanceScale = value;
         }
 
         public LiftedPlayer(IntPtr ptr) : base(ptr)
@@ -622,7 +628,7 @@ namespace ml_alg
                             }
                         }
                     }
-                    if(l_nearestDistance > (m_grabDistance * Utils.GetTrackingScale()))
+                    if(l_nearestDistance > (m_grabDistance * (m_distanceScale ? Utils.GetTrackingScale() : 1f)))
                         l_result = HumanBodyBones.LastBone;
                 }
             }

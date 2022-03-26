@@ -18,6 +18,7 @@
         static bool ms_allowHandsPull = true;
         static bool ms_allowHipsPull = true;
         static bool ms_allowLegsPull = true;
+        static bool ms_distanceScale = true;
 
         public static void LoadSettings()
         {
@@ -37,6 +38,7 @@
             MelonLoader.MelonPreferences.CreateEntry("ALG", "Velocity", ms_useVelocity, "Apply velocity on pull").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("ALG", "VelocityMultiplier", ms_velocityMultiplier, "Velocity multiplier (0-100)").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("ALG", "AverageVelocity", ms_useAverageVelocity, "Use average velocity").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("ALG", "DistanceScale", ms_distanceScale, "Use avatar scale for grabbing").OnValueChanged += OnAnyEntryUpdate;
 
             ReloadSettings();
         }
@@ -55,6 +57,7 @@
             ms_velocityMultiplier = UnityEngine.Mathf.Clamp(MelonLoader.MelonPreferences.GetEntryValue<float>("ALG", "VelocityMultiplier"), 0f, 100f);
             MelonLoader.MelonPreferences.SetEntryValue("ALG", "VelocityMultiplier", ms_velocityMultiplier);
             ms_useAverageVelocity = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "AverageVelocity");
+            ms_distanceScale = MelonLoader.MelonPreferences.GetEntryValue<bool>("ALG", "DistanceScale");
         }
 
         static void OnAnyEntryUpdate<T>(T p_oldValue, T p_newValue) => ms_settingsUpdated = true;
@@ -116,6 +119,10 @@
         public static bool UseAverageVelocity
         {
             get => ms_useAverageVelocity;
+        }
+        public static bool DistanceScale
+        {
+            get => ms_distanceScale;
         }
     }
 }

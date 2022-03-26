@@ -76,6 +76,7 @@ namespace ml_alg
                     m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
                     m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
                     m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
+                    m_localLiftedPlayer.DistanceScale = Settings.DistanceScale;
                     m_localLiftedPlayer.ReapplyPermissions();
                 }
             }
@@ -127,6 +128,7 @@ namespace ml_alg
             m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
             m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
             m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
+            m_localLiftedPlayer.DistanceScale = Settings.DistanceScale;
 
             ((UIExpansionKit.API.Controls.IMenuLabel)m_menuLabelWorld).Text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
         }

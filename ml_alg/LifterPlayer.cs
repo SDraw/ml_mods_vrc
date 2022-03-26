@@ -9,10 +9,11 @@ namespace ml_alg
     {
         VRCPlayer m_player = null;
         Animator m_animator = null;
+        AnimatorCullingMode m_origCullingMode = AnimatorCullingMode.CullUpdateTransforms;
         HandGestureController m_gestureController = null;
         bool m_leftHandGrab = false;
         bool m_rightHandGrab = false;
-        List<LiftedPlayer> m_liftedPlayers = null;
+        readonly List<LiftedPlayer> m_liftedPlayers = null;
 
         public VRCPlayer Player
         {
@@ -36,12 +37,14 @@ namespace ml_alg
             m_gestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
 
             m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
+            if(m_animator != null)
+                m_origCullingMode = m_animator.cullingMode;
         }
 
         void OnDestroy()
         {
             if(m_animator != null)
-                m_animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
+                m_animator.cullingMode = m_origCullingMode;
         }
 
         void Update()
@@ -85,6 +88,7 @@ namespace ml_alg
                 foreach(LiftedPlayer l_lifted in m_liftedPlayers)
                     l_lifted.UnassignRemoteLifter(this);
 
+                m_origCullingMode = m_animator.cullingMode;
                 m_animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             }
         }
