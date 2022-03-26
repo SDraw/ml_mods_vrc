@@ -132,37 +132,41 @@ namespace ml_lme
 
         public override void OnUpdate()
         {
-            if(Settings.Enabled && m_leapController.IsConnected)
+            if(Settings.Enabled)
             {
-                Leap.Frame l_frame = m_leapController.Frame();
-                if(l_frame != null)
-                {
-                    GestureMatcher.GetGestures(l_frame, ref ms_gesturesData);
-                    if(m_localTracked != null)
-                        m_localTracked.UpdateFromGestures(ms_gesturesData);
+                for(int i = 0; i < GestureMatcher.GesturesData.ms_handsCount; i++)
+                    ms_gesturesData.m_handsPresenses[i] = false;
 
-                    // Update transforms
-                    for(int i = 0; i < GestureMatcher.GesturesData.ms_handsCount; i++)
+                if((m_leapController != null) && m_leapController.IsConnected)
+                {
+                    Leap.Frame l_frame = m_leapController.Frame();
+                    if(l_frame != null)
                     {
-                        if(ms_gesturesData.m_handsPresenses[i] && (m_leapHands[i] != null))
+                        GestureMatcher.GetGestures(l_frame, ref ms_gesturesData);
+
+                        for(int i = 0; i < GestureMatcher.GesturesData.ms_handsCount; i++)
                         {
-                            Vector3 l_pos = ms_gesturesData.m_handsPositons[i];
-                            Quaternion l_rot = ms_gesturesData.m_handsRotations[i];
-                            ReorientateLeapToUnity(ref l_pos, ref l_rot, Settings.LeapHmdMode);
-                            m_leapHands[i].transform.localPosition = l_pos;
-                            m_leapHands[i].transform.localRotation = l_rot;
+                            if(ms_gesturesData.m_handsPresenses[i] && (m_leapHands[i] != null))
+                            {
+                                Vector3 l_pos = ms_gesturesData.m_handsPositons[i];
+                                Quaternion l_rot = ms_gesturesData.m_handsRotations[i];
+                                ReorientateLeapToUnity(ref l_pos, ref l_rot, Settings.LeapHmdMode);
+                                m_leapHands[i].transform.localPosition = l_pos;
+                                m_leapHands[i].transform.localRotation = l_rot;
+                            }
                         }
                     }
                 }
+
+                if(m_localTracked != null)
+                    m_localTracked.UpdateFromGestures(ms_gesturesData);
             }
         }
 
         public override void OnLateUpdate()
         {
             if(Settings.Enabled && (m_localTracked != null))
-            {
                 m_localTracked.UpdateTracking(ms_gesturesData, m_leapHands[0].transform, m_leapHands[1].transform);
-            }
         }
 
         void ApplySettings()
