@@ -16,7 +16,7 @@ namespace ml_alg
             FBT
         }
 
-        enum OffsetReapplyState
+        enum RotationReapplyState
         {
             None = 0,
             Await,
@@ -25,12 +25,12 @@ namespace ml_alg
 
         struct LiftBodyPart
         {
-            public LifterPlayer m_lifter;
-            public HumanBodyBones m_attachedBone;
-            public Matrix4x4 m_offsetMatrix;
+            public LifterPlayer m_source;
+            public Transform m_sourceTarget;
+            public Matrix4x4 m_targetOffset;
             public Vector3 m_targetPos;
             public Quaternion m_targetRot;
-            public OffsetReapplyState m_reapplyOffset;
+            public RotationReapplyState m_reapplyState;
             public bool m_saved;
         };
 
@@ -53,12 +53,8 @@ namespace ml_alg
         Animator m_animator = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
+        VRCFbbIkController m_fbbIK = null;
         BodyTrackingMode m_trackingMode = BodyTrackingMode.Generic;
-
-        public VRCPlayer Player
-        {
-            get => m_player;
-        }
 
         public float GrabDistance
         {
@@ -128,12 +124,12 @@ namespace ml_alg
             {
                 m_liftBodyParts[i] = new LiftBodyPart
                 {
-                    m_lifter = null,
-                    m_attachedBone = HumanBodyBones.LastBone,
-                    m_offsetMatrix = Matrix4x4.identity,
+                    m_source = null,
+                    m_sourceTarget = null,
+                    m_targetOffset = Matrix4x4.identity,
                     m_targetPos = Vector3.zero,
                     m_targetRot = Quaternion.identity,
-                    m_reapplyOffset = OffsetReapplyState.None,
+                    m_reapplyState = RotationReapplyState.None,
                     m_saved = false
                 };
             }
@@ -155,61 +151,55 @@ namespace ml_alg
 
             foreach(int i in ms_updateBones)
             {
-                if((m_liftBodyParts[i].m_lifter != null) && (m_liftBodyParts[i].m_attachedBone != HumanBodyBones.LastBone))
+                if(m_liftBodyParts[i].m_sourceTarget != null)
                 {
-                    if(m_liftBodyParts[i].m_lifter.Animator != null)
+                    switch(i)
                     {
-                        Transform l_bonePoint = m_liftBodyParts[i].m_lifter.Animator.GetBoneTransform(m_liftBodyParts[i].m_attachedBone);
-                        if(l_bonePoint != null)
+                        case (int)HumanBodyBones.Neck:
                         {
-                            switch(i)
+                            Transform l_transform = m_player.transform;
+                            if(l_transform != null)
                             {
-                                case (int)HumanBodyBones.Neck:
-                                {
-                                    Transform l_transform = m_player.transform;
-                                    if(l_transform != null)
-                                    {
-                                        l_transform.position = (l_bonePoint.transform.GetMatrix(true, false) * m_liftBodyParts[i].m_offsetMatrix) * ms_pointVector;
-                                        m_player.field_Private_VRCPlayerApi_0.SetVelocity(Vector3.zero);
-                                    }
+                                l_transform.position = (m_liftBodyParts[i].m_sourceTarget.GetMatrix(true, false) * m_liftBodyParts[i].m_targetOffset) * ms_pointVector;
+                                m_player.field_Private_VRCPlayerApi_0.SetVelocity(Vector3.zero);
+                            }
 
-                                    if(m_useVelocity)
-                                    {
-                                        Vector3 l_position = m_player.field_Private_VRCPlayerApi_0.GetPosition();
-                                        Vector3 l_frameVelocity = ((l_position - m_lastPoint) / Time.deltaTime) * m_velocityMultiplier;
-                                        m_frameVelocity = (m_averageVelocity ? ((m_frameVelocity + l_frameVelocity) * 0.5f) : l_frameVelocity);
-                                        m_lastPoint = l_position;
-                                    }
-                                }
-                                break;
-
-                                case (int)HumanBodyBones.Head:
-                                case (int)HumanBodyBones.Hips:
-                                case (int)HumanBodyBones.LeftFoot:
-                                case (int)HumanBodyBones.RightFoot:
-                                {
-                                    Matrix4x4 l_resultMatrix = l_bonePoint.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
-                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * ms_pointVector;
-                                    m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
-                                }
-                                break;
-
-                                case (int)HumanBodyBones.LeftHand:
-                                case (int)HumanBodyBones.RightHand:
-                                {
-                                    // Ha-ha, funny hands, very cool
-                                    ReapplyOffset(i);
-
-                                    Matrix4x4 l_resultMatrix = l_bonePoint.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
-                                    m_liftBodyParts[i].m_targetPos = l_resultMatrix * ms_pointVector;
-                                    m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
-                                }
-                                break;
+                            if(m_useVelocity)
+                            {
+                                Vector3 l_position = m_player.field_Private_VRCPlayerApi_0.GetPosition();
+                                Vector3 l_frameVelocity = ((l_position - m_lastPoint) / Time.deltaTime) * m_velocityMultiplier;
+                                m_frameVelocity = (m_averageVelocity ? ((m_frameVelocity + l_frameVelocity) * 0.5f) : l_frameVelocity);
+                                m_lastPoint = l_position;
                             }
                         }
+                        break;
+
+                        case (int)HumanBodyBones.Head:
+                        case (int)HumanBodyBones.Hips:
+                        case (int)HumanBodyBones.LeftFoot:
+                        case (int)HumanBodyBones.RightFoot:
+                        {
+                            Matrix4x4 l_resultMatrix = m_liftBodyParts[i].m_sourceTarget.GetMatrix() * m_liftBodyParts[i].m_targetOffset;
+                            m_liftBodyParts[i].m_targetPos = l_resultMatrix * ms_pointVector;
+                            m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
+                        }
+                        break;
+
+                        case (int)HumanBodyBones.LeftHand:
+                        case (int)HumanBodyBones.RightHand:
+                        {
+                            // Ha-ha, funny hands, very cool
+                            ReapplyRotation(i);
+
+                            Matrix4x4 l_resultMatrix = m_liftBodyParts[i].m_sourceTarget.GetMatrix() * m_liftBodyParts[i].m_targetOffset;
+                            m_liftBodyParts[i].m_targetPos = l_resultMatrix * ms_pointVector;
+                            m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
+                        }
+                        break;
                     }
-                    continue;
                 }
+                else
+                    continue;
 
                 if(m_savePose && m_liftBodyParts[i].m_saved)
                 {
@@ -221,7 +211,7 @@ namespace ml_alg
                         case (int)HumanBodyBones.LeftFoot:
                         case (int)HumanBodyBones.RightFoot:
                         {
-                            Matrix4x4 l_resultMatrix = m_player.transform.GetMatrix() * m_liftBodyParts[i].m_offsetMatrix;
+                            Matrix4x4 l_resultMatrix = m_player.transform.GetMatrix() * m_liftBodyParts[i].m_targetOffset;
                             m_liftBodyParts[i].m_targetPos = l_resultMatrix * ms_pointVector;
                             m_liftBodyParts[i].m_targetRot = l_resultMatrix.rotation;
                         }
@@ -235,7 +225,7 @@ namespace ml_alg
         {
             foreach(int i in ms_lateUpdateBones)
             {
-                if((m_liftBodyParts[i].m_attachedBone != HumanBodyBones.LastBone) || m_liftBodyParts[i].m_saved)
+                if((m_liftBodyParts[i].m_sourceTarget != null) || m_liftBodyParts[i].m_saved)
                 {
                     switch(m_trackingMode)
                     {
@@ -259,7 +249,8 @@ namespace ml_alg
                                             l_spine.headTarget.transform.parent.rotation = m_liftBodyParts[i].m_targetRot;
                                         }
                                     }
-                                } break;
+                                }
+                                break;
 
                                 case (int)HumanBodyBones.Hips:
                                 {
@@ -339,6 +330,16 @@ namespace ml_alg
                                     l_effector.target.rotation = m_liftBodyParts[i].m_targetRot;
                                 }
                             }
+
+                            if((i == (int)HumanBodyBones.Head) && (m_fbbIK != null))
+                            {
+                                var l_headEffector = m_fbbIK.field_Private_FBBIKHeadEffector_0;
+                                if(l_headEffector != null)
+                                {
+                                    l_headEffector.transform.position = m_liftBodyParts[i].m_targetPos;
+                                    l_headEffector.transform.rotation = m_liftBodyParts[i].m_targetRot;
+                                }
+                            }
                         }
                         break;
                     }
@@ -354,15 +355,16 @@ namespace ml_alg
             else
                 m_solver = null; // Generic avatar
             m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
+            m_fbbIK = m_player.field_Private_VRC_AnimationController_0.field_Private_VRCFbbIkController_0;
         }
 
-        public void OnLifterGesture(LifterPlayer p_lifter, HumanBodyBones p_hand, bool p_state)
+        public void OnLifterGesture(LifterPlayer p_lifter, Transform p_target, bool p_state)
         {
             if(p_state)
             {
-                if((m_animator != null) && (p_lifter.Animator != null))
+                if(m_animator != null)
                 {
-                    HumanBodyBones l_nearestBone = GetNearestBone(p_lifter.Animator, p_hand, this.gameObject == p_lifter.gameObject);
+                    HumanBodyBones l_nearestBone = GetNearestBone(p_target, this.gameObject == p_lifter.gameObject);
                     if(l_nearestBone != HumanBodyBones.LastBone)
                     {
                         switch(l_nearestBone)
@@ -370,28 +372,29 @@ namespace ml_alg
                             case HumanBodyBones.Neck:
                             {
                                 if(m_allowPull)
-                                    AssignLiftedBone(p_lifter, p_lifter.Animator, l_nearestBone, p_hand);
+                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
                             }
                             break;
 
                             case HumanBodyBones.Head:
                             {
                                 if(m_allowHeadPull)
-                                    AssignLiftedBone(p_lifter, p_lifter.Animator, l_nearestBone, p_hand);
-                            } break;
+                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
+                            }
+                            break;
 
                             case HumanBodyBones.LeftHand:
                             case HumanBodyBones.RightHand:
                             {
                                 if(m_allowHandsPull)
-                                    AssignLiftedBone(p_lifter, p_lifter.Animator, l_nearestBone, p_hand);
+                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
                             }
                             break;
 
                             case HumanBodyBones.Hips:
                             {
                                 if(m_allowHipsPull)
-                                    AssignLiftedBone(p_lifter, p_lifter.Animator, l_nearestBone, p_hand);
+                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
                             }
                             break;
 
@@ -399,7 +402,7 @@ namespace ml_alg
                             case HumanBodyBones.RightFoot:
                             {
                                 if(m_allowLegsPull)
-                                    AssignLiftedBone(p_lifter, p_lifter.Animator, l_nearestBone, p_hand);
+                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
                             }
                             break;
                         }
@@ -407,18 +410,18 @@ namespace ml_alg
                 }
             }
             else
-                UnassignRemoteLifter(p_lifter, p_hand);
+                UnassignRemoteLifter(p_lifter, p_target);
         }
 
-        void AssignLiftedBone(LifterPlayer p_lifter, Animator p_remoteAnimator, HumanBodyBones p_localBone, HumanBodyBones p_remoteBone)
+        void AssignLiftedBone(LifterPlayer p_lifter, HumanBodyBones p_localBone, Transform p_remoteTarget)
         {
-            m_liftBodyParts[(int)p_localBone].m_lifter = p_lifter;
-            m_liftBodyParts[(int)p_localBone].m_attachedBone = p_remoteBone;
+            m_liftBodyParts[(int)p_localBone].m_source = p_lifter;
+            m_liftBodyParts[(int)p_localBone].m_sourceTarget = p_remoteTarget;
             switch(p_localBone)
             {
                 case HumanBodyBones.Neck:
                 {
-                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).transform.GetMatrix(true, false).inverse * m_player.transform.GetMatrix(true, false);
+                    m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix(true, false).inverse * m_player.transform.GetMatrix(true, false);
                     m_player.prop_VRCPlayerApi_0.Immobilize(true);
 
                     if(m_useVelocity)
@@ -433,21 +436,22 @@ namespace ml_alg
                 {
                     if((m_solver?.spine?.headTarget != null) && (m_solver.spine.headTarget.transform.parent != null))
                     {
-                        m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_solver.spine.headTarget.transform.parent.GetMatrix();
+                        m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * m_solver.spine.headTarget.transform.parent.GetMatrix();
                     }
-                } break;
+                }
+                break;
 
                 case HumanBodyBones.Hips:
                 {
-                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
+                    m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
                 }
                 break;
 
                 case HumanBodyBones.LeftHand:
                 case HumanBodyBones.RightHand:
                 {
-                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
-                    m_liftBodyParts[(int)p_localBone].m_reapplyOffset = OffsetReapplyState.Await;
+                    m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * m_animator.GetBoneTransform(p_localBone).GetMatrix();
+                    m_liftBodyParts[(int)p_localBone].m_reapplyState = RotationReapplyState.Await;
                 }
                 break;
 
@@ -466,19 +470,19 @@ namespace ml_alg
                     else
                         l_footTransform = m_animator.GetBoneTransform(p_localBone);
 
-                    m_liftBodyParts[(int)p_localBone].m_offsetMatrix = p_remoteAnimator.GetBoneTransform(p_remoteBone).GetMatrix().inverse * l_footTransform.GetMatrix();
+                    m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * l_footTransform.GetMatrix();
                 }
                 break;
             }
         }
 
-        void UnassignRemoteLifter(LifterPlayer p_player, HumanBodyBones p_remoteBone)
+        void UnassignRemoteLifter(LifterPlayer p_player, Transform p_remoteTarget)
         {
             for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
             {
-                if((m_liftBodyParts[i].m_lifter == p_player) && (m_liftBodyParts[i].m_attachedBone == p_remoteBone))
+                if((m_liftBodyParts[i].m_source == p_player) && (m_liftBodyParts[i].m_sourceTarget == p_remoteTarget))
                 {
-                    ProcessBoneReset((HumanBodyBones)i);
+                    ResetBone((HumanBodyBones)i);
                     break;
                 }
             }
@@ -490,9 +494,9 @@ namespace ml_alg
             {
                 for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
                 {
-                    if(m_liftBodyParts[i].m_lifter == p_player)
+                    if(m_liftBodyParts[i].m_source == p_player)
                     {
-                        ProcessBoneReset((HumanBodyBones)i);
+                        ResetBone((HumanBodyBones)i);
                     }
                 }
             }
@@ -500,40 +504,37 @@ namespace ml_alg
 
         public void ReapplyPermissions()
         {
-            if(m_liftBodyParts != null)
+            if(!m_allowPull && (m_liftBodyParts[(int)HumanBodyBones.Neck].m_source != null))
+                ResetBone(HumanBodyBones.Neck);
+
+            if(!m_allowHeadPull && (m_liftBodyParts[(int)HumanBodyBones.Head].m_source != null))
+                ResetBone(HumanBodyBones.Head);
+
+            if(!m_allowHipsPull && (m_liftBodyParts[(int)HumanBodyBones.Hips].m_source != null))
+                ResetBone(HumanBodyBones.Hips);
+
+            if(!m_allowHandsPull)
             {
-                if(!m_allowPull && (m_liftBodyParts[(int)HumanBodyBones.Neck].m_lifter != null))
-                    ProcessBoneReset(HumanBodyBones.Neck);
+                if(m_liftBodyParts[(int)HumanBodyBones.LeftHand].m_source != null)
+                    ResetBone(HumanBodyBones.LeftHand);
+                if(m_liftBodyParts[(int)HumanBodyBones.RightHand].m_source != null)
+                    ResetBone(HumanBodyBones.RightHand);
+            }
 
-                if(!m_allowHeadPull && (m_liftBodyParts[(int)HumanBodyBones.Head].m_lifter != null))
-                    ProcessBoneReset(HumanBodyBones.Head);
-
-                if(!m_allowHipsPull && (m_liftBodyParts[(int)HumanBodyBones.Hips].m_lifter != null))
-                    ProcessBoneReset(HumanBodyBones.Hips);
-
-                if(!m_allowHandsPull)
-                {
-                    if(m_liftBodyParts[(int)HumanBodyBones.LeftHand].m_lifter != null)
-                        ProcessBoneReset(HumanBodyBones.LeftHand);
-                    if(m_liftBodyParts[(int)HumanBodyBones.RightHand].m_lifter != null)
-                        ProcessBoneReset(HumanBodyBones.RightHand);
-                }
-
-                if(!m_allowLegsPull)
-                {
-                    if(m_liftBodyParts[(int)HumanBodyBones.LeftFoot].m_lifter != null)
-                        ProcessBoneReset(HumanBodyBones.LeftFoot);
-                    if(m_liftBodyParts[(int)HumanBodyBones.RightFoot].m_lifter != null)
-                        ProcessBoneReset(HumanBodyBones.RightFoot);
-                }
+            if(!m_allowLegsPull)
+            {
+                if(m_liftBodyParts[(int)HumanBodyBones.LeftFoot].m_source != null)
+                    ResetBone(HumanBodyBones.LeftFoot);
+                if(m_liftBodyParts[(int)HumanBodyBones.RightFoot].m_source != null)
+                    ResetBone(HumanBodyBones.RightFoot);
             }
         }
 
-        void ProcessBoneReset(HumanBodyBones p_bone)
+        void ResetBone(HumanBodyBones p_bone)
         {
-            m_liftBodyParts[(int)p_bone].m_lifter = null;
-            m_liftBodyParts[(int)p_bone].m_attachedBone = HumanBodyBones.LastBone;
-            m_liftBodyParts[(int)p_bone].m_offsetMatrix = Matrix4x4.identity;
+            m_liftBodyParts[(int)p_bone].m_source = null;
+            m_liftBodyParts[(int)p_bone].m_sourceTarget = null;
+            m_liftBodyParts[(int)p_bone].m_targetOffset = Matrix4x4.identity;
 
             if(p_bone == HumanBodyBones.Neck)
             {
@@ -557,7 +558,7 @@ namespace ml_alg
                     case HumanBodyBones.LeftFoot:
                     case HumanBodyBones.RightFoot:
                     {
-                        m_liftBodyParts[(int)p_bone].m_offsetMatrix = m_player.transform.GetMatrix().inverse * Matrix4x4.TRS(m_liftBodyParts[(int)p_bone].m_targetPos, m_liftBodyParts[(int)p_bone].m_targetRot, Vector3.one);
+                        m_liftBodyParts[(int)p_bone].m_targetOffset = m_player.transform.GetMatrix().inverse * Matrix4x4.TRS(m_liftBodyParts[(int)p_bone].m_targetPos, m_liftBodyParts[(int)p_bone].m_targetRot, Vector3.one);
                         m_liftBodyParts[(int)p_bone].m_saved = true;
                     }
                     break;
@@ -579,79 +580,73 @@ namespace ml_alg
 
             m_liftBodyParts[(int)p_bone].m_targetPos = Vector3.zero;
             m_liftBodyParts[(int)p_bone].m_targetRot = Quaternion.identity;
-            m_liftBodyParts[(int)p_bone].m_reapplyOffset = OffsetReapplyState.None;
+            m_liftBodyParts[(int)p_bone].m_reapplyState = RotationReapplyState.None;
         }
 
         public void ClearSavedPose()
         {
-            if(m_liftBodyParts != null)
+            for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
             {
-                for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
+                m_liftBodyParts[i].m_saved = false;
+                if((m_liftBodyParts[i].m_sourceTarget == null) && (m_trackingMode == BodyTrackingMode.Generic))
                 {
-                    m_liftBodyParts[i].m_saved = false;
-                    if((m_liftBodyParts[i].m_attachedBone == HumanBodyBones.LastBone) && (m_trackingMode == BodyTrackingMode.Generic))
+                    switch(i)
                     {
-                        switch(i)
-                        {
-                            case (int)HumanBodyBones.LeftFoot:
-                            case (int)HumanBodyBones.RightFoot:
-                                m_solver?.SetLegIKWeight((HumanBodyBones)i, 0f);
-                                break;
-                        }
+                        case (int)HumanBodyBones.LeftFoot:
+                        case (int)HumanBodyBones.RightFoot:
+                            m_solver?.SetLegIKWeight((HumanBodyBones)i, 0f);
+                            break;
                     }
                 }
             }
         }
 
-        HumanBodyBones GetNearestBone(Animator p_remoteAnimator, HumanBodyBones p_remoteBone, bool p_self = false)
+        HumanBodyBones GetNearestBone(Transform p_remoteTarget, bool p_self = false)
         {
             HumanBodyBones l_result = HumanBodyBones.LastBone;
-            if(m_animator.isHuman && p_remoteAnimator.isHuman)
+            if(m_animator.isHuman)
             {
-                Transform l_remoteTransform = p_remoteAnimator.GetBoneTransform(p_remoteBone);
-                if(l_remoteTransform != null)
-                {
-                    float l_nearestDistance = float.MaxValue;
-                    foreach(HumanBodyBones l_bone in ms_updateBones)
-                    {
-                        if(p_self && ((l_bone == p_remoteBone) || (l_bone == HumanBodyBones.Neck) || (l_bone == HumanBodyBones.Head)))
-                            continue;
+                float l_nearestDistance = float.MaxValue;
 
-                        Transform l_localTransform = m_animator.GetBoneTransform(l_bone);
-                        if(l_localTransform != null)
+                foreach(HumanBodyBones l_bone in ms_updateBones)
+                {
+                    if(p_self && ((l_bone == HumanBodyBones.Neck) || (l_bone == HumanBodyBones.Head)))
+                        continue;
+
+                    Transform l_localTransform = m_animator.GetBoneTransform(l_bone);
+                    if((l_localTransform != null) && (l_localTransform != p_remoteTarget))
+                    {
+                        float l_distance = Vector3.Distance(p_remoteTarget.position, l_localTransform.position);
+                        if(l_distance < l_nearestDistance)
                         {
-                            float l_distance = Vector3.Distance(l_remoteTransform.position, l_localTransform.position);
-                            if(l_distance < l_nearestDistance)
-                            {
-                                l_nearestDistance = l_distance;
-                                l_result = l_bone;
-                            }
+                            l_nearestDistance = l_distance;
+                            l_result = l_bone;
                         }
                     }
-                    if(l_nearestDistance > (m_grabDistance * (m_distanceScale ? Utils.GetTrackingScale() : 1f)))
-                        l_result = HumanBodyBones.LastBone;
                 }
+                if(l_nearestDistance > (m_grabDistance * (m_distanceScale ? Utils.GetTrackingScale() : 1f)))
+                    l_result = HumanBodyBones.LastBone;
             }
             return l_result;
         }
 
-        void ReapplyOffset(int p_index)
+        void ReapplyRotation(int p_index)
         {
-            switch(m_liftBodyParts[p_index].m_reapplyOffset)
+            switch(m_liftBodyParts[p_index].m_reapplyState)
             {
-                case OffsetReapplyState.Await:
-                    m_liftBodyParts[p_index].m_reapplyOffset = OffsetReapplyState.Final;
+                case RotationReapplyState.Await:
+                    m_liftBodyParts[p_index].m_reapplyState = RotationReapplyState.Final;
                     break;
-                case OffsetReapplyState.Final:
+                case RotationReapplyState.Final:
                 {
-                    m_liftBodyParts[p_index].m_reapplyOffset = OffsetReapplyState.None;
+                    m_liftBodyParts[p_index].m_reapplyState = RotationReapplyState.None;
 
                     if(m_animator != null)
                     {
                         Transform l_boneTransform = m_animator.GetBoneTransform((HumanBodyBones)p_index);
                         if(l_boneTransform != null)
                         {
-                            m_liftBodyParts[p_index].m_offsetMatrix = m_liftBodyParts[p_index].m_offsetMatrix * (Quaternion.Inverse(l_boneTransform.transform.rotation) * m_liftBodyParts[p_index].m_targetRot).AsMatrix();
+                            m_liftBodyParts[p_index].m_targetOffset = m_liftBodyParts[p_index].m_targetOffset * (Quaternion.Inverse(l_boneTransform.transform.rotation) * m_liftBodyParts[p_index].m_targetRot).AsMatrix();
                         }
                     }
                 }

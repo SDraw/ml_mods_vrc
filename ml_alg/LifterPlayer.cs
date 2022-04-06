@@ -11,19 +11,13 @@ namespace ml_alg
         Animator m_animator = null;
         AnimatorCullingMode m_origCullingMode = AnimatorCullingMode.CullUpdateTransforms;
         HandGestureController m_gestureController = null;
+
         bool m_leftHandGrab = false;
         bool m_rightHandGrab = false;
+        Transform m_leftHand = null;
+        Transform m_rightHand = null;
+
         readonly List<LiftedPlayer> m_liftedPlayers = null;
-
-        public VRCPlayer Player
-        {
-            get => m_player;
-        }
-
-        public Animator Animator
-        {
-            get => m_animator;
-        }
 
         public LifterPlayer(IntPtr ptr) : base(ptr)
         {
@@ -36,13 +30,15 @@ namespace ml_alg
             m_animator = m_player.field_Internal_Animator_0;
             m_gestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
 
-            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
-            if(m_animator != null)
-                m_origCullingMode = m_animator.cullingMode;
+            m_player.field_Private_OnAvatarIsReady_0 += new Action(this.RecacheComponents);
+            RecacheComponents();
         }
 
         void OnDestroy()
         {
+            foreach(LiftedPlayer l_lifted in m_liftedPlayers)
+                l_lifted.UnassignRemoteLifter(this);
+
             if(m_animator != null)
                 m_animator.cullingMode = m_origCullingMode;
         }
@@ -55,16 +51,22 @@ namespace ml_alg
                 if(m_leftHandGrab != l_grabState)
                 {
                     m_leftHandGrab = l_grabState;
-                    foreach(LiftedPlayer l_lifted in m_liftedPlayers)
-                        l_lifted.OnLifterGesture(this, HumanBodyBones.LeftHand, m_leftHandGrab);
+                    if(m_leftHand != null)
+                    {
+                        foreach(LiftedPlayer l_lifted in m_liftedPlayers)
+                            l_lifted.OnLifterGesture(this, m_leftHand, m_leftHandGrab);
+                    }
                 }
 
                 l_grabState = (m_gestureController.field_Private_Gesture_2 == HandGestureController.Gesture.Fist);
                 if(m_rightHandGrab != l_grabState)
                 {
                     m_rightHandGrab = l_grabState;
-                    foreach(LiftedPlayer l_lifted in m_liftedPlayers)
-                        l_lifted.OnLifterGesture(this, HumanBodyBones.RightHand, m_rightHandGrab);
+                    if(m_rightHand != null)
+                    {
+                        foreach(LiftedPlayer l_lifted in m_liftedPlayers)
+                            l_lifted.OnLifterGesture(this, m_rightHand, m_rightHandGrab);
+                    }
                 }
             }
         }
@@ -76,17 +78,27 @@ namespace ml_alg
         }
         public void RemoveLifted(LiftedPlayer p_lifted)
         {
-            if(p_lifted != null)
+            if((p_lifted != null) && m_liftedPlayers.Contains(p_lifted))
+            {
+                p_lifted.UnassignRemoteLifter(this);
                 m_liftedPlayers.Remove(p_lifted);
+            }
         }
 
         void RecacheComponents()
         {
+            foreach(LiftedPlayer l_lifted in m_liftedPlayers)
+                l_lifted.UnassignRemoteLifter(this);
+
+            m_origCullingMode = AnimatorCullingMode.CullUpdateTransforms;
+            m_leftHand = null;
+            m_rightHand = null;
+
             m_animator = m_player.field_Internal_Animator_0;
-            if((m_animator != null) && !m_animator.isHuman)
+            if(m_animator != null)
             {
-                foreach(LiftedPlayer l_lifted in m_liftedPlayers)
-                    l_lifted.UnassignRemoteLifter(this);
+                m_leftHand = m_animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                m_rightHand = m_animator.GetBoneTransform(HumanBodyBones.RightHand);
 
                 m_origCullingMode = m_animator.cullingMode;
                 m_animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;

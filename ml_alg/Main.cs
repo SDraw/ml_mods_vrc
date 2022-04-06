@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UIExpansionKit.API.Controls;
+using UnityEngine;
 
 namespace ml_alg
 {
@@ -23,7 +24,6 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnLeftRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerLeft += this.OnPlayerLeft;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
         }
@@ -50,10 +50,7 @@ namespace ml_alg
                             if(l_component != null)
                             {
                                 if(!Settings.AllowFriends)
-                                {
-                                    m_localLiftedPlayer.UnassignRemoteLifter(l_component);
                                     Object.Destroy(l_component);
-                                }
                             }
                             else
                             {
@@ -84,13 +81,13 @@ namespace ml_alg
 
         public override void OnUpdate()
         {
-            if(m_update && ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Visible)
+            if(m_update && ((IMenuToggle)m_buttonPlayerAllow).Visible)
             {
                 VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_selectedPlayer != l_selectedPlayer))
                 {
                     m_selectedPlayer = l_selectedPlayer;
-                    ((UIExpansionKit.API.Controls.IMenuToggle)m_buttonPlayerAllow).Selected = (m_selectedPlayer.GetComponent<LifterPlayer>() != null);
+                    ((IMenuToggle)m_buttonPlayerAllow).Selected = (m_selectedPlayer.GetComponent<LifterPlayer>() != null);
                 }
             }
         }
@@ -130,7 +127,7 @@ namespace ml_alg
             m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
             m_localLiftedPlayer.DistanceScale = Settings.DistanceScale;
 
-            ((UIExpansionKit.API.Controls.IMenuLabel)m_menuLabelWorld).Text = "World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>";
+            ((IMenuLabel)m_menuLabelWorld).SetText("World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>");
         }
 
         void OnLeftRoom()
@@ -149,15 +146,11 @@ namespace ml_alg
             while(m_localLiftedPlayer == null)
                 yield return null;
 
-            LifterPlayer l_component = p_player.gameObject.AddComponent<LifterPlayer>();
-            l_component.AddLifted(m_localLiftedPlayer);
-        }
-
-        void OnPlayerLeft(VRC.Player p_player)
-        {
-            LifterPlayer l_component = p_player.GetComponent<LifterPlayer>();
-            if((l_component != null) && (m_localLiftedPlayer != null))
-                m_localLiftedPlayer.UnassignRemoteLifter(l_component);
+            if(p_player != null)
+            {
+                LifterPlayer l_component = p_player.gameObject.AddComponent<LifterPlayer>();
+                l_component.AddLifted(m_localLiftedPlayer);
+            }
         }
 
         void OnFriended(VRC.Core.APIUser p_apiPlayer)
@@ -186,10 +179,7 @@ namespace ml_alg
                 {
                     LifterPlayer l_component = l_player.GetComponent<LifterPlayer>();
                     if(l_component != null)
-                    {
-                        m_localLiftedPlayer.UnassignRemoteLifter(l_component);
                         Object.Destroy(l_component);
-                    }
                 }
             }
         }
@@ -210,7 +200,6 @@ namespace ml_alg
                     else if((l_component != null) && !p_state)
                     {
                         l_component.RemoveLifted(m_localLiftedPlayer);
-                        m_localLiftedPlayer.UnassignRemoteLifter(l_component);
                         Object.Destroy(l_component);
                     }
                 }
@@ -242,10 +231,7 @@ namespace ml_alg
                         {
                             LifterPlayer l_component = l_remotePlayer.GetComponent<LifterPlayer>();
                             if(l_component != null)
-                            {
-                                m_localLiftedPlayer.UnassignRemoteLifter(l_component);
                                 Object.Destroy(l_component);
-                            }
                         }
                     }
                 }
