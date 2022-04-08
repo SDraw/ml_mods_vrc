@@ -7,12 +7,15 @@
 
         static bool ms_legsAnimation = false;
         static bool ms_legsAutostep = false;
+        static bool ms_legsForwardKnees = false;
 
         public static void Load()
         {
             MelonLoader.MelonPreferences.CreateCategory("LAT", "Legs Animation Tweaker");
             MelonLoader.MelonPreferences.CreateEntry("LAT", "LegsAnimation", ms_legsAnimation, "Override legs animation").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LAT", "LegsAutostep", ms_legsAutostep, "Override legs autostep").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("LAT", "LegsForwardKnees", ms_legsForwardKnees, "Override knees direction").OnValueChanged += OnAnyEntryUpdate;
+
             Reload();
         }
 
@@ -20,6 +23,7 @@
         {
             ms_legsAnimation = MelonLoader.MelonPreferences.GetEntryValue<bool>("LAT", "LegsAnimation");
             ms_legsAutostep = MelonLoader.MelonPreferences.GetEntryValue<bool>("LAT", "LegsAutostep");
+            ms_legsForwardKnees = MelonLoader.MelonPreferences.GetEntryValue<bool>("LAT", "LegsForwardKnees");
         }
 
         static void OnAnyEntryUpdate<T>(T p_oldValue, T p_newValue) => ms_settingsUpdated = true;
@@ -38,6 +42,11 @@
         public static bool LegsAutostep
         {
             get => ms_legsAutostep;
+        }
+
+        public static bool LegsForwardKnees
+        {
+            get => ms_legsForwardKnees;
         }
     }
 }

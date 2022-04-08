@@ -15,3 +15,4 @@ Designed primarily for avatars that have non-standart bones bind poses and custo
 Available mod's settings through UIExpansionKit:
 * **Override legs animation:** disables animation affection for legs IK computing if enabled, disabled by default.
 * **Override legs autostep:** disables legs autostep if enabled, disabled by default.
+* **Override knees direction:** forces knees direction to player's forward direction if enabled, disabled by default.
