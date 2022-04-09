@@ -29,7 +29,22 @@ namespace ml_lat
         void Update()
         {
             if(m_legsAutostep && (m_vrIkController != null))
-                m_vrIkController.field_Private_Single_7 = 0f;
+                m_vrIkController.field_Private_Single_7 = 0f; // _lowerBodyWeight ?
+
+            if(m_legsForwardKnees && (m_vrIkController != null) && (m_solver != null))
+            {
+                if(m_solver.leftLeg != null)
+                {
+                    m_solver.leftLeg.bendGoalWeight = m_vrIkController.field_Private_Single_3; // _ikBlendGoal ?
+                    m_solver.leftLeg.bendToTargetWeight = m_vrIkController.field_Private_Single_3;
+                }
+
+                if(m_solver.rightLeg != null)
+                {
+                    m_solver.rightLeg.bendGoalWeight = m_vrIkController.field_Private_Single_3;
+                    m_solver.rightLeg.bendToTargetWeight = m_vrIkController.field_Private_Single_3;
+                }
+            }
         }
 
         void RecacheComponents()
@@ -42,15 +57,12 @@ namespace ml_lat
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
 
             m_vrIkController = m_player.field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0;
-            if(m_vrIkController != null)
+            if((m_vrIkController != null) && (m_player.field_Internal_Animator_0 != null) && (m_player.field_Internal_Animator_0.isHuman))
             {
-                if((m_player.field_Internal_Animator_0 != null) && (m_player.field_Internal_Animator_0.isHuman))
+                Transform l_leftLowerLeg = m_player.field_Internal_Animator_0.GetBoneTransform(HumanBodyBones.LeftLowerLeg);
+                if(l_leftLowerLeg != null)
                 {
-                    Transform l_leftLowerLeg = m_player.field_Internal_Animator_0.GetBoneTransform(HumanBodyBones.LeftLowerLeg);
-                    if(l_leftLowerLeg != null)
-                    {
-                        m_kneesOffset = (m_player.transform.GetMatrix().inverse * l_leftLowerLeg.GetMatrix()) * ms_pointVector;
-                    }
+                    m_kneesOffset = (m_player.transform.GetMatrix().inverse * l_leftLowerLeg.GetMatrix()) * ms_pointVector;
                 }
             }
 
@@ -85,8 +97,8 @@ namespace ml_lat
                 {
                     if(m_solver.leftLeg?.bendGoal == null)
                     {
-                        m_vrIkController.field_Public_Transform_0.localPosition = new Vector3(m_kneesOffset.x, m_kneesOffset.y, 5f * m_vrIkController.field_Private_Single_0);
-                        m_solver.leftLeg.bendGoal = m_vrIkController.field_Public_Transform_0;
+                        m_vrIkController.field_Public_Transform_0.localPosition = new Vector3(m_kneesOffset.x, m_kneesOffset.y, 5f * m_vrIkController.field_Private_Single_0); // _avatarScale
+                        m_solver.leftLeg.bendGoal = m_vrIkController.field_Public_Transform_0; // LeftKneeTarget
                         m_solver.leftLeg.bendGoalWeight = 1f;
                         m_solver.leftLeg.bendToTargetWeight = 1f;
                     }
@@ -94,7 +106,7 @@ namespace ml_lat
                     if(m_solver.rightLeg?.bendGoal == null)
                     {
                         m_vrIkController.field_Public_Transform_1.localPosition = new Vector3(-m_kneesOffset.x, m_kneesOffset.y, 5f * m_vrIkController.field_Private_Single_0);
-                        m_solver.rightLeg.bendGoal = m_vrIkController.field_Public_Transform_1;
+                        m_solver.rightLeg.bendGoal = m_vrIkController.field_Public_Transform_1; // RightKneeTarget
                         m_solver.rightLeg.bendGoalWeight = 1f;
                         m_solver.rightLeg.bendToTargetWeight = 1f;
                     }
