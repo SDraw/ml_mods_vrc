@@ -77,7 +77,7 @@ namespace ml_clv
 
             TrackerBoneLine.ControllerManager = Utils.GetSteamVRControllerManager();
 
-            // Material
+            // Material, thank Requi for this code
             TrackerBoneLine.Material = new Material(Shader.Find("Hidden/Internal-Colored"));
             TrackerBoneLine.Material.hideFlags = HideFlags.HideAndDontSave;
             TrackerBoneLine.Material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -85,10 +85,11 @@ namespace ml_clv
             TrackerBoneLine.Material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
             TrackerBoneLine.Material.SetInt("_ZWrite", 0);
             TrackerBoneLine.Material.SetInt("_ZTest", (int)UnityEngine.Rendering.CompareFunction.Always);
+            TrackerBoneLine.Material.color = new Color(Settings.ColorR, Settings.ColorG, Settings.ColorB);
 
             // Game objects
             var l_puckArray = Utils.GetSteamVRControllerManager().field_Public_ArrayOf_GameObject_0;
-            for(int i = 0; i < l_puckArray.Length - 2; i++)
+            for(int i = 0, j = l_puckArray.Length - 2; i < j; i++)
             {
                 GameObject l_obj = new GameObject("Line");
                 l_obj.active = false;

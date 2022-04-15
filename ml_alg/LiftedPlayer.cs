@@ -197,9 +197,9 @@ namespace ml_alg
                         }
                         break;
                     }
-                }
-                else
+
                     continue;
+                }
 
                 if(m_savePose && m_liftBodyParts[i].m_saved)
                 {
