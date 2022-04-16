@@ -13,9 +13,10 @@ namespace ml_abp
         };
 
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
+        Animator m_animator = null;
 
         readonly List<Transform> m_hands = null;
-        Animator m_animator = null;
 
         public VRCPlayer Player
         {
@@ -25,14 +26,21 @@ namespace ml_abp
         public InteracterPlayer(IntPtr ptr) : base(ptr)
         {
             m_hands = new List<Transform>();
+            m_avatarReadyEvent = new Action(this.RecacheComponents);
         }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
-            m_player.field_Private_OnAvatarIsReady_0 += new Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
 
             RecacheComponents();
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_avatarReadyEvent;
         }
 
         [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]

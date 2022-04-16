@@ -16,6 +16,7 @@ namespace ml_abp
         }
 
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
         AvatarPlayableController m_playableController = null;
         Animator m_animator = null;
 
@@ -44,6 +45,7 @@ namespace ml_abp
         {
             m_interacterPlayers = new List<InteracterPlayer>();
             m_parameters = new List<CustomParameter>();
+            m_avatarReadyEvent = new Action(this.RebuildParameters);
         }
 
         void Awake()
@@ -51,7 +53,13 @@ namespace ml_abp
             m_player = this.GetComponent<VRCPlayer>();
             m_animator = m_player.field_Internal_Animator_0;
 
-            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RebuildParameters);
+            m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_avatarReadyEvent;
         }
 
         void Update()

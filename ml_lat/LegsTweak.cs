@@ -7,7 +7,9 @@ namespace ml_lat
     class LegsTweak : MonoBehaviour
     {
         static Vector4 ms_pointVector = new Vector4(0f, 0f, 0f, 1f);
+
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_readyAvatarEvent = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         VRCVrIkController m_vrIkController = null;
 
@@ -17,13 +19,22 @@ namespace ml_lat
         bool m_legsAutostep = false;
         bool m_legsForwardKnees = false;
 
-        public LegsTweak(IntPtr ptr) : base(ptr) { }
+        public LegsTweak(IntPtr ptr) : base(ptr)
+        {
+            m_readyAvatarEvent = new Action(this.RecacheComponents);
+        }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
 
-            m_player.field_Private_OnAvatarIsReady_0 += new Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_readyAvatarEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_readyAvatarEvent;
         }
 
         void Update()

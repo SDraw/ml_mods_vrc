@@ -50,6 +50,7 @@ namespace ml_alg
         bool m_distanceScale = true;
 
         VRCPlayer m_player;
+        readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
         Animator m_animator = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
@@ -133,13 +134,21 @@ namespace ml_alg
                     m_saved = false
                 };
             }
+
+            m_avatarReadyEvent = new Action(this.RecacheComponents);
         }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
 
-            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_avatarReadyEvent;
         }
 
         void Update()

@@ -8,6 +8,7 @@ namespace ml_alg
     class LifterPlayer : MonoBehaviour
     {
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
         Animator m_animator = null;
         AnimatorCullingMode m_origCullingMode = AnimatorCullingMode.CullUpdateTransforms;
         HandGestureController m_gestureController = null;
@@ -22,6 +23,7 @@ namespace ml_alg
         public LifterPlayer(IntPtr ptr) : base(ptr)
         {
             m_liftedPlayers = new List<LiftedPlayer>();
+            m_avatarReadyEvent = new Action(this.RecacheComponents);
         }
 
         void Awake()
@@ -30,12 +32,15 @@ namespace ml_alg
             m_animator = m_player.field_Internal_Animator_0;
             m_gestureController = m_player.field_Private_VRC_AnimationController_0.field_Private_HandGestureController_0;
 
-            m_player.field_Private_OnAvatarIsReady_0 += new Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
             RecacheComponents();
         }
 
         void OnDestroy()
         {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_avatarReadyEvent;
+
             foreach(LiftedPlayer l_lifted in m_liftedPlayers)
                 l_lifted.UnassignRemoteLifter(this);
 

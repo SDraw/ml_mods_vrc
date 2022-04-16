@@ -15,6 +15,8 @@ namespace ml_arh
 
         static readonly float[] ms_heightMultipliers = { 1f, 0.6f, 0.35f };
 
+        VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
         CharacterController m_characterController = null;
         VRCVrIkController m_ikController = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
@@ -35,13 +37,23 @@ namespace ml_arh
             set => m_poseHeight = value;
         }
 
-        public HeightAdjuster(IntPtr ptr) : base(ptr) { }
+        public HeightAdjuster(IntPtr ptr) : base(ptr)
+        {
+            m_avatarReadyEvent = new Action(this.RecacheComponents);
+        }
 
         void Awake()
         {
+            m_player = this.GetComponent<VRCPlayer>();
             m_characterController = this.GetComponent<CharacterController>();
 
-            this.GetComponent<VRCPlayer>().field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_avatarReadyEvent;
         }
 
         void Update()

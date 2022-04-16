@@ -7,14 +7,24 @@ namespace ml_vsf
     class VsfTracked : MonoBehaviour
     {
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_readyAvatarEvent = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
 
-        public VsfTracked(IntPtr ptr) : base(ptr) { }
+        public VsfTracked(IntPtr ptr) : base(ptr)
+        {
+            m_readyAvatarEvent = new Action(this.RecacheComponents);
+        }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
-            m_player.field_Private_OnAvatarIsReady_0 += new Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_readyAvatarEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_readyAvatarEvent;
         }
 
         // LateUpdate only

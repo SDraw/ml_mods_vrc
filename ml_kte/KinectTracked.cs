@@ -7,6 +7,7 @@ namespace ml_kte
     class KinectTracked : MonoBehaviour
     {
         VRCPlayer m_player = null;
+        readonly VRCPlayer.OnAvatarIsReady m_readyAvatarEvent = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
 
         bool m_trackHead = true;
@@ -52,13 +53,22 @@ namespace ml_kte
             set => m_rotateHands = value;
         }
 
-        public KinectTracked(IntPtr ptr) : base(ptr) { }
+        public KinectTracked(IntPtr ptr) : base(ptr)
+        {
+            m_readyAvatarEvent = new Action(this.RecacheComponents);
+        }
 
         void Awake()
         {
             m_player = this.GetComponent<VRCPlayer>();
 
-            m_player.field_Private_OnAvatarIsReady_0 += new System.Action(this.RecacheComponents);
+            m_player.field_Private_OnAvatarIsReady_0 += m_readyAvatarEvent;
+        }
+
+        void OnDestroy()
+        {
+            if(m_player != null)
+                m_player.field_Private_OnAvatarIsReady_0 -= m_readyAvatarEvent;
         }
 
         public void LateUpdateTransforms(Transform p_head, Transform p_hips, Transform p_leftLeg, Transform p_rightLeg, Transform p_leftHand, Transform p_rightHand)
