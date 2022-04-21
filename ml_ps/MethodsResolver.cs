@@ -17,7 +17,6 @@ namespace ml_ps
                     m.Name.StartsWith("Method_Public_Static_Void_AudioClip_Single_") && (m.ReturnType == typeof(void)) && (m.GetParameters().Count() == 2) &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(ActionMenu))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(AxisPuppetMenu))).Any() &&
-                    XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(ButtonReaction))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(HudVoiceIndicator))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(UserIconCameraMenu))).Any() &&
                     XrefScanner.UsedBy(m).Where(x => (x.Type == XrefType.Method) && (x.TryResolve()?.DeclaringType == typeof(VRCUiPage))).Any() &&
