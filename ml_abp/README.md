@@ -27,5 +27,6 @@ Added parameters change value according to proximity of another player's hands t
 * Press `Bones proximity` toggle in UIExpansionKit quick menu.
 
 # Notes
-* This mod is made specificaly for SDK3 avatars creators, but will be obsolete after physics bones update release.
+* This mod is obsolete since physics bones update release (build 1189).
+* This mod is made specificaly for SDK3 avatars creators.
 * Eyes and jaw bones are merged with head due to zero scaling of local player's head bone. Those bones will have same proximity values if camera is near of head bone.
