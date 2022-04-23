@@ -81,7 +81,7 @@ namespace ml_alg
 
         public override void OnUpdate()
         {
-            if(m_update && ((IMenuToggle)m_buttonPlayerAllow).Visible)
+            if(m_update && ((IMenuToggle)m_buttonPlayerAllow).CurrentInstance.activeInHierarchy)
             {
                 VRC.Player l_selectedPlayer = Utils.GetPlayerQM();
                 if((l_selectedPlayer != null) && (m_selectedPlayer != l_selectedPlayer))
@@ -134,6 +134,7 @@ namespace ml_alg
         {
             m_update = false;
             m_localLiftedPlayer = null;
+            m_selectedPlayer = null;
         }
 
         void OnPlayerJoined(VRC.Player p_player)

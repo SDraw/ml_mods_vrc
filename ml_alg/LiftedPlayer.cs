@@ -214,6 +214,7 @@ namespace ml_alg
                 {
                     switch(i)
                     {
+                        case (int)HumanBodyBones.Head:
                         case (int)HumanBodyBones.Hips:
                         case (int)HumanBodyBones.LeftHand:
                         case (int)HumanBodyBones.RightHand:
