@@ -25,7 +25,6 @@ namespace ml_lme
             ms_instance = this;
 
             DependenciesHandler.ExtractDependencies();
-            MethodsResolver.ResolveMethods();
             Settings.LoadSettings();
 
             m_leapController = new Leap.Controller();
@@ -275,7 +274,7 @@ namespace ml_lme
 
         static void VRCIPI_GetGestureStates(bool __0, UnhollowerBaseLib.Il2CppStructArray<VRCInputProcessorIndex.FingerGestureState> __1)
         {
-            if(Settings.Enabled && Settings.LeapGestures && Utils.IsInVRMode() && Utils.AreHandsTracked() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
+            if(Settings.Enabled && Settings.LeapGestures && Utils.IsInVRMode() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
             {
                 if(ms_gesturesData.m_handsPresenses[__0 ? 1 : 0])
                 {
@@ -288,7 +287,7 @@ namespace ml_lme
         static void HGC_Update(ref HandGestureController __instance) => ms_instance?.OnHandGestureControllerUpdate(__instance);
         void OnHandGestureControllerUpdate(HandGestureController p_controller)
         {
-            if(Settings.Enabled && !Settings.LeapGestures && Utils.IsInVRMode() && Utils.AreHandsTracked() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
+            if(Settings.Enabled && !Settings.LeapGestures && Utils.IsInVRMode() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
             {
                 if(m_localTracked != null)
                     m_localTracked.ForceIndexTracking(p_controller);

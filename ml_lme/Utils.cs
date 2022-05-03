@@ -10,15 +10,8 @@
         public static UnityEngine.Transform GetTrackingRightController() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0.field_Public_GameObject_1.transform;
         public static SteamVR_ControllerManager GetSteamVRControllerManager() => GetVRCTrackingSteam().field_Private_SteamVR_ControllerManager_0;
 
-        public static bool AreHandsTracked()
-        {
-            return (VRCTrackingManager.Method_Public_Static_Boolean_ID_0(VRCTracking.ID.HandTracker_LeftWrist) || VRCTrackingManager.Method_Public_Static_Boolean_ID_0(VRCTracking.ID.HandTracker_RightWrist));
-        }
-
-        public static bool IsInVRMode()
-        {
-            return (bool)MethodsResolver.IsInVRMode?.Invoke(null, null);
-        }
+        public static bool AreHandsTracked() => (UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.LeftHand).isValid || UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.RightHand).isValid);
+        public static bool IsInVRMode() => UnityEngine.XR.XRDevice.isPresent;
 
         public static bool GetGesturesToggle() => (UnityEngine.PlayerPrefs.GetInt(HandGestureController.field_Private_Static_String_0) == 1);
         public static VRCInputManager.InputMethod GetCurrentInput() => VRCInputManager.field_Private_Static_InputMethod_0;
@@ -29,22 +22,5 @@
             lhs = rhs;
             rhs = temp;
         }
-
-        // Extensions
-        /*public static void SetAvatarIntParamEx(this AvatarPlayableController controller, int paramHash, int val)
-        {
-            MethodsResolver.SetAvatarIntParam?.Invoke(controller, new object[] { paramHash, val });
-            controller.field_Private_Boolean_3 = true; // bool requiresNetworkSync;
-        }
-        public static void SetAvatarBoolParamEx(this AvatarPlayableController controller, int paramHash, bool val)
-        {
-            MethodsResolver.SetAvatarBoolParam?.Invoke(controller, new object[] { paramHash, val });
-            controller.field_Private_Boolean_3 = true; // bool requiresNetworkSync;
-        }
-        public static void SetAvatarFloatParamEx(this AvatarPlayableController controller, int paramHash, float val, bool debug = false)
-        {
-            MethodsResolver.SetAvatarFloatParam?.Invoke(controller, new object[] { paramHash, val, debug });
-            controller.field_Private_Boolean_3 = true; // bool requiresNetworkSync;
-        }*/
     }
 }
