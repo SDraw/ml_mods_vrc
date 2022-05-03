@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ml_lme
 {
@@ -22,7 +21,8 @@ namespace ml_lme
 
         public override void OnApplicationStart()
         {
-            ms_instance = this;
+            if(ms_instance == null)
+                ms_instance = this;
 
             DependenciesHandler.ExtractDependencies();
             Settings.LoadSettings();
@@ -36,28 +36,20 @@ namespace ml_lme
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
-
-            // Patches
-            HarmonyLib.HarmonyMethod l_patchMethod = new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIM_ControllersType));
-            typeof(VRCInputManager).GetMethods().Where(m =>
-                m.Name.StartsWith("Method_Public_Static_Boolean_InputMethod_") && (m.ReturnType == typeof(bool)) && (m.GetParameters().Count() == 1)
-            ).ToList().ForEach(m => HarmonyInstance.Patch(m, l_patchMethod));
-
-            HarmonyInstance.Patch(
-                typeof(VRCInputProcessorIndex).GetMethod(nameof(VRCInputProcessorIndex.Method_Public_Static_Void_Boolean_ArrayOf_FingerGestureState_0)),
-                null,
-                new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(VRCIPI_GetGestureStates))
-            );
-
-            HarmonyInstance.Patch(
-                typeof(HandGestureController).GetMethod(nameof(HandGestureController.Update)),
-                null,
-                new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(HGC_Update))
-            );
         }
 
         void OnUiManagerInit()
         {
+            if(Utils.IsInVRMode())
+            {
+                // Patches
+                HarmonyInstance.Patch(
+                    typeof(HandGestureController).GetMethod(nameof(HandGestureController.Update)),
+                    new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(HGC_Update_Prefix)),
+                    new HarmonyLib.HarmonyMethod(typeof(LeapMotionExtention), nameof(HGC_Update_Postfix))
+                );
+            }
+
             MelonLoader.MelonCoroutines.Start(CreateLeapObjects());
         }
         System.Collections.IEnumerator CreateLeapObjects()
@@ -253,41 +245,20 @@ namespace ml_lme
             }
         }
 
-        static bool VRCIM_ControllersType(ref bool __result, VRCInputManager.InputMethod __0)
+        static void HGC_Update_Prefix(ref HandGestureController __instance) => ms_instance?.OnHandGestureControllerUpdatePrefix(__instance);
+        void OnHandGestureControllerUpdatePrefix(HandGestureController p_controller)
         {
-            if(Settings.Enabled && Settings.LeapGestures && Utils.IsInVRMode() && Utils.AreHandsTracked() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
+            if(Settings.Enabled && !Utils.AreHandsTracked() && Utils.IsNonVRInput(Utils.GetCurrentInput()))
             {
-                if(__0 == VRCInputManager.InputMethod.Index)
-                {
-                    __result = true;
-                    return false;
-                }
-                else
-                {
-                    __result = false;
-                    return false;
-                }
-            }
-            else
-                return true;
-        }
-
-        static void VRCIPI_GetGestureStates(bool __0, UnhollowerBaseLib.Il2CppStructArray<VRCInputProcessorIndex.FingerGestureState> __1)
-        {
-            if(Settings.Enabled && Settings.LeapGestures && Utils.IsInVRMode() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
-            {
-                if(ms_gesturesData.m_handsPresenses[__0 ? 1 : 0])
-                {
-                    for(int i = 0; i < 5; i++)
-                        __1[i] = ((1f - (__0 ? ms_gesturesData.m_rightFingersBends[i] : ms_gesturesData.m_leftFingersBends[i]) > 0.25f) ? VRCInputProcessorIndex.FingerGestureState.StretchedOut : VRCInputProcessorIndex.FingerGestureState.CurledIn);
-                }
+                if(m_localTracked != null)
+                    m_localTracked.ForceDesktopTracking(p_controller);
             }
         }
 
-        static void HGC_Update(ref HandGestureController __instance) => ms_instance?.OnHandGestureControllerUpdate(__instance);
-        void OnHandGestureControllerUpdate(HandGestureController p_controller)
+        static void HGC_Update_Postfix(ref HandGestureController __instance) => ms_instance?.OnHandGestureControllerUpdatePostfix(__instance);
+        void OnHandGestureControllerUpdatePostfix(HandGestureController p_controller)
         {
-            if(Settings.Enabled && !Settings.LeapGestures && Utils.IsInVRMode() && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
+            if(Settings.Enabled && (Utils.GetCurrentInput() != VRCInputManager.InputMethod.Index))
             {
                 if(m_localTracked != null)
                     m_localTracked.ForceIndexTracking(p_controller);

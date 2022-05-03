@@ -13,7 +13,6 @@
         static float ms_headOffsetY = -0.15f;
         static float ms_headOffsetZ = 0.15f;
         static float ms_rootRotation = 0f;
-        static bool ms_leapGestures = false;
         static bool ms_showModel = false;
 
         public static void LoadSettings()
@@ -28,7 +27,6 @@
             MelonLoader.MelonPreferences.CreateEntry("LME", "HeadOffsetY", ms_headOffsetY, "Head Y axis (up) offset").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "HeadffsetZ", ms_headOffsetZ, "Head Z axis (forward) offset").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "RootRotation", ms_rootRotation, "X axis rotation (for neck mounts)").OnValueChanged += OnAnyEntryUpdate;
-            MelonLoader.MelonPreferences.CreateEntry("LME", "LeapGestures", ms_leapGestures, "Gestures based on fingers tracking (VR)").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "ShowModel", ms_showModel, "Show Leap Motion controller model").OnValueChanged += OnAnyEntryUpdate;
 
             ReloadSettings();
@@ -45,7 +43,6 @@
             ms_headOffsetY = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "HeadOffsetY");
             ms_headOffsetZ = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "HeadffsetZ");
             ms_rootRotation = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "RootRotation");
-            ms_leapGestures = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "LeapGestures");
             ms_showModel = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "ShowModel");
         }
 
@@ -100,11 +97,6 @@
         public static float RootRotation
         {
             get => ms_rootRotation;
-        }
-
-        public static bool LeapGestures
-        {
-            get => ms_leapGestures;
         }
 
         public static bool ShowModel

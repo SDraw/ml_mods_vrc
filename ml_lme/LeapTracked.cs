@@ -181,5 +181,14 @@ namespace ml_lme
                 VRC.PoseRecorder.field_Internal_Static_Int32_0 |= (int)0x200u;
             }
         }
+
+        public void ForceDesktopTracking(HandGestureController p_controller)
+        {
+            if(m_handGestureController == p_controller)
+            {
+                // Spaceballs!
+                m_handGestureController.field_Private_InputMethod_0 = VRCInputManager.InputMethod.Count;
+            }
+        }
     }
 }

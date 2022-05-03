@@ -15,6 +15,21 @@
 
         public static bool GetGesturesToggle() => (UnityEngine.PlayerPrefs.GetInt(HandGestureController.field_Private_Static_String_0) == 1);
         public static VRCInputManager.InputMethod GetCurrentInput() => VRCInputManager.field_Private_Static_InputMethod_0;
+        public static bool IsNonVRInput(VRCInputManager.InputMethod p_input)
+        {
+            bool l_result = false;
+            switch(p_input)
+            {
+                case VRCInputManager.InputMethod.Mouse:
+                case VRCInputManager.InputMethod.Keyboard:
+                case VRCInputManager.InputMethod.Controller:
+                case VRCInputManager.InputMethod.Osc:
+                case VRCInputManager.InputMethod.Count:
+                    l_result = true;
+                    break;
+            }
+            return l_result;
+        }
 
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
