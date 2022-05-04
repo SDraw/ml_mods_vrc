@@ -21,7 +21,6 @@ Available mod's settings through UIExpansionKit:
 * **Desktop Y/Z axis offset:** up/forward offset position for body attachment (`Attach to head` is **`false`**), (-0.5, 0.4) by default.
 * **Head Y/Z axis offset:** up/forward offset position for head attachment (`Attach to head` is **`true`**), (-0.15, 0.15) by default.
 * **X axis rotation (for neck mounts):** root rotation around X axis, useful for neck mounts, 0 by default.
-* **Gestures based on fingers tracking (VR):** avatar gestures based on fingers tracking, if disabled original gestures from controllers input will be used, VR only, disabled by default.
 * **Show Leap Motion controller model:** show Leap Motion controller model, useful for tracking visualizing, disabled by default.
 
 # Notes
