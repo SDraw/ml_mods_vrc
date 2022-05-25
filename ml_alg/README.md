@@ -16,7 +16,7 @@ Available mod's settings through UIExpansionKit:
 * **Maximal distance to limbs:** maximal distance to limbs for successful grab, 0.25 by default, scaled by avatar height.
 * **Allow friends to manipulate you:** allow manipulation for friends in room (includes new joiners and option toggle), enabled by default.
 * **Allow pull:** allow player pulling, enabled by default.
-* **Allow head pull:** allow head pulling, enabled by default.
+* **Allow head pull:** allow head pulling, disabled by default.
 * **Allow hands pull:** allow hands pulling, enabled by default.
 * **Allow hips pull:** allow hips pulling, enabled by default.
 * **Allow legs pull:** allow legs pulling, enabled by default.

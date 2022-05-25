@@ -14,7 +14,7 @@
         static float ms_velocityMultiplier = 5f;
         static bool ms_useAverageVelocity = true;
         static bool ms_allowPull = true;
-        static bool ms_allowHeadPull = true;
+        static bool ms_allowHeadPull = false;
         static bool ms_allowHandsPull = true;
         static bool ms_allowHipsPull = true;
         static bool ms_allowLegsPull = true;
