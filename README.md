@@ -1,6 +1,6 @@
 Merged set of MelonLoader mods for VRChat.
 
-**State table for game build 1201:**
+**State table for game build 1202:**
 | Full name | Short name | Current Status | Notes |
 |-----------|------------|----------------|-------|
 | Avatar Bones Proximity| ml_abp | Deprecated | Superseded by PhysBones release |
