@@ -17,6 +17,7 @@ namespace ml_arh
 
         VRCPlayer m_player = null;
         readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
+        VRC.Animation.VRCMotionState m_motionState = null;
         CharacterController m_characterController = null;
         VRCVrIkController m_ikController = null;
         RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
@@ -46,6 +47,7 @@ namespace ml_arh
         {
             m_player = this.GetComponent<VRCPlayer>();
             m_characterController = this.GetComponent<CharacterController>();
+            m_motionState = this.GetComponent<VRC.Animation.VRCMotionState>();
 
             m_player.field_Private_OnAvatarIsReady_0 += m_avatarReadyEvent;
         }
@@ -58,17 +60,22 @@ namespace ml_arh
 
         void Update()
         {
-            if(m_poseHeight && (m_ikController != null) && (m_fbtIK != null))
+            if(m_poseHeight)
             {
                 PoseState l_currentState = PoseState.Standing;
-                if(m_fbtIK.enabled)
+
+                // Generic avatars are skipped
+                if((m_fbtIK != null) && m_fbtIK.enabled)
                 {
-                    float l_upright = Mathf.Clamp(Utils.GetUprightAmount(), 0f, 1f);
+                    float l_upright = Mathf.Clamp(m_motionState.field_Private_Single_0, 0f, 1f);
                     if(l_upright <= 0.6f)
                         l_currentState = ((l_upright <= 0.35f) ? PoseState.Crawling : PoseState.Crouching);
                 }
                 else
-                    l_currentState = (m_ikController.field_Private_Boolean_15 ? PoseState.Crouching : (m_ikController.field_Private_Boolean_14 ? PoseState.Crawling : PoseState.Standing));
+                {
+                    if(m_ikController != null)
+                        l_currentState = (m_ikController.field_Private_Boolean_31 ? PoseState.Crawling : (m_ikController.field_Private_Boolean_32 ? PoseState.Crouching : PoseState.Standing));
+                }
 
                 if(m_poseState != l_currentState)
                 {
@@ -83,8 +90,10 @@ namespace ml_arh
             m_poseState = PoseState.Standing;
 
             m_ikController = null;
-            m_ikController = this.GetComponent<VRCPlayer>().field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0;
-            m_fbtIK = this.GetComponent<VRCPlayer>().field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
+            m_fbtIK = null;
+
+            m_ikController = m_player.field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0;
+            m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
 
             if(m_enabled)
                 UpdateHeight(Utils.GetTrackingHeight());

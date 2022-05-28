@@ -6,7 +6,6 @@
 
         public override void OnApplicationStart()
         {
-            MethodsResolver.Resolve();
             Settings.Load();
 
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
