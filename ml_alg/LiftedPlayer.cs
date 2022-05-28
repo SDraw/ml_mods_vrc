@@ -376,51 +376,42 @@ namespace ml_alg
                 {
                     HumanBodyBones l_nearestBone = GetNearestBone(p_target, this.gameObject == p_lifter.gameObject);
                     if(l_nearestBone != HumanBodyBones.LastBone)
-                    {
-                        switch(l_nearestBone)
-                        {
-                            case HumanBodyBones.Neck:
-                            {
-                                if(m_allowPull)
-                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
-                            }
-                            break;
-
-                            case HumanBodyBones.Head:
-                            {
-                                if(m_allowHeadPull)
-                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
-                            }
-                            break;
-
-                            case HumanBodyBones.LeftHand:
-                            case HumanBodyBones.RightHand:
-                            {
-                                if(m_allowHandsPull)
-                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
-                            }
-                            break;
-
-                            case HumanBodyBones.Hips:
-                            {
-                                if(m_allowHipsPull)
-                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
-                            }
-                            break;
-
-                            case HumanBodyBones.LeftFoot:
-                            case HumanBodyBones.RightFoot:
-                            {
-                                if(m_allowLegsPull)
-                                    AssignLiftedBone(p_lifter, l_nearestBone, p_target);
-                            }
-                            break;
-                        }
-                    }
+                        AssignLiftedBone(p_lifter, l_nearestBone, p_target);
                 }
             }
             else
                 UnassignRemoteLifter(p_lifter, p_target);
+        }
+
+        bool IsAllowed(HumanBodyBones p_bone, bool p_self = false)
+        {
+            bool l_result = false;
+            switch(p_bone)
+            {
+                case HumanBodyBones.Neck:
+                    l_result = (m_allowPull && !p_self);
+                    break;
+
+                case HumanBodyBones.Head:
+                    l_result = (m_allowHeadPull && !p_self);
+                    break;
+
+                case HumanBodyBones.LeftHand:
+                case HumanBodyBones.RightHand:
+                    l_result = m_allowHandsPull;
+                    break;
+
+                case HumanBodyBones.Hips:
+                    l_result = m_allowHipsPull;
+                    break;
+
+                case HumanBodyBones.LeftFoot:
+                case HumanBodyBones.RightFoot:
+                    l_result = m_allowLegsPull;
+                    break;
+            }
+
+            return l_result;
         }
 
         void AssignLiftedBone(LifterPlayer p_lifter, HumanBodyBones p_localBone, Transform p_remoteTarget)
@@ -620,7 +611,7 @@ namespace ml_alg
 
                 foreach(HumanBodyBones l_bone in ms_updateBones)
                 {
-                    if(p_self && ((l_bone == HumanBodyBones.Neck) || (l_bone == HumanBodyBones.Head)))
+                    if(!IsAllowed(l_bone, p_self))
                         continue;
 
                     Transform l_localTransform = m_animator.GetBoneTransform(l_bone);
