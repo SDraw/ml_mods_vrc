@@ -5,6 +5,8 @@ namespace ml_alg
 {
     public class AvatarLimbsGrabber : MelonLoader.MelonMod
     {
+        static AvatarLimbsGrabber ms_instance = null;
+
         bool m_quit = false;
 
         object m_menuSettings = null;
@@ -12,11 +14,14 @@ namespace ml_alg
         object m_buttonPlayerAllow = null;
 
         bool m_update = false;
-        LiftedPlayer m_localLiftedPlayer = null;
+        LiftedPlayer m_localLifted = null;
         VRC.Player m_selectedPlayer = null;
 
         public override void OnApplicationStart()
         {
+            if(ms_instance == null)
+                ms_instance = this;
+
             MethodsResolver.ResolveMethods();
             Settings.LoadSettings();
 
@@ -26,6 +31,12 @@ namespace ml_alg
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
             VRChatUtilityKit.Utilities.NetworkEvents.OnUnfriended += this.OnUnfriended;
+
+            // Patches
+            HarmonyInstance.Patch(
+                typeof(RootMotion.FinalIK.IKSolverVR).GetMethod(nameof(RootMotion.FinalIK.IKSolverVR.VrcLateSolve)),
+                new HarmonyLib.HarmonyMethod(typeof(AvatarLimbsGrabber), nameof(IKSolverVR_VrcLateSolve_Prefix))
+            );
         }
 
         public override void OnApplicationQuit()
@@ -39,7 +50,7 @@ namespace ml_alg
             {
                 Settings.ReloadSettings();
 
-                if(m_update && (m_localLiftedPlayer != null) && Settings.IsAnyEntryUpdated())
+                if(m_update && (m_localLifted != null) && Settings.IsAnyEntryUpdated())
                 {
                     if(Settings.IsFriendsEntryUpdated())
                     {
@@ -57,24 +68,24 @@ namespace ml_alg
                                 if(Settings.AllowFriends)
                                 {
                                     l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
-                                    l_component.AddLifted(m_localLiftedPlayer);
+                                    l_component.AddLifted(m_localLifted);
                                 }
                             }
                         }
                     }
 
-                    m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
-                    m_localLiftedPlayer.AllowHeadPull = Settings.AllowHeadPull;
-                    m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
-                    m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
-                    m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
-                    m_localLiftedPlayer.GrabDistance = Settings.GrabDistance;
-                    m_localLiftedPlayer.SavePose = Settings.SavePose;
-                    m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
-                    m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
-                    m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
-                    m_localLiftedPlayer.DistanceScale = Settings.DistanceScale;
-                    m_localLiftedPlayer.ReapplyPermissions();
+                    m_localLifted.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+                    m_localLifted.AllowHeadPull = Settings.AllowHeadPull;
+                    m_localLifted.AllowHandsPull = Settings.AllowHandsPull;
+                    m_localLifted.AllowHipsPull = Settings.AllowHipsPull;
+                    m_localLifted.AllowLegsPull = Settings.AllowLegsPull;
+                    m_localLifted.GrabDistance = Settings.GrabDistance;
+                    m_localLifted.SavePose = Settings.SavePose;
+                    m_localLifted.UseVelocity = Settings.UseVelocity;
+                    m_localLifted.VelocityMultiplier = Settings.VelocityMultiplier;
+                    m_localLifted.AverageVelocity = Settings.UseAverageVelocity;
+                    m_localLifted.DistanceScale = Settings.DistanceScale;
+                    m_localLifted.ReapplyPermissions();
                 }
             }
         }
@@ -114,18 +125,18 @@ namespace ml_alg
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
 
-            m_localLiftedPlayer = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
-            m_localLiftedPlayer.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
-            m_localLiftedPlayer.AllowHeadPull = Settings.AllowHeadPull;
-            m_localLiftedPlayer.AllowHandsPull = Settings.AllowHandsPull;
-            m_localLiftedPlayer.AllowHipsPull = Settings.AllowHipsPull;
-            m_localLiftedPlayer.AllowLegsPull = Settings.AllowLegsPull;
-            m_localLiftedPlayer.GrabDistance = Settings.GrabDistance;
-            m_localLiftedPlayer.SavePose = Settings.SavePose;
-            m_localLiftedPlayer.UseVelocity = Settings.UseVelocity;
-            m_localLiftedPlayer.VelocityMultiplier = Settings.VelocityMultiplier;
-            m_localLiftedPlayer.AverageVelocity = Settings.UseAverageVelocity;
-            m_localLiftedPlayer.DistanceScale = Settings.DistanceScale;
+            m_localLifted = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
+            m_localLifted.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+            m_localLifted.AllowHeadPull = Settings.AllowHeadPull;
+            m_localLifted.AllowHandsPull = Settings.AllowHandsPull;
+            m_localLifted.AllowHipsPull = Settings.AllowHipsPull;
+            m_localLifted.AllowLegsPull = Settings.AllowLegsPull;
+            m_localLifted.GrabDistance = Settings.GrabDistance;
+            m_localLifted.SavePose = Settings.SavePose;
+            m_localLifted.UseVelocity = Settings.UseVelocity;
+            m_localLifted.VelocityMultiplier = Settings.VelocityMultiplier;
+            m_localLifted.AverageVelocity = Settings.UseAverageVelocity;
+            m_localLifted.DistanceScale = Settings.DistanceScale;
 
             ((IMenuLabel)m_menuLabelWorld).SetText("World pull permission: <color=#" + (VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed ? "00FF00>Allowed" : "FF0000>Disallowed") + "</color>");
         }
@@ -133,7 +144,7 @@ namespace ml_alg
         void OnLeftRoom()
         {
             m_update = false;
-            m_localLiftedPlayer = null;
+            m_localLifted = null;
             m_selectedPlayer = null;
         }
 
@@ -144,19 +155,19 @@ namespace ml_alg
         }
         System.Collections.IEnumerator CreateLifterOnJoin(VRC.Player p_player)
         {
-            while(m_localLiftedPlayer == null)
+            while(m_localLifted == null)
                 yield return null;
 
             if(p_player != null)
             {
                 LifterPlayer l_component = p_player.gameObject.AddComponent<LifterPlayer>();
-                l_component.AddLifted(m_localLiftedPlayer);
+                l_component.AddLifted(m_localLifted);
             }
         }
 
         void OnFriended(VRC.Core.APIUser p_apiPlayer)
         {
-            if(m_update && (m_localLiftedPlayer != null) && Settings.AllowFriends)
+            if(m_update && (m_localLifted != null) && Settings.AllowFriends)
             {
                 VRC.Player l_remotePlayer = Utils.GetPlayerWithId(p_apiPlayer.id);
                 if(l_remotePlayer != null)
@@ -165,7 +176,7 @@ namespace ml_alg
                     if(l_component == null)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
-                        l_component.AddLifted(m_localLiftedPlayer);
+                        l_component.AddLifted(m_localLifted);
                     }
                 }
             }
@@ -173,7 +184,7 @@ namespace ml_alg
 
         void OnUnfriended(string p_id)
         {
-            if(m_update && (m_localLiftedPlayer != null) && Settings.AllowFriends)
+            if(m_update && (m_localLifted != null) && Settings.AllowFriends)
             {
                 VRC.Player l_player = Utils.GetPlayerWithId(p_id);
                 if(l_player != null)
@@ -187,7 +198,7 @@ namespace ml_alg
 
         void OnManipulationToggle(bool p_state)
         {
-            if(m_update && (m_localLiftedPlayer != null))
+            if(m_update && (m_localLifted != null))
             {
                 VRC.Player l_remotePlayer = Utils.GetPlayerQM();
                 if(l_remotePlayer != null)
@@ -196,11 +207,11 @@ namespace ml_alg
                     if((l_component == null) && p_state)
                     {
                         l_component = l_remotePlayer.gameObject.AddComponent<LifterPlayer>();
-                        l_component.AddLifted(m_localLiftedPlayer);
+                        l_component.AddLifted(m_localLifted);
                     }
                     else if((l_component != null) && !p_state)
                     {
-                        l_component.RemoveLifted(m_localLiftedPlayer);
+                        l_component.RemoveLifted(m_localLifted);
                         Object.Destroy(l_component);
                     }
                 }
@@ -215,13 +226,13 @@ namespace ml_alg
 
         void OnPoseReset()
         {
-            if(m_update && (m_localLiftedPlayer != null) && Settings.SavePose)
-                m_localLiftedPlayer.ClearSavedPose();
+            if(m_update && (m_localLifted != null) && Settings.SavePose)
+                m_localLifted.ClearSavedPose();
         }
 
         void OnDisallowAll()
         {
-            if(m_update && (m_localLiftedPlayer != null))
+            if(m_update && (m_localLifted != null))
             {
                 var l_remotePlayers = Utils.GetPlayers();
                 if(l_remotePlayers != null)
@@ -243,6 +254,13 @@ namespace ml_alg
         {
             if(m_update && (m_menuSettings != null))
                 ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Hide();
+        }
+
+        static void IKSolverVR_VrcLateSolve_Prefix(ref RootMotion.FinalIK.IKSolverVR __instance) => ms_instance?.OnVrcLateIKSolve(__instance);
+        void OnVrcLateIKSolve(RootMotion.FinalIK.IKSolverVR p_solver)
+        {
+            if(m_localLifted != null)
+                m_localLifted.LateUpdateIK(p_solver);
         }
     }
 }

@@ -49,6 +49,8 @@ namespace ml_kte
             new Vector4(-1f,1f,-1f,1f)
         };
 
+        static KinectTrackingExtension ms_instance = null;
+
         KinectTracked m_localTracked = null;
         GameObject m_trackedRoot = null;
         GameObject[] m_trackedPoints = null;
@@ -62,6 +64,9 @@ namespace ml_kte
 
         public override void OnApplicationStart()
         {
+            if(ms_instance == null)
+                ms_instance = this;
+
             DependenciesHandler.ExtractDependencies();
             Settings.Load();
 
@@ -75,6 +80,12 @@ namespace ml_kte
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+
+            // Patches
+            HarmonyInstance.Patch(
+                typeof(RootMotion.FinalIK.IKSolverVR).GetMethod(nameof(RootMotion.FinalIK.IKSolverVR.VrcLateSolve)),
+                new HarmonyLib.HarmonyMethod(typeof(KinectTrackingExtension), nameof(IKSolverVR_VrcLateSolve_Prefix))
+            );
         }
 
         public override void OnApplicationQuit()
@@ -137,18 +148,6 @@ namespace ml_kte
                     l_boneIndex = ms_rotationBones[i];
                     m_trackedPoints[i].transform.localRotation = ms_globalRotations[i] * (new Quaternion(-m_rotationFloats[l_boneIndex * 4] * ms_rotationNegations[i].x, -m_rotationFloats[l_boneIndex * 4 + 1] * ms_rotationNegations[i].y, m_rotationFloats[l_boneIndex * 4 + 2] * ms_rotationNegations[i].z, m_rotationFloats[l_boneIndex * 4 + 3] * ms_rotationNegations[i].w) * ms_localRotations[i]);
                 }
-            }
-        }
-
-        public override void OnLateUpdate()
-        {
-            if(Settings.Enabled && (m_localTracked != null) && (m_trackedRoot != null))
-            {
-                m_localTracked.LateUpdateTransforms(
-                    m_trackedPoints[(int)TrackedPoint.Head].transform, m_trackedPoints[(int)TrackedPoint.Hips].transform,
-                    m_trackedPoints[(int)TrackedPoint.LeftLeg].transform, m_trackedPoints[(int)TrackedPoint.RightLeg].transform,
-                     m_trackedPoints[(int)TrackedPoint.LeftHand].transform, m_trackedPoints[(int)TrackedPoint.RightHand].transform
-                );
             }
         }
 
@@ -269,6 +268,17 @@ namespace ml_kte
         void OnRoomLeft()
         {
             m_localTracked = null;
+        }
+
+        static void IKSolverVR_VrcLateSolve_Prefix(ref RootMotion.FinalIK.IKSolverVR __instance) => ms_instance?.OnVrcLateIKSolve(__instance);
+        void OnVrcLateIKSolve(RootMotion.FinalIK.IKSolverVR p_solver)
+        {
+            if(Settings.Enabled && (m_localTracked != null))
+                m_localTracked.LateUpdateTransforms(p_solver,
+                    m_trackedPoints[(int)TrackedPoint.Head].transform, m_trackedPoints[(int)TrackedPoint.Hips].transform,
+                    m_trackedPoints[(int)TrackedPoint.LeftLeg].transform, m_trackedPoints[(int)TrackedPoint.RightLeg].transform,
+                     m_trackedPoints[(int)TrackedPoint.LeftHand].transform, m_trackedPoints[(int)TrackedPoint.RightHand].transform
+                );
         }
     }
 }

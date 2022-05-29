@@ -117,6 +117,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetsHandler.cs" />
     <Compile Include="DependenciesHandler.cs" />
     <Compile Include="GestureMatcher.cs" />
     <Compile Include="LeapTracked.cs" />
@@ -163,9 +164,13 @@
       <Link>LeapC.dll</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\leapmotion_controller.asset" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(TargetPath)" "C:\Games\Steam\common\VRChat\Mods\"
+
 copy /y "$(TargetPath)" "$(SolutionDir)\artifacts\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

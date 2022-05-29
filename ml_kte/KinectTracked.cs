@@ -71,9 +71,9 @@ namespace ml_kte
                 m_player.field_Private_OnAvatarIsReady_0 -= m_readyAvatarEvent;
         }
 
-        public void LateUpdateTransforms(Transform p_head, Transform p_hips, Transform p_leftLeg, Transform p_rightLeg, Transform p_leftHand, Transform p_rightHand)
+        public void LateUpdateTransforms(RootMotion.FinalIK.IKSolverVR p_solver, Transform p_head, Transform p_hips, Transform p_leftLeg, Transform p_rightLeg, Transform p_leftHand, Transform p_rightHand)
         {
-            if(m_solver != null)
+            if((m_solver != null) && (m_solver.Pointer == p_solver.Pointer))
             {
                 if(m_solver.spine != null)
                 {

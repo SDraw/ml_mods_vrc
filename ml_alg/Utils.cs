@@ -59,17 +59,6 @@ namespace ml_alg
 
         public static float GetTrackingScale() => GetVRCTrackingManager().transform.localScale.x;
 
-        // RootMotion.FinalIK.IKSolverVR extensions
-        public static void SetLegIKWeight(this RootMotion.FinalIK.IKSolverVR p_solver, HumanBodyBones p_leg, float p_weight)
-        {
-            var l_leg = (p_leg == HumanBodyBones.LeftFoot) ? p_solver.leftLeg : p_solver.rightLeg;
-            if(l_leg != null)
-            {
-                l_leg.positionWeight = p_weight;
-                l_leg.rotationWeight = p_weight;
-            }
-        }
-
         // Math extensions
         public static Matrix4x4 GetMatrix(this Transform p_transform, bool p_pos = true, bool p_rot = true, bool p_scl = false)
         {

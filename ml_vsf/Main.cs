@@ -4,6 +4,8 @@ namespace ml_vsf
 {
     public class VsfExtension : MelonLoader.MelonMod
     {
+        static VsfExtension ms_instance = null;
+
         bool m_quit = false;
 
         MemoryMapReader m_mapReader = null;
@@ -16,6 +18,9 @@ namespace ml_vsf
 
         public override void OnApplicationStart()
         {
+            if(ms_instance == null)
+                ms_instance = this;
+
             Settings.Load();
 
             m_mapReader = new MemoryMapReader();
@@ -26,6 +31,12 @@ namespace ml_vsf
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+
+            // Patches
+            HarmonyInstance.Patch(
+                typeof(RootMotion.FinalIK.IKSolverVR).GetMethod(nameof(RootMotion.FinalIK.IKSolverVR.VrcLateSolve)),
+                new HarmonyLib.HarmonyMethod(typeof(VsfExtension), nameof(IKSolverVR_VrcLateSolve_Prefix))
+            );
         }
 
         public override void OnApplicationQuit()
@@ -67,14 +78,6 @@ namespace ml_vsf
                     m_headTracker.transform.localRotation,
                     Settings.Blending
                 );
-            }
-        }
-
-        public override void OnLateUpdate()
-        {
-            if(Settings.Enabled && (m_localTracked != null))
-            {
-                m_localTracked.UpdateHeadTransform(m_headTracker.transform);
             }
         }
 
@@ -126,6 +129,13 @@ namespace ml_vsf
                 m_headOffset = m_headTracker.transform.localPosition;
                 m_headOffset.y -= m_faceData.m_headPositionY;
             }
+        }
+
+        static void IKSolverVR_VrcLateSolve_Prefix(ref RootMotion.FinalIK.IKSolverVR __instance) => ms_instance?.OnVrcLateIKSolve(__instance);
+        void OnVrcLateIKSolve(RootMotion.FinalIK.IKSolverVR p_solver)
+        {
+            if(Settings.Enabled && (m_localTracked != null))
+                m_localTracked.UpdateHeadTransform(p_solver, m_headTracker.transform);
         }
     }
 }

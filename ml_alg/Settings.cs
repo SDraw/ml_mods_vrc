@@ -10,7 +10,7 @@
         static float ms_grabDistance = 0.25f;
         static bool ms_allowFriends = true;
         static bool ms_savePose = false;
-        static bool ms_useVelocity = false;
+        static bool ms_useVelocity = true;
         static float ms_velocityMultiplier = 5f;
         static bool ms_useAverageVelocity = true;
         static bool ms_allowPull = true;
@@ -18,7 +18,7 @@
         static bool ms_allowHandsPull = true;
         static bool ms_allowHipsPull = true;
         static bool ms_allowLegsPull = true;
-        static bool ms_distanceScale = true;
+        static bool ms_distanceScale = false;
 
         public static void LoadSettings()
         {

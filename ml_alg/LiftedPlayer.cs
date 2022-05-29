@@ -10,12 +10,6 @@ namespace ml_alg
         static readonly HumanBodyBones[] ms_updateBones = { HumanBodyBones.Neck, HumanBodyBones.Head, HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
         static readonly HumanBodyBones[] ms_lateUpdateBones = { HumanBodyBones.Head, HumanBodyBones.Hips, HumanBodyBones.LeftHand, HumanBodyBones.RightHand, HumanBodyBones.LeftFoot, HumanBodyBones.RightFoot };
 
-        enum BodyTrackingMode
-        {
-            Generic = 0,
-            FBT
-        }
-
         enum RotationReapplyState
         {
             None = 0,
@@ -40,22 +34,19 @@ namespace ml_alg
         Vector3 m_frameVelocity;
         float m_velocityMultiplier = 5f;
         bool m_allowPull = true;
-        bool m_allowHeadPull = true;
+        bool m_allowHeadPull = false;
         bool m_allowHandsPull = true;
         bool m_allowHipsPull = true;
         bool m_allowLegsPull = true;
         bool m_savePose = false;
-        bool m_useVelocity = false;
+        bool m_useVelocity = true;
         bool m_averageVelocity = true;
-        bool m_distanceScale = true;
+        bool m_distanceScale = false;
 
         VRCPlayer m_player;
         readonly VRCPlayer.OnAvatarIsReady m_avatarReadyEvent = null;
         Animator m_animator = null;
         RootMotion.FinalIK.IKSolverVR m_solver = null;
-        RootMotion.FinalIK.FullBodyBipedIK m_fbtIK = null;
-        VRCFbbIkController m_fbbIK = null;
-        BodyTrackingMode m_trackingMode = BodyTrackingMode.Generic;
 
         public float GrabDistance
         {
@@ -153,11 +144,6 @@ namespace ml_alg
 
         void Update()
         {
-            // Recheck tracking mode
-            m_trackingMode = BodyTrackingMode.Generic;
-            if((m_fbtIK != null) && m_fbtIK.enabled)
-                m_trackingMode = BodyTrackingMode.FBT;
-
             foreach(int i in ms_updateBones)
             {
                 if(m_liftBodyParts[i].m_sourceTarget != null)
@@ -231,127 +217,94 @@ namespace ml_alg
             }
         }
 
-        void LateUpdate()
+        public void LateUpdateIK(RootMotion.FinalIK.IKSolverVR p_solver)
         {
-            foreach(int i in ms_lateUpdateBones)
+            if((m_solver != null) && (m_solver.Pointer == p_solver.Pointer))
             {
-                if((m_liftBodyParts[i].m_sourceTarget != null) || m_liftBodyParts[i].m_saved)
+                foreach(int i in ms_lateUpdateBones)
                 {
-                    switch(m_trackingMode)
+                    if((m_liftBodyParts[i].m_sourceTarget != null) || m_liftBodyParts[i].m_saved)
                     {
-                        case BodyTrackingMode.Generic:
+                        switch(i)
                         {
-                            switch(i)
+                            case (int)HumanBodyBones.Head:
                             {
-                                case (int)HumanBodyBones.Head:
+                                var l_spine = m_solver.spine;
+                                if(l_spine != null)
                                 {
-                                    var l_spine = m_solver?.spine;
-                                    if(l_spine != null)
-                                    {
-                                        l_spine.headPosition = m_liftBodyParts[i].m_targetPos;
-                                        l_spine.IKPositionHead = m_liftBodyParts[i].m_targetPos;
-                                        l_spine.headRotation = m_liftBodyParts[i].m_targetRot;
-                                        l_spine.IKRotationHead = m_liftBodyParts[i].m_targetRot;
+                                    l_spine.headPosition = m_liftBodyParts[i].m_targetPos;
+                                    l_spine.IKPositionHead = m_liftBodyParts[i].m_targetPos;
+                                    l_spine.headRotation = m_liftBodyParts[i].m_targetRot;
+                                    l_spine.IKRotationHead = m_liftBodyParts[i].m_targetRot;
 
-                                        if((l_spine.headTarget != null) && (l_spine.headTarget.transform.parent != null))
-                                        {
-                                            l_spine.headTarget.transform.parent.position = m_liftBodyParts[i].m_targetPos;
-                                            l_spine.headTarget.transform.parent.rotation = m_liftBodyParts[i].m_targetRot;
-                                        }
+                                    if((l_spine.headTarget != null) && (l_spine.headTarget.parent != null))
+                                    {
+                                        l_spine.headTarget.parent.position = m_liftBodyParts[i].m_targetPos;
+                                        l_spine.headTarget.parent.rotation = m_liftBodyParts[i].m_targetRot;
                                     }
                                 }
-                                break;
+                            }
+                            break;
 
-                                case (int)HumanBodyBones.Hips:
+                            case (int)HumanBodyBones.Hips:
+                            {
+                                var l_spine = m_solver.spine;
+                                if(l_spine != null)
                                 {
-                                    var l_spine = m_solver?.spine;
-                                    if(l_spine?.pelvisTarget != null)
-                                    {
-                                        l_spine.pelvisPositionWeight = 1f;
-                                        l_spine.IKPositionPelvis = m_liftBodyParts[i].m_targetPos;
-                                        l_spine.pelvisTarget.position = m_liftBodyParts[i].m_targetPos;
+                                    l_spine.pelvisPositionWeight = 1f;
+                                    l_spine.IKPositionPelvis = m_liftBodyParts[i].m_targetPos;
 
-                                        l_spine.pelvisRotationWeight = 1f;
-                                        l_spine.IKRotationPelvis = m_liftBodyParts[i].m_targetRot;
+                                    l_spine.pelvisRotationWeight = 1f;
+                                    l_spine.IKRotationPelvis = m_liftBodyParts[i].m_targetRot;
+
+                                    if(l_spine.pelvisTarget != null)
+                                    {
+                                        l_spine.pelvisTarget.position = m_liftBodyParts[i].m_targetPos;
                                         l_spine.pelvisTarget.rotation = m_liftBodyParts[i].m_targetRot;
                                     }
                                 }
-                                break;
+                            }
+                            break;
 
-                                case (int)HumanBodyBones.LeftHand:
-                                case (int)HumanBodyBones.RightHand:
+                            case (int)HumanBodyBones.LeftHand:
+                            case (int)HumanBodyBones.RightHand:
+                            {
+                                var l_ikArm = (i == (int)HumanBodyBones.LeftHand) ? m_solver.leftArm : m_solver.rightArm;
+                                if(l_ikArm != null)
                                 {
-                                    var l_ikArm = (i == (int)HumanBodyBones.LeftHand) ? m_solver?.leftArm : m_solver?.rightArm;
-                                    if(l_ikArm?.target != null)
-                                    {
-                                        l_ikArm.positionWeight = 1f;
-                                        l_ikArm.target.transform.position = m_liftBodyParts[i].m_targetPos;
+                                    l_ikArm.positionWeight = 1f;
+                                    l_ikArm.rotationWeight = 1f;
 
-                                        l_ikArm.rotationWeight = 1f;
-                                        l_ikArm.target.transform.rotation = m_liftBodyParts[i].m_targetRot;
+                                    if(l_ikArm.target != null)
+                                    {
+                                        l_ikArm.target.position = m_liftBodyParts[i].m_targetPos;
+                                        l_ikArm.target.rotation = m_liftBodyParts[i].m_targetRot;
                                     }
                                 }
-                                break;
+                            }
+                            break;
 
-                                case (int)HumanBodyBones.LeftFoot:
-                                case (int)HumanBodyBones.RightFoot:
+                            case (int)HumanBodyBones.LeftFoot:
+                            case (int)HumanBodyBones.RightFoot:
+                            {
+                                var l_ikLeg = (i == (int)HumanBodyBones.LeftFoot) ? m_solver.leftLeg : m_solver.rightLeg;
+                                if(l_ikLeg != null)
                                 {
-                                    var l_ikLeg = (i == (int)HumanBodyBones.LeftFoot) ? m_solver?.leftLeg : m_solver?.rightLeg;
-                                    if(l_ikLeg != null)
+                                    l_ikLeg.positionWeight = 1f;
+                                    l_ikLeg.IKPosition = m_liftBodyParts[i].m_targetPos;
+
+                                    l_ikLeg.rotationWeight = 1f;
+                                    l_ikLeg.IKRotation = m_liftBodyParts[i].m_targetRot;
+
+                                    if(l_ikLeg.target != null)
                                     {
-                                        l_ikLeg.IKPosition = m_liftBodyParts[i].m_targetPos;
-                                        l_ikLeg.IKRotation = m_liftBodyParts[i].m_targetRot;
+                                        l_ikLeg.target.position = m_liftBodyParts[i].m_targetPos;
+                                        l_ikLeg.target.rotation = m_liftBodyParts[i].m_targetRot;
                                     }
                                 }
-                                break;
                             }
+                            break;
                         }
-                        break;
-
-                        case BodyTrackingMode.FBT:
-                        {
-                            if(m_fbtIK != null)
-                            {
-                                RootMotion.FinalIK.IKEffector l_effector = null;
-                                switch(i)
-                                {
-                                    case (int)HumanBodyBones.Hips:
-                                        l_effector = m_fbtIK.solver?.bodyEffector;
-                                        break;
-                                    case (int)HumanBodyBones.LeftHand:
-                                        l_effector = m_fbtIK.solver?.leftHandEffector;
-                                        break;
-                                    case (int)HumanBodyBones.RightHand:
-                                        l_effector = m_fbtIK.solver?.rightHandEffector;
-                                        break;
-                                    case (int)HumanBodyBones.LeftFoot:
-                                        l_effector = m_fbtIK.solver?.leftFootEffector;
-                                        break;
-                                    case (int)HumanBodyBones.RightFoot:
-                                        l_effector = m_fbtIK.solver?.rightFootEffector;
-                                        break;
-                                }
-                                if(l_effector?.target != null)
-                                {
-                                    l_effector.position = m_liftBodyParts[i].m_targetPos;
-                                    l_effector.target.position = m_liftBodyParts[i].m_targetPos;
-
-                                    l_effector.rotation = m_liftBodyParts[i].m_targetRot;
-                                    l_effector.target.rotation = m_liftBodyParts[i].m_targetRot;
-                                }
-                            }
-
-                            if((i == (int)HumanBodyBones.Head) && (m_fbbIK != null))
-                            {
-                                var l_headEffector = m_fbbIK.field_Private_FBBIKHeadEffector_0;
-                                if(l_headEffector != null)
-                                {
-                                    l_headEffector.transform.position = m_liftBodyParts[i].m_targetPos;
-                                    l_headEffector.transform.rotation = m_liftBodyParts[i].m_targetRot;
-                                }
-                            }
-                        }
-                        break;
                     }
                 }
             }
@@ -364,8 +317,6 @@ namespace ml_alg
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
             else
                 m_solver = null; // Generic avatar
-            m_fbtIK = m_player.field_Private_VRC_AnimationController_0.field_Private_FullBodyBipedIK_0;
-            m_fbbIK = m_player.field_Private_VRC_AnimationController_0.field_Private_VRCFbbIkController_0;
         }
 
         public void OnLifterGesture(LifterPlayer p_lifter, Transform p_target, bool p_state)
@@ -435,9 +386,9 @@ namespace ml_alg
 
                 case HumanBodyBones.Head:
                 {
-                    if((m_solver?.spine?.headTarget != null) && (m_solver.spine.headTarget.transform.parent != null))
+                    if((m_solver?.spine?.headTarget != null) && (m_solver.spine.headTarget.parent != null))
                     {
-                        m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * m_solver.spine.headTarget.transform.parent.GetMatrix();
+                        m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * m_solver.spine.headTarget.parent.GetMatrix();
                     }
                 }
                 break;
@@ -459,16 +410,9 @@ namespace ml_alg
                 case HumanBodyBones.LeftFoot:
                 case HumanBodyBones.RightFoot:
                 {
-                    Transform l_footTransform = null;
-                    if(m_trackingMode == BodyTrackingMode.Generic)
-                    {
-                        // Consider toes
-                        l_footTransform = m_animator.GetBoneTransform((p_localBone == HumanBodyBones.LeftFoot) ? HumanBodyBones.LeftToes : HumanBodyBones.RightToes);
-                        if(l_footTransform == null)
-                            l_footTransform = m_animator.GetBoneTransform(p_localBone);
-                        m_solver?.SetLegIKWeight(p_localBone, 1f);
-                    }
-                    else
+                    // Consider toes
+                    Transform l_footTransform = m_animator.GetBoneTransform((p_localBone == HumanBodyBones.LeftFoot) ? HumanBodyBones.LeftToes : HumanBodyBones.RightToes);
+                    if(l_footTransform == null)
                         l_footTransform = m_animator.GetBoneTransform(p_localBone);
 
                     m_liftBodyParts[(int)p_localBone].m_targetOffset = m_liftBodyParts[(int)p_localBone].m_sourceTarget.GetMatrix().inverse * l_footTransform.GetMatrix();
@@ -565,19 +509,6 @@ namespace ml_alg
                     break;
                 }
             }
-            else
-            {
-                switch(p_bone)
-                {
-                    case HumanBodyBones.LeftFoot:
-                    case HumanBodyBones.RightFoot:
-                    {
-                        if(m_trackingMode == BodyTrackingMode.Generic)
-                            m_solver?.SetLegIKWeight(p_bone, 0f);
-                    }
-                    break;
-                }
-            }
 
             m_liftBodyParts[(int)p_bone].m_targetPos = Vector3.zero;
             m_liftBodyParts[(int)p_bone].m_targetRot = Quaternion.identity;
@@ -587,19 +518,7 @@ namespace ml_alg
         public void ClearSavedPose()
         {
             for(int i = 0; i < (int)HumanBodyBones.LastBone; i++)
-            {
                 m_liftBodyParts[i].m_saved = false;
-                if((m_liftBodyParts[i].m_sourceTarget == null) && (m_trackingMode == BodyTrackingMode.Generic))
-                {
-                    switch(i)
-                    {
-                        case (int)HumanBodyBones.LeftFoot:
-                        case (int)HumanBodyBones.RightFoot:
-                            m_solver?.SetLegIKWeight((HumanBodyBones)i, 0f);
-                            break;
-                    }
-                }
-            }
         }
 
         HumanBodyBones GetNearestBone(Transform p_remoteTarget, bool p_self = false)

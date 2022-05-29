@@ -50,6 +50,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>F:\games\Steam\steamapps\common\VRChat\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
@@ -137,7 +140,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Games\Steam\steamapps\common\VRChat\Mods\"
+    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Games\Steam\common\VRChat\Mods\"
 copy /y "$(TargetPath)" "$(SolutionDir)\artifacts\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

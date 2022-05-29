@@ -28,22 +28,25 @@ namespace ml_vsf
         }
 
         // LateUpdate only
-        public void UpdateHeadTransform(Transform p_transform)
+        public void UpdateHeadTransform(RootMotion.FinalIK.IKSolverVR p_solver, Transform p_transform)
         {
-            if((m_solver != null) && (m_solver.spine != null))
+            if((m_solver != null) && (m_solver.Pointer == p_solver.Pointer))
             {
-                m_solver.spine.headPosition = p_transform.position;
-                m_solver.spine.IKPositionHead = p_transform.position;
-                m_solver.spine.headRotation = p_transform.rotation;
-                m_solver.spine.IKRotationHead = p_transform.rotation;
-
-                if(m_solver.spine.headTarget != null)
+                if(m_solver.spine != null)
                 {
-                    m_solver.spine.headTarget.parent.position = p_transform.position;
-                    m_solver.spine.headTarget.position = p_transform.position;
+                    m_solver.spine.headPosition = p_transform.position;
+                    m_solver.spine.IKPositionHead = p_transform.position;
+                    m_solver.spine.headRotation = p_transform.rotation;
+                    m_solver.spine.IKRotationHead = p_transform.rotation;
 
-                    m_solver.spine.headTarget.rotation = p_transform.rotation;
-                    m_solver.spine.headTarget.parent.rotation = p_transform.rotation;
+                    if(m_solver.spine.headTarget != null)
+                    {
+                        m_solver.spine.headTarget.parent.position = p_transform.position;
+                        m_solver.spine.headTarget.position = p_transform.position;
+
+                        m_solver.spine.headTarget.rotation = p_transform.rotation;
+                        m_solver.spine.headTarget.parent.rotation = p_transform.rotation;
+                    }
                 }
             }
         }

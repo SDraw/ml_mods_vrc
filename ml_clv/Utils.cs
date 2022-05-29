@@ -12,7 +12,7 @@
         {
             float l_result = 1f;
             if(p_player.field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0 != null)
-                l_result = p_player.field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0.field_Private_Single_0;
+                l_result = p_player.field_Private_VRC_AnimationController_0.field_Private_VRCVrIkController_0.field_Private_Single_4;
             return l_result;
         }
     }
