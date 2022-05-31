@@ -104,6 +104,7 @@ namespace ml_lme
             }
         }
 
+        [UnhollowerBaseLib.Attributes.HideFromIl2Cpp]
         public void LateUpdateIK(RootMotion.FinalIK.IKSolverVR p_solver, GestureMatcher.GesturesData p_gesturesData, Transform p_left, Transform p_right)
         {
             if(m_enabled && !m_fingersOnly && (m_solver != null) && (m_solver.Pointer == p_solver.Pointer)) // Ha-ha, yes

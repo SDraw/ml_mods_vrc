@@ -18,10 +18,8 @@
 
             if(Settings.IsAnyEntryUpdated() && (m_localAdjuster != null))
             {
-                m_localAdjuster.Enabled = (Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
-                m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
-
-                m_localAdjuster.UpdateHeight((Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed) ? Utils.GetTrackingHeight() : 1.65f);
+                m_localAdjuster.SetEnabled(Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+                m_localAdjuster.SetPoseHeight(Settings.PoseHeight);
             }
         }
 
@@ -33,9 +31,10 @@
         {
             while(Utils.GetLocalPlayer() == null)
                 yield return null;
+
             m_localAdjuster = Utils.GetLocalPlayer().gameObject.AddComponent<HeightAdjuster>();
-            m_localAdjuster.Enabled = (Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
-            m_localAdjuster.PoseHeight = (Settings.Enabled && Settings.PoseHeight && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+            m_localAdjuster.SetEnabled(Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
+            m_localAdjuster.SetPoseHeight(Settings.PoseHeight);
         }
 
         void OnRoomLeft()

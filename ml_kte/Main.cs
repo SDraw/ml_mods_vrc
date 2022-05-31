@@ -217,8 +217,8 @@ namespace ml_kte
                         break;
                 }
 
-                if(p_oldState && (Utils.GetLocalPlayer() != null))
-                    VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                if(p_oldState && (m_localTracked != null))
+                    m_localTracked.ResetViewPoint();
             }
 
             if(m_trackedRoot != null)

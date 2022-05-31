@@ -18,7 +18,7 @@
         public static void LoadSettings()
         {
             MelonLoader.MelonPreferences.CreateCategory("LME", "Leap Motion extension");
-            MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable hands tracking").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable Leap tracking").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "LeapHmdMode", ms_leapHmdMode, "HMD mode").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "HeadRoot", ms_headRoot, "Attach to head").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "FingersTracking", ms_fingersTracking, "Fingers tracking only").OnValueChanged += OnAnyEntryUpdate;

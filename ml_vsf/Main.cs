@@ -58,13 +58,13 @@ namespace ml_vsf
             {
                 Settings.Reload();
                 if(Settings.IsEnableEntryUpdated() && !Settings.Enabled && (m_localTracked != null))
-                    VRChatUtilityKit.Utilities.VRCUtils.ReloadAvatar(Utils.GetLocalPlayer());
+                    m_localTracked.ResetViewPoint();
             }
         }
 
         public override void OnUpdate()
         {
-            if(Settings.Enabled && m_mapReader.Read(ref m_buffer) && (m_localTracked != null))
+            if(Settings.Enabled && (m_localTracked != null) && m_mapReader.Read(ref m_buffer))
             {
                 m_faceData = FaceData.ToObject(m_buffer);
 

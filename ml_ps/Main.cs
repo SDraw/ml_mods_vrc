@@ -49,16 +49,16 @@ namespace ml_ps
                     l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("InternalUI"));
                 }
 
-                RenderTexture l_rtA = new RenderTexture(Settings.CubemapSize, Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
+                RenderTexture l_rtA = new RenderTexture((int)Settings.CubemapSize, (int)Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
                 l_rtA.dimension = UnityEngine.Rendering.TextureDimension.Cube;
                 l_camera.RenderToCubemap(l_rtA);
 
-                RenderTexture l_rtB = new RenderTexture(Settings.PanoramaWidth, Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
+                RenderTexture l_rtB = new RenderTexture((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
                 l_rtA.ConvertToEquirect(l_rtB, Camera.MonoOrStereoscopicEye.Mono);
 
                 RenderTexture.active = l_rtB;
-                Texture2D l_resultTex = new Texture2D(Settings.PanoramaWidth, Settings.PanoramaHeight, TextureFormat.RGB24, false);
-                l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
+                Texture2D l_resultTex = new Texture2D((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, TextureFormat.RGB24, false);
+                l_resultTex.ReadPixels(new Rect(0, 0, (int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight), 0, 0);
                 l_resultTex.Apply();
 
                 DateTime l_now = DateTime.Now;
@@ -125,16 +125,16 @@ namespace ml_ps
                     l_camera.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
                     Utils.GetPhotoCamera().active = false;
 
-                    RenderTexture l_rtA = new RenderTexture(Settings.CubemapSize, Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
+                    RenderTexture l_rtA = new RenderTexture((int)Settings.CubemapSize, (int)Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
                     l_rtA.dimension = UnityEngine.Rendering.TextureDimension.Cube;
                     l_camera.RenderToCubemap(l_rtA);
 
-                    RenderTexture l_rtB = new RenderTexture(Settings.PanoramaWidth, Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
+                    RenderTexture l_rtB = new RenderTexture((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
                     l_rtA.ConvertToEquirect(l_rtB, Camera.MonoOrStereoscopicEye.Mono);
 
                     RenderTexture.active = l_rtB;
-                    Texture2D l_resultTex = new Texture2D(Settings.PanoramaWidth, Settings.PanoramaHeight, TextureFormat.RGB24, false);
-                    l_resultTex.ReadPixels(new Rect(0, 0, Settings.PanoramaWidth, Settings.PanoramaHeight), 0, 0);
+                    Texture2D l_resultTex = new Texture2D((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, TextureFormat.RGB24, false);
+                    l_resultTex.ReadPixels(new Rect(0, 0, (int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight), 0, 0);
                     l_resultTex.Apply();
 
                     DateTime l_now = DateTime.Now;

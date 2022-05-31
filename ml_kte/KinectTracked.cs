@@ -19,6 +19,9 @@ namespace ml_kte
         bool m_rotateLegs = true;
         bool m_rotateHands = true;
 
+        Vector3 m_headToView;
+        Quaternion m_headToViewRotation;
+
         public bool TrackHead
         {
             set => m_trackHead = value;
@@ -92,8 +95,8 @@ namespace ml_kte
                             m_solver.spine.headTarget.position = p_head.position;
                             if(m_rotateHead)
                             {
-                                m_solver.spine.headTarget.rotation = p_head.rotation;
                                 m_solver.spine.headTarget.parent.rotation = p_head.rotation;
+                                m_solver.spine.headTarget.rotation = p_head.rotation;
                             }
                         }
                     }
@@ -164,10 +167,25 @@ namespace ml_kte
 
         void RecacheComponents()
         {
+            m_solver = null;
+
             if(m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0 != null)
                 m_solver = m_player.field_Private_VRC_AnimationController_0.field_Private_VRIK_0.solver;
-            else
-                m_solver = null;
+
+            if(m_solver?.spine?.headTarget != null)
+            {
+                m_headToView = m_solver.spine.headTarget.localPosition;
+                m_headToViewRotation = m_solver.spine.headTarget.localRotation;
+            }
+        }
+
+        public void ResetViewPoint()
+        {
+            if(m_solver?.spine?.headTarget != null)
+            {
+                m_solver.spine.headTarget.localPosition = m_headToView;
+                m_solver.spine.headTarget.localRotation = m_headToViewRotation;
+            }
         }
     }
 }
