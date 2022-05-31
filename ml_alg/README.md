@@ -39,7 +39,10 @@ To succesfully grab your limbs remote player should place his hand near your ava
 Index users should enabled gestures from action menu settings.
 
 # Notes
-* [IKTweaks](https://github.com/knah/VRCMods) support is removed due to several issues after release tag [`r51`](https://github.com/SDraw/ml_mods/tree/r51).
+* Limbs pulling doesn't work with legacy VR IK
+* [IKTweaks](https://github.com/knah/VRCMods) notes:
+  * Head pull only works with disabled `Don't freeze head/hands inside walls` option
+  * Hands pull breaks hands tracking
 * You can't be picked up in worlds that don't allow risky functions.
 * Self pulling is possible with limitations:
   * You can't move yourself as others do

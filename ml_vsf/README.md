@@ -23,4 +23,5 @@ Available mod's settings through UIExpansionKit:
 
 # Notes
 * Designed for desktop usage, can't be used for VR because of VRChat's internal tracking hierarchy.
+* If [IKTweaks](https://github.com/knah/VRCMods) is used, disable `Don't freeze head/hands inside walls` option.
 * Current mod won't be added to VRCMG list due to security rules for mods that consist of separated parts.
