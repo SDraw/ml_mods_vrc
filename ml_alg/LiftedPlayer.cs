@@ -353,7 +353,7 @@ namespace ml_alg
                     break;
 
                 case HumanBodyBones.Hips:
-                    l_result = m_allowHipsPull;
+                    l_result = (m_allowHipsPull && !p_self);
                     break;
 
                 case HumanBodyBones.LeftFoot:
