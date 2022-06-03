@@ -108,7 +108,7 @@ namespace ml_arh
 
                 UpdateCollider(
                     m_enabled ? m_avatarEyeHeight : ms_defaultColliderHeight,
-                    m_enabled ? m_center : ms_defaultColliderHeight,
+                    m_enabled ? m_center : ms_defaultColliderCenter,
                     m_enabled ? m_radius : ms_defaultColliderRadius
                 );
             }
