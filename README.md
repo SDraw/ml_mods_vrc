@@ -10,7 +10,7 @@ Merged set of MelonLoader mods for VRChat.
 | Head Turn | ml_ht | 1.1.6 | Yes | **Working** |
 | Hip Tracker Rotator | ml_htr | 1.0.3 | Yes (`Broken` group) | **Deprecated** | Superseded by IK 2.0 release |
 | Kinect Tracking Extension | ml_kte | 1.3.1 | Yes | **Working** |
-| Leap Motion Extension | ml_lme | 1.6.3 | Yes | **Working** |
+| Leap Motion Extension | ml_lme | 1.6.4 | Yes | **Working** |
 | Legs Animation Tweaker | ml_lat | 1.0.3 | Yes (`Broken` group) | **Deprecated** |  No longer needed after after IK 2.0 release |
 | Panorama Screenshot | ml_ps | 1.0.4 | Yes | **Working** |
 | Vertex Animaton Remover | ml_var | 1.0.1 | Yes (`Broken` group) | **Deprecated** | No longer needed after game migration to Unity 2019 |
