@@ -2,10 +2,23 @@
 {
     static class Settings
     {
+        [System.Flags]
+        public enum LeapTrackingMode
+        {
+            [System.ComponentModel.Description("Screentop")]
+            Screentop = 0,
+
+            [System.ComponentModel.Description("Desktop")]
+            Desktop = 1,
+
+            [System.ComponentModel.Description("HMD")]
+            Hmd = 2
+        }
+
         static bool ms_settingsUpdated = false;
 
         static bool ms_enabled = false;
-        static bool ms_leapHmdMode = false;
+        static LeapTrackingMode ms_trackingMode = LeapTrackingMode.Desktop;
         static bool ms_headRoot = false;
         static bool ms_fingersTracking = false;
         static float ms_desktopOffsetY = -0.5f;
@@ -19,7 +32,7 @@
         {
             MelonLoader.MelonPreferences.CreateCategory("LME", "Leap Motion extension");
             MelonLoader.MelonPreferences.CreateEntry("LME", "Enabled", ms_enabled, "Enable Leap tracking").OnValueChanged += OnAnyEntryUpdate;
-            MelonLoader.MelonPreferences.CreateEntry("LME", "LeapHmdMode", ms_leapHmdMode, "HMD mode").OnValueChanged += OnAnyEntryUpdate;
+            MelonLoader.MelonPreferences.CreateEntry("LME", "TrackingMode", ms_trackingMode, "Tracking mode").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "HeadRoot", ms_headRoot, "Attach to head").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "FingersTracking", ms_fingersTracking, "Fingers tracking only").OnValueChanged += OnAnyEntryUpdate;
             MelonLoader.MelonPreferences.CreateEntry("LME", "DesktopOffsetY", ms_desktopOffsetY, "Desktop Y axis (up) offset").OnValueChanged += OnAnyEntryUpdate;
@@ -35,7 +48,7 @@
         public static void ReloadSettings()
         {
             ms_enabled = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "Enabled");
-            ms_leapHmdMode = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "LeapHmdMode");
+            ms_trackingMode = MelonLoader.MelonPreferences.GetEntryValue<LeapTrackingMode>("LME", "TrackingMode");
             ms_headRoot = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "HeadRoot");
             ms_fingersTracking = MelonLoader.MelonPreferences.GetEntryValue<bool>("LME", "FingersTracking");
             ms_desktopOffsetY = MelonLoader.MelonPreferences.GetEntryValue<float>("LME", "DesktopOffsetY");
@@ -59,9 +72,9 @@
             get => ms_enabled;
         }
 
-        public static bool LeapHmdMode
+        public static LeapTrackingMode TrackingMode
         {
-            get => ms_leapHmdMode;
+            get => ms_trackingMode;
         }
 
         public static bool HeadRoot
