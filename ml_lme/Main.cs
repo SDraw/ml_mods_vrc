@@ -174,18 +174,7 @@ namespace ml_lme
                 if(Settings.Enabled)
                 {
                     m_leapController.StartConnection();
-                    m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
-                    m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-
-                    switch(Settings.TrackingMode)
-                    {
-                        case Settings.LeapTrackingMode.Screentop:
-                            m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
-                            break;
-                        case Settings.LeapTrackingMode.Hmd:
-                            m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-                            break;
-                    }
+                    UpdateDeviceTrackingMode();
                 }
                 else
                     m_leapController.StopConnection();
@@ -246,19 +235,22 @@ namespace ml_lme
         void OnLeapDeviceInitialized(object p_sender, Leap.DeviceEventArgs p_args)
         {
             if(!m_quit && (m_leapController != null))
-            {
-                m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
-                m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                UpdateDeviceTrackingMode();
+        }
 
-                switch(Settings.TrackingMode)
-                {
-                    case Settings.LeapTrackingMode.Screentop:
-                        m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
-                        break;
-                    case Settings.LeapTrackingMode.Hmd:
-                        m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-                        break;
-                }
+        void UpdateDeviceTrackingMode()
+        {
+            m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
+            m_leapController.ClearPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+
+            switch(Settings.TrackingMode)
+            {
+                case Settings.LeapTrackingMode.Screentop:
+                    m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_SCREENTOP);
+                    break;
+                case Settings.LeapTrackingMode.Hmd:
+                    m_leapController.SetPolicy(Leap.Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+                    break;
             }
         }
 
