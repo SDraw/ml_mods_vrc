@@ -34,48 +34,8 @@ namespace ml_ps
             Utils.PlayCameraShutterSound();
             try
             {
-                if(Settings.IgnorePlayer)
-                {
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("MirrorReflection")); // Player's clone
-                }
-                if(Settings.IgnorePlayers)
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
-                if(Settings.IgnoreUI)
-                {
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Interactive"));
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UiMenu"));
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
-                    l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("InternalUI"));
-                }
-
-                RenderTexture l_rtA = new RenderTexture((int)Settings.CubemapSize, (int)Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
-                l_rtA.dimension = UnityEngine.Rendering.TextureDimension.Cube;
-                l_camera.RenderToCubemap(l_rtA);
-
-                RenderTexture l_rtB = new RenderTexture((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
-                l_rtA.ConvertToEquirect(l_rtB, Camera.MonoOrStereoscopicEye.Mono);
-
-                RenderTexture.active = l_rtB;
-                Texture2D l_resultTex = new Texture2D((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, TextureFormat.RGB24, false);
-                l_resultTex.ReadPixels(new Rect(0, 0, (int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight), 0, 0);
-                l_resultTex.Apply();
-
-                DateTime l_now = DateTime.Now;
-                CheckDirectories(l_now.Year, l_now.Month);
-
-                byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
-                System.IO.File.WriteAllBytes(string.Format("{0}/VRChat/Panorama/{1}-{2}/{1}-{2}-{3} {4}-{5}-{6} ({7}).png",
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                    l_now.Year, l_now.Month, l_now.Day,
-                    l_now.Hour, l_now.Minute, l_now.Second,
-                    Utils.CleanupAsFilename(Utils.GetCurrentWorldName())), l_bytes
-                );
-
-                UnityEngine.Object.DestroyImmediate(l_rtA);
-                UnityEngine.Object.DestroyImmediate(l_rtB);
-                UnityEngine.Object.DestroyImmediate(l_resultTex);
-
+                PrepareCameraLayers(l_camera);
+                TakeScreenshot(l_camera);
                 Utils.PlayXyloSound();
             }
             catch(Exception e)
@@ -106,51 +66,13 @@ namespace ml_ps
                     l_camera.cullingMask = Utils.GetStreamCamera().GetComponent<Camera>().cullingMask;
                     l_camera.stereoTargetEye = StereoTargetEyeMask.None;
 
-                    if(Settings.IgnorePlayer)
-                    {
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("MirrorReflection")); // Player's clone
-                    }
-                    if(Settings.IgnorePlayers)
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
-                    if(Settings.IgnoreUI)
-                    {
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Interactive"));
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UiMenu"));
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
-                        l_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("InternalUI"));
-                    }
+                    PrepareCameraLayers(l_camera);
 
                     l_camera.transform.parent = Utils.GetUserCamera().transform;
                     l_camera.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
                     Utils.GetPhotoCamera().active = false;
 
-                    RenderTexture l_rtA = new RenderTexture((int)Settings.CubemapSize, (int)Settings.CubemapSize, 24, RenderTextureFormat.ARGB32);
-                    l_rtA.dimension = UnityEngine.Rendering.TextureDimension.Cube;
-                    l_camera.RenderToCubemap(l_rtA);
-
-                    RenderTexture l_rtB = new RenderTexture((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32);
-                    l_rtA.ConvertToEquirect(l_rtB, Camera.MonoOrStereoscopicEye.Mono);
-
-                    RenderTexture.active = l_rtB;
-                    Texture2D l_resultTex = new Texture2D((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, TextureFormat.RGB24, false);
-                    l_resultTex.ReadPixels(new Rect(0, 0, (int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight), 0, 0);
-                    l_resultTex.Apply();
-
-                    DateTime l_now = DateTime.Now;
-                    CheckDirectories(l_now.Year, l_now.Month);
-
-                    byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
-                    System.IO.File.WriteAllBytes(string.Format("{0}/VRChat/Panorama/{1}-{2}/{1}-{2}-{3} {4}-{5}-{6} ({7}).png",
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                        l_now.Year, l_now.Month, l_now.Day,
-                        l_now.Hour, l_now.Minute, l_now.Second,
-                        Utils.CleanupAsFilename(Utils.GetCurrentWorldName())), l_bytes
-                    );
-
-                    UnityEngine.Object.DestroyImmediate(l_rtA);
-                    UnityEngine.Object.DestroyImmediate(l_rtB);
-                    UnityEngine.Object.DestroyImmediate(l_resultTex);
+                    TakeScreenshot(l_camera);
 
                     Utils.PlayXyloSound();
                 }
@@ -171,6 +93,57 @@ namespace ml_ps
             }
         }
 
+        void PrepareCameraLayers(Camera p_camera)
+        {
+            if(Settings.IgnorePlayer)
+            {
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerLocal"));
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("MirrorReflection")); // Player's clone
+            }
+            if(Settings.IgnorePlayers)
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Player"));
+            if(Settings.IgnoreUI)
+            {
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("Interactive"));
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UiMenu"));
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
+                p_camera.cullingMask &= ~(1 << LayerMask.NameToLayer("InternalUI"));
+            }
+        }
+
+        void TakeScreenshot(Camera p_camera)
+        {
+            RenderTexture l_rtA = new RenderTexture((int)Settings.CubemapSize, (int)Settings.CubemapSize, 24, RenderTextureFormat.ARGB32, 0);
+            l_rtA.dimension = UnityEngine.Rendering.TextureDimension.Cube;
+            p_camera.RenderToCubemap(l_rtA);
+
+            RenderTexture l_rtB = new RenderTexture((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, 0, RenderTextureFormat.ARGB32, 0);
+            l_rtB.dimension = UnityEngine.Rendering.TextureDimension.Tex2D;
+            l_rtA.ConvertToEquirect(l_rtB, Camera.MonoOrStereoscopicEye.Mono);
+
+            UnityEngine.Object.DestroyImmediate(l_rtA); // Yeet!
+
+            RenderTexture.active = l_rtB;
+            Texture2D l_resultTex = new Texture2D((int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight, TextureFormat.RGB24, false);
+            l_resultTex.ReadPixels(new Rect(0, 0, (int)Settings.PanoramaWidth, (int)Settings.PanoramaHeight), 0, 0);
+            l_resultTex.Apply();
+
+            UnityEngine.Object.DestroyImmediate(l_rtB); // Yeet!
+
+            DateTime l_now = DateTime.Now;
+            CheckDirectories(l_now.Year, l_now.Month);
+
+            byte[] l_bytes = ImageConversion.EncodeToPNG(l_resultTex);
+            System.IO.File.WriteAllBytes(string.Format("{0}/VRChat/{1}-{2}/{1}-{2}-{3}_{4}-{5}-{6}.png",
+                Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                l_now.Year, l_now.Month.ToString("00"), l_now.Day.ToString("00"),
+                l_now.Hour.ToString("00"), l_now.Minute.ToString("00"), l_now.Second.ToString("00")),
+                l_bytes
+            );
+
+            UnityEngine.Object.DestroyImmediate(l_resultTex);
+        }
+
         static void CheckDirectories(int p_year, int p_month)
         {
             string l_picturesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
@@ -178,11 +151,7 @@ namespace ml_ps
             if(!System.IO.Directory.Exists(l_picturesDir))
                 System.IO.Directory.CreateDirectory(l_picturesDir);
 
-            l_picturesDir += "/Panorama";
-            if(!System.IO.Directory.Exists(l_picturesDir))
-                System.IO.Directory.CreateDirectory(l_picturesDir);
-
-            l_picturesDir += string.Format("/{0}-{1}", p_year, p_month);
+            l_picturesDir += string.Format("/{0}-{1}", p_year, p_month.ToString("00"));
             if(!System.IO.Directory.Exists(l_picturesDir))
                 System.IO.Directory.CreateDirectory(l_picturesDir);
         }

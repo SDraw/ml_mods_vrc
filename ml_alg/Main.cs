@@ -107,12 +107,16 @@ namespace ml_alg
         {
             m_menuSettings = UIExpansionKit.API.ExpansionKitApi.CreateCustomQuickMenuPage(UIExpansionKit.API.LayoutDescription.WideSlimList);
             m_menuLabelWorld = ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddLabel("");
-            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset manipulated pose", this.OnPoseReset);
             ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Disallow manipulation for everyone in room", this.OnDisallowAll);
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset saved pose (All)", () => this.OnPoseReset(LiftedPlayer.BodyLimbs.All));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset saved pose (Head)", () => this.OnPoseReset(LiftedPlayer.BodyLimbs.Head));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset saved pose (Hands)", () => this.OnPoseReset(LiftedPlayer.BodyLimbs.Hands));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset saved pose (Hips)", () => this.OnPoseReset(LiftedPlayer.BodyLimbs.Hips));
+            ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Reset saved pose (Legs)", () => this.OnPoseReset(LiftedPlayer.BodyLimbs.Legs));
             ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).AddSimpleButton("Close", this.OnMenuClose);
-            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("Avatar limbs grabber", this.OnMenuShow);
+            UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.QuickMenu).AddSimpleButton("[ALG]\nMenu", this.OnMenuShow);
 
-            m_buttonPlayerAllow = UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddToggleButton("Limbs manipulation", this.OnManipulationToggle, null);
+            m_buttonPlayerAllow = UIExpansionKit.API.ExpansionKitApi.GetExpandedMenu(UIExpansionKit.API.ExpandedMenu.UserQuickMenu).AddToggleButton("[ALG]\nAllow manipulation", this.OnManipulationToggle, null);
         }
 
         void OnJoinedRoom()
@@ -224,10 +228,10 @@ namespace ml_alg
                 ((UIExpansionKit.API.ICustomShowableLayoutedMenu)m_menuSettings).Show();
         }
 
-        void OnPoseReset()
+        void OnPoseReset(LiftedPlayer.BodyLimbs p_bodyPart)
         {
             if(m_update && (m_localLifted != null) && Settings.SavePose)
-                m_localLifted.ClearSavedPose();
+                m_localLifted.ClearSavedPose(p_bodyPart);
         }
 
         void OnDisallowAll()

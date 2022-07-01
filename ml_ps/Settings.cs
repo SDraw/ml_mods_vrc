@@ -7,34 +7,34 @@ namespace ml_ps
         [System.Flags]
         public enum TextureSize
         {
-            [Description("32 pixels")]
+            [Description("32px")]
             X32 = 32,
 
-            [Description("64 pixels")]
+            [Description("64px")]
             X64 = 64,
 
-            [Description("128 pixels")]
+            [Description("128px")]
             X128 = 128,
 
-            [Description("256 pixels")]
+            [Description("256px")]
             X256 = 256,
 
-            [Description("512 pixels")]
+            [Description("512px")]
             X512 = 512,
 
-            [Description("1024 pixels")]
+            [Description("1024px")]
             X1024 = 1024,
 
-            [Description("2048 pixels")]
+            [Description("2048px")]
             X2048 = 2048,
 
-            [Description("4096 pixels")]
+            [Description("4096px")]
             X4096 = 4096,
 
-            [Description("8192 pixels")]
+            [Description("8192px")]
             X8192 = 8192,
 
-            [Description("16384 pixels")]
+            [Description("16384px")]
             X16384 = 16384,
         }
 

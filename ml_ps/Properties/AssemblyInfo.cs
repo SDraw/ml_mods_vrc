@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("PanoramaScreenshot")]
-[assembly: AssemblyVersion("1.0.4")]
-[assembly: AssemblyFileVersion("1.0.4")]
+[assembly: AssemblyVersion("1.0.5")]
+[assembly: AssemblyFileVersion("1.0.5")]
 
-[assembly: MelonLoader.MelonInfo(typeof(ml_ps.PanoramaScreenshot), "PanoramaScreenshot", "1.0.4", "SDraw", "https://github.com/SDraw/ml_mods")]
+[assembly: MelonLoader.MelonInfo(typeof(ml_ps.PanoramaScreenshot), "PanoramaScreenshot", "1.0.5", "SDraw", "https://github.com/SDraw/ml_mods")]
 [assembly: MelonLoader.MelonGame("VRChat", "VRChat")]
 [assembly: MelonLoader.MelonAdditionalDependencies("UIExpansionKit", "VRChatUtilityKit")]
 [assembly: MelonLoader.MelonPlatform(MelonLoader.MelonPlatformAttribute.CompatiblePlatforms.WINDOWS_X64)]

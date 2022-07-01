@@ -31,7 +31,7 @@ Available mod's settings through UIExpansionKit:
 
 Also, available additional `Avatar limbs grabber` menu button in main UIExpansionKit quick menu tab:
 * **World pull permission:** shows if player pulling is allowed in this world.
-* **Reset manipulated pose:** reset manipulated pose if `Preserve manipulated pose` option is enabled.
+* **Reset manipulated pose (*):** reset manipulated pose of specific limbs type if `Preserve manipulated pose` option is enabled.
 * **Disallow manipulation for everyone in room:** remove manipulation from everyone in room.
 
 ## Functionality
