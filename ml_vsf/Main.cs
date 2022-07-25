@@ -29,7 +29,7 @@ namespace ml_vsf
             m_buffer = new byte[1024];
 
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
@@ -102,15 +102,14 @@ namespace ml_vsf
             m_headTracker.transform.localRotation = Quaternion.identity;
         }
 
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer()._player)
+                OnRoomJoined();
+        }
+
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(CreateLocalTracked());
-        }
-        System.Collections.IEnumerator CreateLocalTracked()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<VsfTracked>();
         }
 

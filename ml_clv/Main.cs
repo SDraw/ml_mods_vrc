@@ -24,7 +24,7 @@ namespace ml_clv
 
             // Events
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
@@ -105,15 +105,14 @@ namespace ml_clv
             }
         }
 
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer()._player)
+                OnRoomJoined();
+        }
+
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(AssignLocalPlayer());
-        }
-        System.Collections.IEnumerator AssignLocalPlayer()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             TrackerBoneLine.Player = Utils.GetLocalPlayer();
         }
 

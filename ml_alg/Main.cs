@@ -26,7 +26,6 @@ namespace ml_alg
             Settings.LoadSettings();
 
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnJoinedRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnLeftRoom;
             VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnFriended += this.OnFriended;
@@ -122,12 +121,6 @@ namespace ml_alg
         void OnJoinedRoom()
         {
             m_update = true;
-            MelonLoader.MelonCoroutines.Start(CreateLocalLifted());
-        }
-        System.Collections.IEnumerator CreateLocalLifted()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
 
             m_localLifted = Utils.GetLocalPlayer().gameObject.AddComponent<LiftedPlayer>();
             m_localLifted.AllowPull = (Settings.AllowPull && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
@@ -154,6 +147,9 @@ namespace ml_alg
 
         void OnPlayerJoined(VRC.Player p_player)
         {
+            if(p_player == Utils.GetLocalPlayer())
+                OnJoinedRoom();
+
             if(Settings.AllowFriends && Utils.IsFriend(p_player))
                 MelonLoader.MelonCoroutines.Start(CreateLifterOnJoin(p_player));
         }

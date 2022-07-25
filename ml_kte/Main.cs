@@ -78,7 +78,7 @@ namespace ml_kte
             m_rotationFloatsAlloc = GCHandle.Alloc(m_rotationFloats, GCHandleType.Pinned);
 
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
@@ -245,15 +245,14 @@ namespace ml_kte
             }
         }
 
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer()._player)
+                OnRoomJoined();
+        }
+
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(CreateLocalLifted());
-        }
-        System.Collections.IEnumerator CreateLocalLifted()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<KinectTracked>();
             m_localTracked.TrackHead = Settings.TrackHead;
             m_localTracked.TrackHips = Settings.TrackHips;

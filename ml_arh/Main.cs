@@ -8,7 +8,7 @@
         {
             Settings.Load();
 
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
         }
 
@@ -23,15 +23,14 @@
             }
         }
 
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer()._player)
+                OnRoomJoined();
+        }
+
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(CreateLocalAdjuster());
-        }
-        System.Collections.IEnumerator CreateLocalAdjuster()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             m_localAdjuster = Utils.GetLocalPlayer().gameObject.AddComponent<HeightAdjuster>();
             m_localAdjuster.SetEnabled(Settings.Enabled && VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed);
             m_localAdjuster.SetPoseHeight(Settings.PoseHeight);

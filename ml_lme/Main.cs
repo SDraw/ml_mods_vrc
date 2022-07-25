@@ -35,7 +35,7 @@ namespace ml_lme
 
             // Events
             VRChatUtilityKit.Utilities.VRCUtils.OnUiManagerInit += this.OnUiManagerInit;
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
 
             // Patches
@@ -213,15 +213,14 @@ namespace ml_lme
             }
         }
 
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer()._player)
+                OnRoomJoined();
+        }
+
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(CreateLocalTracked());
-        }
-        System.Collections.IEnumerator CreateLocalTracked()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             m_localTracked = Utils.GetLocalPlayer().gameObject.AddComponent<LeapTracked>();
             m_localTracked.Enabled = Settings.Enabled;
             m_localTracked.FingersOnly = Settings.FingersTracking;

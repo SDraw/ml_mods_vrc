@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyTitle("AvatarLimbsGrabber")]
-[assembly: AssemblyVersion("1.4.3")]
-[assembly: AssemblyFileVersion("1.4.3")]
+[assembly: AssemblyVersion("1.4.4")]
+[assembly: AssemblyFileVersion("1.4.4")]
 
-[assembly: MelonLoader.MelonInfo(typeof(ml_alg.AvatarLimbsGrabber), "AvatarLimbsGrabber", "1.4.3", "SDraw", "https://github.com/SDraw/ml_mods")]
+[assembly: MelonLoader.MelonInfo(typeof(ml_alg.AvatarLimbsGrabber), "AvatarLimbsGrabber", "1.4.4", "SDraw", "https://github.com/SDraw/ml_mods")]
 [assembly: MelonLoader.MelonGame("VRChat", "VRChat")]
 [assembly: MelonLoader.MelonAdditionalDependencies("VRChatUtilityKit", "UIExpansionKit")]
 [assembly: MelonLoader.MelonPlatform(MelonLoader.MelonPlatformAttribute.CompatiblePlatforms.WINDOWS_X64)]

@@ -6,19 +6,18 @@
 
         public override void OnApplicationStart()
         {
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += this.OnRoomJoined;
+            VRChatUtilityKit.Utilities.NetworkEvents.OnPlayerJoined += this.OnPlayerJoined;
             VRChatUtilityKit.Utilities.NetworkEvents.OnRoomLeft += this.OnRoomLeft;
+        }
+
+        void OnPlayerJoined(VRC.Player p_player)
+        {
+            if(p_player == Utils.GetLocalPlayer())
+                OnRoomJoined();
         }
 
         void OnRoomJoined()
         {
-            MelonLoader.MelonCoroutines.Start(CreateLocalTurner());
-        }
-        System.Collections.IEnumerator CreateLocalTurner()
-        {
-            while(Utils.GetLocalPlayer() == null)
-                yield return null;
-
             m_localTurner = Utils.GetLocalPlayer().gameObject.AddComponent<HeadTurner>();
         }
 
