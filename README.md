@@ -1,3 +1,7 @@
+# IMPORTANT NOTICE
+Development is over due to VRChat's decision on implementation of EasyAntiCheat in latest build. Repository is archived.
+
+# Information
 Merged set of MelonLoader mods for VRChat.
 
 **State table for game build 1207:**
